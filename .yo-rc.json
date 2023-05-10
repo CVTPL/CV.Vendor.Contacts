@@ -1,0 +1,16 @@
+{
+  "@microsoft/generator-sharepoint": {
+    "plusBeta": false,
+    "isCreatingSolution": true,
+    "version": "1.15.2",
+    "libraryName": "cv-vendor-contacts",
+    "libraryId": "e21e5504-6166-406d-9b71-3cfb069f1a69",
+    "environment": "spo",
+    "packageManager": "npm",
+    "solutionName": "CV Vendor Contacts",
+    "solutionShortDescription": "CV Vendor Contacts description",
+    "skipFeatureDeployment": true,
+    "isDomainIsolated": false,
+    "componentType": "webpart"
+  }
+}
