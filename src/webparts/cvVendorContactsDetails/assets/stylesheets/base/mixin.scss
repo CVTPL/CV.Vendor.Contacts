@@ -1,0 +1,48 @@
+/* Define mixin with text style */
+@mixin text-style($fontSize, $line-height, $font-family, $color: $black) {
+  @if $line-height==null {
+    font-size: $fontSize;
+    font-family: $font-family;
+    color: $color;
+  } @else{
+    font-size: $fontSize;
+    line-height: $line-height;
+    font-family: $font-family;
+    color: $color;
+  }
+}
+
+/* Define mixin with Scroll Mixin */
+@mixin scroll-style() {
+  &::-webkit-scrollbar {
+    width: $scroll-width;
+    -webkit-width: $scroll-width;
+    height: $scroll-height;
+    -webkit-height: $scroll-height;
+  }
+  &::-webkit-scrollbar-track {
+    background: $scroll-track-bg;
+  }
+  &::-webkit-scrollbar-thumb {
+    background: $scroll-thumb-bg;
+    border-radius: $scroll-thumb-radius;
+  }
+  &::-webkit-scrollbar-thumb:hover {
+    background: $scroll-thumb-hover-bg;
+  }
+}
+
+/* Responsive - Mixin Start */
+@mixin media-breakpoint-down($breakpoint) {
+  $breakpoint-value: map-get($breakpoints, $breakpoint);
+  @media (max-width: $breakpoint-value) {
+    @content;
+  }
+}
+@mixin media-breakpoint-up($breakpoint) {
+  $breakpoint-value: map-get($breakpoints, $breakpoint);
+  @media (min-width: $breakpoint-value) {
+    @content;
+  }
+}
+/* Responsive - Mixin End */

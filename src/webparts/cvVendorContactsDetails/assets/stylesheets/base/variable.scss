@@ -1,0 +1,64 @@
+/* *************************************************** Color Relative Declare Variables Style CSS Start *************************************************** */
+$black: #000000;
+$white: #ffffff;
+$transparent: transparent;
+
+$primary-1: #3E4357;
+$primary-2: #E5F9DB;
+$primary-3: #DC3545;
+
+$secondary-1: #f9f9f9;
+$secondary-2: #E1E5EC;
+$secondary-3: #fafafa;
+$secondary-4: #bfbfbf;
+$secondary-5: #080808;
+$secondary-6: #d3d3d3;
+$secondary-7: #B2D5A1;
+$secondary-8: #dddddd;
+$secondary-9: #7e7e7e;
+/* *************************************************** Color Relative Declare Variables Style CSS End *************************************************** */
+
+$font-regular: 'Segoe UI Web (Arabic)';
+
+/* *************************************************** Box Shadow Relative Declare Variables Style CSS Start *************************************************** */
+$box-shadow-1: 0px 0px 20px rgb($secondary-6, 0.4);
+/* *************************************************** Box Shadow Relative Declare Variables Style CSS End *************************************************** */
+
+/* *************************************************** Scroll Bar Relative Declare Variables Style CSS Start *************************************************** */
+$scroll-width: 6px;
+$scroll-height: 3px;
+$scroll-thumb-radius: 20px;
+$scroll-thumb-bg: $secondary-2;
+$scroll-thumb-hover-bg: $primary-1;
+$scroll-track-bg: $secondary-1;
+/* *************************************************** Scroll Bar Relative Declare Variables Style CSS End *************************************************** */
+
+/* *************************************************** Font Size Relative Declare Variables Style CSS Start *************************************************** */
+$fs-10: 10px;
+$fs-12: 12px;
+$fs-14: 14px;
+$fs-15: 15px;
+$fs-16: 16px;
+$fs-18: 18px;
+$fs-20: 20px;
+$fs-22: 22px;
+$fs-24: 24px;
+$fs-26: 26px;
+$fs-28: 28px;
+$fs-40: 40px;
+/* *************************************************** Font Size Relative Declare Variables Style CSS End *************************************************** */
+
+/* *************************************************** Responsive Breapoints Relative Declare Variables Style CSS Start *************************************************** */
+$breakpoints: (
+  xxxs: 360px,
+  xxs: 420px,
+  xs: 575px,
+  sm: 768px,
+  md: 991px,
+  ipad: 1023px,
+  lg: 1199px,
+  xl: 1400px,
+  xxl: 1600px,
+  xxxl: 1900px,
+);
+/* *************************************************** Responsive Breapoints Relative Declare Variables Style CSS End *************************************************** */
