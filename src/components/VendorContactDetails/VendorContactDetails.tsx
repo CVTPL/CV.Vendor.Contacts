@@ -1,9 +1,12 @@
 import * as React from 'react';
 import { IVendorContactDetailsProps } from './IVendorContactDetailsProps';
-import { TooltipHost } from 'office-ui-fabric-react';
-
+import { ActionButton, Dropdown, IDropdownOption, IIconProps, Icon, TooltipHost } from 'office-ui-fabric-react';
+import PnpSpCommonServices from '../../services/PnpSpCommonServices';
+import { spfi, SPFx } from "@pnp/sp";
 
 const VendorContactDetails: React.FunctionComponent<IVendorContactDetailsProps> = (props) => {
+
+  const sp = spfi().using(SPFx(props.context));
 
   const vendorCardList: any[] = [
     {
@@ -93,50 +96,76 @@ const VendorContactDetails: React.FunctionComponent<IVendorContactDetailsProps> 
     </div>
   );
   // Tooltip Relative Code End
+  const[defaultData, setDefaultData] = React.useState([]);
+
+  React.useEffect(() => {
+    _callGetData()
+      .then((response) => {
+        // Handle successful response here
+        console.log(response);
+        setDefaultData(response);
+      })
+      .catch((error) => {
+        // Handle error here
+        console.error(error);
+      });
+
+      console.log("SharePoint Vendor Card List - Data Store = ", defaultData);
+  
+    // Clean up function
+    return () => {
+      console.log("Sorry not working code!");
+    };
+  }, []);
 
   return (
     <div className="vendor-card-scroll-content">
       <ul className="vendor-card-list">
         {
-          vendorCardList.map((item: any) => {
+          defaultData.map((item: any) => {
+            const imgJson = JSON.parse(item.VendorImage);
             return (
               <>
-                <li className="vendor-card-list-item">
+                <li className="vendor-card-list-item" onClick={(e) => parentComponent("parent", e)}>
                   <div className="card-container vendor-card-container">
                     <div className="card">
                       <div className="card-header">
                         <div className="rectangle-shape-box">
-                          <img src={item.vendorimgSrc} alt="Not Available Now" title="Vendor image" />
+                          <img src={imgJson.serverRelativeUrl} alt="Not Available Now" title="Vendor image" />
                         </div>
                       </div>
                       <div className="card-body">
-                        <TooltipHost className="tooltip-container" tooltipProps={{ onRenderContent: () => onVendorTitleRenderContent(item.vendorTitle) }} calloutProps={calloutProps}>
+                        <TooltipHost className="tooltip-container" tooltipProps={{ onRenderContent: () => onVendorTitleRenderContent(item.Title) }} calloutProps={calloutProps}>
                           <div className="clamp-text">
-                            <h2>{item.vendorTitle}</h2>
+                            <h2 onClick={(e) => parentComponent("child", e)}>{item.Title}</h2>
                           </div>
                         </TooltipHost>
                         <div className="detail-card">
                           <div className="detail-card-header">
-                            <TooltipHost className="tooltip-container" tooltipProps={{ onRenderContent: () => onVendorDetailTitleRenderContent(item.vendorDetailTitle) }} calloutProps={calloutProps}>
+                            <TooltipHost className="tooltip-container" tooltipProps={{ onRenderContent: () => onVendorDetailTitleRenderContent(item.VendorHeading) }} calloutProps={calloutProps}>
                               <div className="clamp-text">
-                                <h3>{item.vendorDetailTitle}</h3>
+                                <h3>{item.VendorHeading}</h3>
                               </div>
                             </TooltipHost>
                           </div>
                           <div className="detail-card-body">
-                            <p>{item.vendorDescription}</p>
+                            <p>{item.VendorName}</p>
                             <ul className="icon-with-label-list">
                               <li className="icon-with-label-list-item">
-                                <div className="circle-box">
-                                  <img src={require("../../assets/svg/phone.svg")} alt="Not Available Now" title="Phone icon" />
-                                </div>
-                                <span>{item.vendorPhone}</span>
+                                <a className="icon-link" href={'tel:' + item.VendorNumber}>
+                                  <div className="circle-box">
+                                    <img src={require("../../assets/svg/phone.svg")} alt="Not Available Now" title="Phone icon" />
+                                  </div>
+                                  <span>{item.VendorNumber}</span>
+                                </a>
                               </li>
                               <li className="icon-with-label-list-item">
-                                <div className="circle-box">
-                                  <img src={require("../../assets/svg/message.svg")} alt="Not Available Now" title="Message icon" />
-                                </div>
-                                <span>{item.vendorEmail}</span>
+                                <a className="icon-link" href={'mailto:' + item.Email}>
+                                  <div className="circle-box">
+                                    <img src={require("../../assets/svg/message.svg")} alt="Not Available Now" title="Message icon" />
+                                  </div>
+                                  <span>{item.Email}</span>
+                                </a>
                               </li>
                             </ul>
                           </div>
@@ -152,6 +181,39 @@ const VendorContactDetails: React.FunctionComponent<IVendorContactDetailsProps> 
       </ul>
     </div>
   );
+
+  function parentComponent(element: any, event: any){
+    if(element === "parent"){
+      console.log("My name is Parent");
+    } else{
+      console.log("My name is Child");
+      event.stopPropagation();
+    }
+  }
+  // function childComponent(element: any, event: any){
+  //   if(element === "child"){
+  //     console.log("My name is Child");
+  //   }
+  //   event.stopPropagation();
+  // }
+
+  async function _callGetData(): Promise<any> {
+    return new Promise((resolve, reject) => {
+      PnpSpCommonServices._getValue(sp).then(
+        (response) => {
+          resolve(response);
+        },
+        (error: any) => {
+          reject(error);
+          console.log(error);
+        }
+      );
+    })
+  }
+
 };
 
 export default VendorContactDetails;
+/*
+variable declaration function level - to use always - ya to set ya to get only 1 use
+*/

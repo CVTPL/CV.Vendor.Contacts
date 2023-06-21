@@ -4,7 +4,7 @@ import VendorContactDetails from '../../../components/VendorContactDetails/Vendo
 import RequestForm from '../../../components/RequestForm/RequestForm';
 require("../assets/stylesheets/base/global.scss");
 
-export default class CvVendorContactsDetails extends React.Component<ICvVendorContactsDetailsProps, {}> {
+export default class CvVendorContactsDetails extends React.Component<ICvVendorContactsDetailsProps, any, {}> {
   constructor(props: ICvVendorContactsDetailsProps){
     super(props);
   }
@@ -23,7 +23,7 @@ export default class CvVendorContactsDetails extends React.Component<ICvVendorCo
             <div className="ms-Grid">
               <div className="ms-Grid-row">
                 <div className="ms-Grid-col ms-sm12 ms-md12 ms-lg12 ms-xl7 ms-xxl8 ms-xxxl8">
-                  <VendorContactDetails />
+                  <VendorContactDetails context={this.props.context} />
                 </div>
                 <div className="ms-Grid-col ms-sm12 ms-md12 ms-lg12 ms-xl5 ms-xxl4 ms-xxxl4 mb-80">
                   <RequestForm />

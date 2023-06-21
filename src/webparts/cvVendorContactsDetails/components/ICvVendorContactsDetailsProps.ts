@@ -4,4 +4,5 @@ export interface ICvVendorContactsDetailsProps {
   environmentMessage: string;
   hasTeamsContext: boolean;
   userDisplayName: string;
+  context: any;
 }

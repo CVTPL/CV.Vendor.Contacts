@@ -238,30 +238,32 @@ ul {
 
 .icon-with-label-list{
   .icon-with-label-list-item{
-    display: flex;
-    align-items: center;
-    justify-content: center;
     &:not(:last-child){
       margin-bottom: 10px;
     }
-    .circle-box{
-      width: 15px;
-      height: 15px;
-      flex: 0 0 auto;
+    .icon-link{
       display: flex;
       align-items: center;
       justify-content: center;
-      border-radius: 100%;
-      background-color: $primary-2;
-      margin-right: 5px;
-      img{
-        width: 7px;
+      .circle-box{
+        width: 15px;
+        height: 15px;
+        flex: 0 0 auto;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 100%;
+        background-color: $primary-2;
+        margin-right: 5px;
+        img{
+          width: 7px;
+        }
       }
-    }
-    span{
-      @include text-style($fs-12, 14px, $font-regular, $secondary-5);
-      word-break: break-all;
-      text-align: left;
+      span{
+        @include text-style($fs-12, 14px, $font-regular, $secondary-5);
+        word-break: break-all;
+        text-align: left;
+      }
     }
   }
 }
