@@ -1,12 +1,21 @@
 import * as React from 'react';
 import { IVendorContactDetailsProps } from './IVendorContactDetailsProps';
-import { ActionButton, Dropdown, IDropdownOption, IIconProps, Icon, TooltipHost } from 'office-ui-fabric-react';
+import { Icon, TextField, TooltipHost } from 'office-ui-fabric-react';
 import PnpSpCommonServices from '../../services/PnpSpCommonServices';
 import { spfi, SPFx } from "@pnp/sp";
+import { Pagination } from "@pnp/spfx-controls-react/lib/pagination";
 
 const VendorContactDetails: React.FunctionComponent<IVendorContactDetailsProps> = (props) => {
 
   const sp = spfi().using(SPFx(props.context));
+
+  /* Pagination with Data Relative Code Start */
+  const [paginationTotalPage, setPaginationTotalPage]: any = React.useState(null);
+  const [paginationTotalcount, setPaginationTotalcount]: any = React.useState(null);
+  const [paginationObject, setPaginationObject]: any = React.useState([]);
+  const [pageNumber, setpageNumber]: any = React.useState(null);
+  const [startEndIndexPagination, setStartEndIndexPagination]: any = React.useState([]);
+  /* Pagination with Data Relative Code End */
 
   const vendorCardList: any[] = [
     {
@@ -96,14 +105,22 @@ const VendorContactDetails: React.FunctionComponent<IVendorContactDetailsProps> 
     </div>
   );
   // Tooltip Relative Code End
+  
+  /* Filter Data Create Object Relative Code Start */
   const[defaultData, setDefaultData] = React.useState([]);
+  const [filteredData, setFilteredData] = React.useState([]);
+  /* Filter Data Create Object Relative Code End */
 
   React.useEffect(() => {
+    sessionStorage.PageNumberData = 1; /* For Pagination */
     _callGetData()
       .then((response) => {
         // Handle successful response here
         console.log(response);
         setDefaultData(response);
+        setFilteredData(response);
+        _getPage(1, response);
+        // _getpagination(1, response);
       })
       .catch((error) => {
         // Handle error here
@@ -120,67 +137,115 @@ const VendorContactDetails: React.FunctionComponent<IVendorContactDetailsProps> 
 
   return (
     <div className="vendor-card-scroll-content">
-      <ul className="vendor-card-list">
-        {
-          defaultData.map((item: any) => {
-            const imgJson = JSON.parse(item.VendorImage);
-            return (
-              <>
-                <li className="vendor-card-list-item" onClick={(e) => parentComponent("parent", e)}>
-                  <div className="card-container vendor-card-container">
-                    <div className="card">
-                      <div className="card-header">
-                        <div className="rectangle-shape-box">
-                          <img src={imgJson.serverRelativeUrl} alt="Not Available Now" title="Vendor image" />
+      <div className="search-with-data">
+        <TextField placeholder="Search to filter data" onChange={filterData} />
+        <ul className="vendor-card-list">
+          {
+            defaultData.map((item: any) => {
+              const imgJson = JSON.parse(item.VendorImage);
+              return (
+                <>
+                  <li className="vendor-card-list-item" onClick={(e) => parentComponent("parent", e)}>
+                    <div className="card-container vendor-card-container">
+                      <div className="card">
+                        <div className="card-header">
+                          <div className="rectangle-shape-box">
+                            <img src={imgJson.serverRelativeUrl} alt="Not Available Now" title="Vendor image" />
+                          </div>
                         </div>
-                      </div>
-                      <div className="card-body">
-                        <TooltipHost className="tooltip-container" tooltipProps={{ onRenderContent: () => onVendorTitleRenderContent(item.Title) }} calloutProps={calloutProps}>
-                          <div className="clamp-text">
-                            <h2 onClick={(e) => parentComponent("child", e)}>{item.Title}</h2>
-                          </div>
-                        </TooltipHost>
-                        <div className="detail-card">
-                          <div className="detail-card-header">
-                            <TooltipHost className="tooltip-container" tooltipProps={{ onRenderContent: () => onVendorDetailTitleRenderContent(item.VendorHeading) }} calloutProps={calloutProps}>
-                              <div className="clamp-text">
-                                <h3>{item.VendorHeading}</h3>
-                              </div>
-                            </TooltipHost>
-                          </div>
-                          <div className="detail-card-body">
-                            <p>{item.VendorName}</p>
-                            <ul className="icon-with-label-list">
-                              <li className="icon-with-label-list-item">
-                                <a className="icon-link" href={'tel:' + item.VendorNumber}>
-                                  <div className="circle-box">
-                                    <img src={require("../../assets/svg/phone.svg")} alt="Not Available Now" title="Phone icon" />
-                                  </div>
-                                  <span>{item.VendorNumber}</span>
-                                </a>
-                              </li>
-                              <li className="icon-with-label-list-item">
-                                <a className="icon-link" href={'mailto:' + item.Email}>
-                                  <div className="circle-box">
-                                    <img src={require("../../assets/svg/message.svg")} alt="Not Available Now" title="Message icon" />
-                                  </div>
-                                  <span>{item.Email}</span>
-                                </a>
-                              </li>
-                            </ul>
+                        <div className="card-body">
+                          <TooltipHost className="tooltip-container" tooltipProps={{ onRenderContent: () => onVendorTitleRenderContent(item.Title) }} calloutProps={calloutProps}>
+                            <div className="clamp-text">
+                              <h2 onClick={(e) => parentComponent("child", e)}>{item.Title}</h2>
+                            </div>
+                          </TooltipHost>
+                          <div className="detail-card">
+                            <div className="detail-card-header">
+                              <TooltipHost className="tooltip-container" tooltipProps={{ onRenderContent: () => onVendorDetailTitleRenderContent(item.VendorHeading) }} calloutProps={calloutProps}>
+                                <div className="clamp-text">
+                                  <h3>{item.VendorHeading}</h3>
+                                </div>
+                              </TooltipHost>
+                            </div>
+                            <div className="detail-card-body">
+                              <p>{item.VendorName}</p>
+                              <ul className="icon-with-label-list">
+                                <li className="icon-with-label-list-item">
+                                  <a className="icon-link" href={'tel:' + item.VendorNumber}>
+                                    <div className="circle-box">
+                                      <img src={require("../../assets/svg/phone.svg")} alt="Not Available Now" title="Phone icon" />
+                                    </div>
+                                    <span>{item.VendorNumber}</span>
+                                  </a>
+                                </li>
+                                <li className="icon-with-label-list-item">
+                                  <a className="icon-link" href={'mailto:' + item.Email}>
+                                    <div className="circle-box">
+                                      <img src={require("../../assets/svg/message.svg")} alt="Not Available Now" title="Message icon" />
+                                    </div>
+                                    <span>{item.Email}</span>
+                                  </a>
+                                </li>
+                              </ul>
+                            </div>
                           </div>
                         </div>
                       </div>
                     </div>
-                  </div>
-                </li>
-              </>
-            )
-          })
-        }
-      </ul>
+                  </li>
+                </>
+              )
+            })
+          }
+        </ul>
+      </div>
+      <div className="pagination-footer">
+        <div className="number-content">
+          {startEndIndexPagination[0] ? startEndIndexPagination[0].startIndex : "1"}{" "}-{" "}
+          {startEndIndexPagination[0] ? startEndIndexPagination[0].endIndex : "10"}{" "} of {paginationTotalcount} items
+        </div>
+        <Pagination currentPage={pageNumber > 1 ? pageNumber : 1} totalPages={paginationTotalPage} onChange={(page) => _getPage(page, paginationObject)} limiter={1} />
+      </div>
     </div>
   );
+
+  function filterData(event: any){
+    var searchValue = event.target.value;
+    var storeData;
+    if(searchValue){
+      storeData = defaultData.filter((item: any) => {
+        return item.Title.toLowerCase().includes(searchValue.toLowerCase().trim());
+      })
+      _getPage(1, storeData);
+    } else{
+      setDefaultData(filteredData);
+      // storeData = filteredData;
+      _getPage(1, defaultData);
+    }
+  }
+
+  function _getPage(page: number, responseItems: any){
+    /* Pagination with Data Relative Code Start */
+    sessionStorage.pageNumberData = page;
+    let paginationObjects = responseItems;
+    let totalPage = Math.ceil(paginationObjects.length / 8);
+    let pageCount = paginationObjects.length;
+    setPaginationObject(paginationObjects);
+    setPaginationTotalPage(totalPage);
+    setPaginationTotalcount(pageCount);
+    if(page){
+      let filterData = paginationObjects.slice((page - 1) * 8, page * 8);
+      setDefaultData(filterData);
+      setpageNumber(page);
+    }
+    /* Pagination with Data Relative Code End */
+    
+    /* Pagination Left Part Calculate Relative Code Start */
+    const startIndex = (page - 1) * 8 + 1;
+    const endIndex = Math.min(page * 8, pageCount);
+    setStartEndIndexPagination([{ startIndex, endIndex }]);
+    /* Pagination Left Part Calculate Relative Code End */
+  }
 
   function parentComponent(element: any, event: any){
     if(element === "parent"){
@@ -190,12 +255,6 @@ const VendorContactDetails: React.FunctionComponent<IVendorContactDetailsProps> 
       event.stopPropagation();
     }
   }
-  // function childComponent(element: any, event: any){
-  //   if(element === "child"){
-  //     console.log("My name is Child");
-  //   }
-  //   event.stopPropagation();
-  // }
 
   async function _callGetData(): Promise<any> {
     return new Promise((resolve, reject) => {
@@ -214,6 +273,3 @@ const VendorContactDetails: React.FunctionComponent<IVendorContactDetailsProps> 
 };
 
 export default VendorContactDetails;
-/*
-variable declaration function level - to use always - ya to set ya to get only 1 use
-*/

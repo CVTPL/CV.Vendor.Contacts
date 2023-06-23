@@ -90,6 +90,9 @@ export default class CvVendorContactsDetailsWebPart extends BaseClientSideWebPar
               groupFields: [
                 PropertyPaneTextField('description', {
                   label: strings.DescriptionFieldLabel
+                }),
+                PropertyPaneTextField('description', {
+                  label: "HR Email"
                 })
               ]
             }

@@ -88,7 +88,7 @@ const RequestForm: React.FunctionComponent<IRequestFormProps> = (props) => {
 
       if (valuePhoneNumber.length !== 10) {
         isErrorMessageObj((prevState: any) => ({...prevState,
-          [event.target.id]: "Please enter a 10-digit phone number - " + " " + "(" + valuePhoneNumber.length + ")",
+          [event.target.id]: `Please enter a 10-digit phone number - (${valuePhoneNumber.length})`,
         }));
       } else {
         isErrorMessageObj((prevState: any) => ({...prevState,
@@ -125,22 +125,23 @@ const RequestForm: React.FunctionComponent<IRequestFormProps> = (props) => {
       }
     });
 
-    if (Object.keys(errors).length > 0) {
-      isErrorMessageObj(errors);
-    } else {
+    // Check for specific phone number and email validation errors
+    if (vendorDetailFormsData.Number.length !== 10) {
+      errors.Number = `Please enter a 10-digit phone number - (${vendorDetailFormsData.Number.length})`;
+    }
+
+    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailPattern.test(vendorDetailFormsData.Email)) {
+      errors.Email = "Please enter a valid email - ('@', '.')";
+    }
+
+    // Update error messages state
+    isErrorMessageObj(errors);
+
+    if (Object.keys(errors).length === 0) {
       isSubmittedForm(true);
     }
   }
 };
 
 export default RequestForm;
-
-/*
-Task For Maharshi :
-#1 - CV Vendor Contacts - Phone Number & Email Fuctionality & how to next step discuss with ankit
-
-Task For Maharshi : Status
-#1 - CV Vendor Contacts - Phone Number & Email Fuctionality & how to next step discuss ankit
-
-- I forgot login, after lunch break
-*/
