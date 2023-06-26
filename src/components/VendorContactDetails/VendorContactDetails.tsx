@@ -4,6 +4,7 @@ import { Icon, TextField, TooltipHost } from 'office-ui-fabric-react';
 import PnpSpCommonServices from '../../services/PnpSpCommonServices';
 import { spfi, SPFx } from "@pnp/sp";
 import { Pagination } from "@pnp/spfx-controls-react/lib/pagination";
+import { clone } from '@microsoft/sp-lodash-subset';
 
 const VendorContactDetails: React.FunctionComponent<IVendorContactDetailsProps> = (props) => {
 
@@ -107,8 +108,10 @@ const VendorContactDetails: React.FunctionComponent<IVendorContactDetailsProps> 
   // Tooltip Relative Code End
   
   /* Filter Data Create Object Relative Code Start */
-  const[defaultData, setDefaultData] = React.useState([]);
-  const [filteredData, setFilteredData] = React.useState([]);
+  const [defaultData, setDefaultData] = React.useState([]);
+  const [defaultDataCopy, setDefaultDataCopy] = React.useState([]);
+  const [filterItem, setFilterItem]: any = React.useState({});
+  const [searchString, setSearchString]: any = React.useState("");
   /* Filter Data Create Object Relative Code End */
 
   React.useEffect(() => {
@@ -117,9 +120,11 @@ const VendorContactDetails: React.FunctionComponent<IVendorContactDetailsProps> 
       .then((response) => {
         // Handle successful response here
         console.log(response);
-        setDefaultData(response);
-        setFilteredData(response);
-        _getPage(1, response);
+        var orderByData = props.alasql("SELECT * FROM ? ORDER BY Title ASC", [response]);
+        console.log(orderByData);
+        setDefaultData(orderByData);
+        setDefaultDataCopy(orderByData);
+        _getPage(1, orderByData);
         // _getpagination(1, response);
       })
       .catch((error) => {
@@ -138,7 +143,7 @@ const VendorContactDetails: React.FunctionComponent<IVendorContactDetailsProps> 
   return (
     <div className="vendor-card-scroll-content">
       <div className="search-with-data">
-        <TextField placeholder="Search to filter data" onChange={filterData} />
+        <TextField placeholder="Search to filter data" onChange={filterData} value={searchString} />
         <ul className="vendor-card-list">
           {
             defaultData.map((item: any) => {
@@ -210,18 +215,15 @@ const VendorContactDetails: React.FunctionComponent<IVendorContactDetailsProps> 
   );
 
   function filterData(event: any){
-    var searchValue = event.target.value;
-    var storeData;
-    if(searchValue){
-      storeData = defaultData.filter((item: any) => {
-        return item.Title.toLowerCase().includes(searchValue.toLowerCase().trim());
-      })
-      _getPage(1, storeData);
-    } else{
-      setDefaultData(filteredData);
-      // storeData = filteredData;
-      _getPage(1, defaultData);
+    let filterItems = filterItem;
+    if (event.target.value != "") {
+      filterItems["Search"] = event.target.value;
+    } else {
+      delete filterItems["Search"];
     }
+    setFilterItem(filterItems); // Filter Data /
+    setSearchString(event.target.value); // Search String /
+    _getFilterData(); // filter Function /
   }
 
   function _getPage(page: number, responseItems: any){
@@ -268,6 +270,22 @@ const VendorContactDetails: React.FunctionComponent<IVendorContactDetailsProps> 
         }
       );
     })
+  }
+
+  // 
+  function _getFilterData() {
+    let itemdata = filterItem;
+    let copyData = clone(defaultDataCopy);
+    if (Object.keys(itemdata).length > 0) {
+      const searchData = itemdata.Search ? "Title like '%" + itemdata.Search + "%' or VendorNumber like '%" + itemdata.Search + "%'" : "Title != 'null'";
+      console.log(searchData);
+      var filteredData = props.alasql("select * from ? where (" + searchData + ")", [copyData]);
+      setDefaultData(filteredData);
+      _getPage(1, filteredData);
+    } else {
+      setDefaultData(defaultDataCopy);
+      _getPage(1, defaultDataCopy);
+    }
   }
 
 };

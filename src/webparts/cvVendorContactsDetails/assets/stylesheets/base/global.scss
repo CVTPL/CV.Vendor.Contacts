@@ -412,9 +412,24 @@ ul {
         border-radius: 4px;
         padding: 0px 4px;
         margin-left: 0px;
-        border: 1px solid $primary-1;
+        border-width: 1px;
+        border-style: solid;
+        border-color: $primary-1;
+        // border: 1px solid $primary-1;
         &:not(:last-child) {
           margin-right: 6px;
+        }
+        &:hover{
+          background-color: $white;
+          border-color: $primary-1 !important;
+          // border: 1px solid $primary-1 !important;
+          .ms-Button-flexContainer{
+            .ms-Button-textContainer{
+              .ms-Button-label{
+                color: $primary-1;
+              }
+            }
+          }
         }
         .ms-Button-flexContainer {
           .ms-Icon {
@@ -430,7 +445,22 @@ ul {
         }
         &.ms-Button--primary {
           background-color: $primary-1;
-          border: 1px solid $primary-1;
+          border-width: 1px;
+          border-style: solid;
+          border-color: $primary-1;
+          // border: 1px solid $primary-1;
+          &:hover{
+            background-color: $primary-1;
+            border-color: $primary-1 !important;
+            // border: 1px solid $primary-1 !important;
+            .ms-Button-flexContainer{
+              .ms-Button-textContainer{
+                .ms-Button-label{
+                  color: $white;
+                }
+              }
+            }
+          }
           .ms-Button-flexContainer {
             .ms-Button-textContainer {
               .ms-Button-label {

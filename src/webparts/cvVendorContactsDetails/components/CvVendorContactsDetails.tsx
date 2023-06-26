@@ -3,10 +3,14 @@ import { ICvVendorContactsDetailsProps } from './ICvVendorContactsDetailsProps';
 import VendorContactDetails from '../../../components/VendorContactDetails/VendorContactDetails';
 import RequestForm from '../../../components/RequestForm/RequestForm';
 require("../assets/stylesheets/base/global.scss");
+import * as alasql from 'alasql';
 
 export default class CvVendorContactsDetails extends React.Component<ICvVendorContactsDetailsProps, any, {}> {
   constructor(props: ICvVendorContactsDetailsProps){
     super(props);
+    this.state = {
+      alasql: alasql,
+    }
   }
   public render(): React.ReactElement<ICvVendorContactsDetailsProps> {
     return (
@@ -23,7 +27,7 @@ export default class CvVendorContactsDetails extends React.Component<ICvVendorCo
             <div className="ms-Grid">
               <div className="ms-Grid-row">
                 <div className="ms-Grid-col ms-sm12 ms-md12 ms-lg12 ms-xl7 ms-xxl8 ms-xxxl8">
-                  <VendorContactDetails context={this.props.context} />
+                  <VendorContactDetails alasql={this.state.alasql} context={this.props.context} />
                 </div>
                 <div className="ms-Grid-col ms-sm12 ms-md12 ms-lg12 ms-xl5 ms-xxl4 ms-xxxl4">
                   <RequestForm />

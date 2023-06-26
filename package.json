@@ -23,6 +23,7 @@
     "@pnp/sp": "^3.16.0",
     "@pnp/sp-admin": "^3.16.0",
     "@pnp/spfx-controls-react": "3.14.0",
+    "alasql": "^1.7.4",
     "office-ui-fabric-react": "7.185.7",
     "react": "16.13.1",
     "react-dom": "16.13.1",
