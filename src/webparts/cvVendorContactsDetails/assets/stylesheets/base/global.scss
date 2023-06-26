@@ -303,6 +303,13 @@ ul {
   border: 1px solid $secondary-7;
   border-radius: 20px;
   overflow: hidden;
+  @include media-breakpoint-down(lg){
+    min-height: 650px;
+  }
+  @include media-breakpoint-down(ipad){
+    min-height: auto;
+    margin-top: 40px;
+  }
   .vendor-forms-header{
     padding: 20px;
     background-color: rgb($primary-2, 0.5);

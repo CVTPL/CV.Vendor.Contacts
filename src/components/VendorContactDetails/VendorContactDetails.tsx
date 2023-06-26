@@ -277,7 +277,7 @@ const VendorContactDetails: React.FunctionComponent<IVendorContactDetailsProps> 
     let itemdata = filterItem;
     let copyData = clone(defaultDataCopy);
     if (Object.keys(itemdata).length > 0) {
-      const searchData = itemdata.Search ? "Title like '%" + itemdata.Search + "%' or VendorNumber like '%" + itemdata.Search + "%'" : "Title != 'null'";
+      const searchData = itemdata.Search ? "Title like '%" + itemdata.Search + "%' or VendorNumber like '%" + itemdata.Search + "%' or VendorName like '%" + itemdata.Search + "%' or Email like '%" + itemdata.Search + "%' or VendorHeading like '%" + itemdata.Search + "%'" : "Title != 'null'";
       console.log(searchData);
       var filteredData = props.alasql("select * from ? where (" + searchData + ")", [copyData]);
       setDefaultData(filteredData);
