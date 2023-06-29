@@ -96,6 +96,13 @@ ul {
                                 max-width: 100% !important;
                               }
                             }
+                            > div{
+                              > div{
+                                @include media-breakpoint-down(xxs){
+                                  padding: 0px;
+                                }
+                              }
+                            }
                           }
                         }
                       }
@@ -119,6 +126,9 @@ ul {
     padding: 20px;
     border: 0.5px solid $secondary-4;
     border-radius: 20px;
+    @include media-breakpoint-down(xxs){
+      padding: 15px;
+    }
     h1{
       @include text-style($fs-22, 30px, $font-regular, $black);
       font-weight: bold;
@@ -142,6 +152,9 @@ ul {
   flex-wrap: wrap;
   margin: 0px -20px;
   box-sizing: border-box;
+  @include media-breakpoint-down(xxs){
+    margin: 0ox -10px;
+  }
   .vendor-card-list-item{
     flex: 0 0 auto;
     width: 25%;
@@ -164,6 +177,9 @@ ul {
     }
     @include media-breakpoint-down(sm){
       width: 100%;
+    }
+    @include media-breakpoint-down(xxs){
+      padding: 0px 10px;
     }
   }
 }
@@ -313,6 +329,9 @@ ul {
   .vendor-forms-header{
     padding: 20px;
     background-color: rgb($primary-2, 0.5);
+    @include media-breakpoint-down(xxs){
+      padding: 15px;
+    }
     h4{
       @include text-style($fs-18, 20px, $font-regular, $primary-1);
       font-weight: bold;
@@ -329,6 +348,9 @@ ul {
     }
     @include media-breakpoint-down(lg){
       padding: 25px 25px 0px;
+    }
+    @include media-breakpoint-down(xxs){
+      padding: 15px 15px 0px;
     }
     .btn-container{
       margin: 45px 0px 20px;
@@ -507,3 +529,371 @@ ul {
     margin-bottom: 20px;
   }
 }
+
+
+.ms-Layer {
+  .ms-Layer-content {
+    .ms-Overlay {
+      backdrop-filter: blur(2px);
+      -webkit-backdrop-filter: blur(2px);
+      -moz-backdrop-filter: blur(2px);
+    }
+    .ms-Panel {
+      &.panel-container {
+        .ms-Panel-main {
+          display: flex;
+          flex-direction: column;
+          justify-content: flex-start;
+          // height: 100vh;
+          .ms-Panel-commands {
+            margin-top: 0px;
+            .ms-Panel-navigation {
+              align-items: center;
+              justify-content: space-between;
+              background: $secondary-3;
+              padding: 15px 25px;
+              @include media-breakpoint-down(sm) {
+                padding: 15px 20px 15px 25px;
+              }
+              @include media-breakpoint-down(xxs) {
+                padding: 12px 12px 12px 15px;
+              }
+              .panel-header {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                flex-wrap: wrap;
+                flex: 1;
+                padding-right: 20px;
+              }
+              .ms-Button {
+                margin-right: 0px;
+              }
+            }
+          }
+          .ms-Panel-contentInner {
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+            overflow-y: hidden;
+            .ms-Panel-scrollableContent {
+              height: calc(100% - 70px);
+              display: flex;
+              flex-direction: column;
+              flex-grow: 1;
+              // height: 100%;
+              // flex: 1;
+              // overflow: unset;
+              .ms-Panel-content {
+                // height: 100%;
+                display: flex;
+                flex-direction: column;
+                padding: 0px;
+                .panel-body {
+                  flex: 1;
+                  background-color: lightseagreen;
+                  padding: 20px 30px;
+                  overflow-y: auto;
+                  @include scroll-style();
+                  @include media-breakpoint-down(xxs) {
+                    padding: 10px;
+                  }
+                }
+                .panel-footer {
+                  padding: 15px 25px;
+                  background-color: $secondary-3;
+                  @include media-breakpoint-down(sm) {
+                    padding: 15px;
+                  }
+                  @include media-breakpoint-down(xxs) {
+                    padding: 12px;
+                  }
+                }
+              }
+            }
+            .ms-Panel-footer {
+              background-color: $secondary-3;
+              .ms-Panel-footerInner {
+                padding: 0px;
+              }
+            }
+          }
+        }
+        .ms-Overlay {
+          background-color: rgb($black, 0.3);
+          filter: blur(2px);
+        }
+      }
+    }
+  }
+}
+/* No Data Found Message Custom Style SCSS Start */
+.not-found-message-content-box {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: $white;
+  border-radius: 20px;
+  padding: 30px 60px;
+  box-shadow: $box-shadow-1;
+  .content-box{
+    text-align: center;
+    > h3{
+      font-size: 28px;
+      margin: 0px;
+      color: $primary-1;
+      margin: 40px 0px 8px;
+    }
+    > p{
+      font-size: 20px;
+    }
+    > img{
+      width: 50%;
+    }
+    .btn-container{
+      .ms-Button--default{
+        &.ms-Button{
+          &.btn-primary-1{
+            min-width: 120px;
+          }
+        }
+      }
+    }
+  }
+}
+/* No Data Found Message Custom Style SCSS End */
+
+/* Sharepoint Select Column Card issue SCSS Customize Start */
+.CanvasZone{
+  .CanvasSection{
+    .ControlZone{
+      .ControlZone--control{
+        .ms-SPLegacyFabricBlock{
+          > section{
+            @include media-breakpoint-down(mxs){
+              padding: 0px;
+            }
+          }
+        }
+      }
+    }
+    &.CanvasSection-xl6{
+      @include sharePointColumnCommanStructure(){
+        .grid-column-wraping-issue{
+          > .ms-Grid{
+            > .ms-Grid-row{
+              > .ms-Grid-col{
+                &:not(:last-child){
+                  @include media-breakpoint-down(xxl){
+                    margin-bottom: 40px;
+                  }
+                }
+              }
+            }
+          }
+        }
+        .ms-Grid-col{
+          @include media-breakpoint-down(xxl){
+            width: 100%;
+          }
+        }
+        .vendor-card-scroll-content{
+          .search-with-data{
+            .vendor-card-list{
+              .vendor-card-list-item{
+                width: 50%;
+                @include media-breakpoint-down(lg){
+                  width: 100%;
+                }
+              }
+            }
+          }
+        }
+        .vendor-forms-container{
+          min-height: auto;
+          .vendor-forms-header{
+            h4{
+              font-size: $fs-16;
+            }
+          }
+          .vendor-forms-body{
+            padding: 25px 20px 0px;
+          }
+        }
+      }
+    }
+    &.CanvasSection-xl4{
+      @include sharePointColumnCommanStructure(){
+        .grid-column-wraping-issue{
+          > .ms-Grid{
+            > .ms-Grid-row{
+              > .ms-Grid-col{
+                &:not(:last-child){
+                  @include media-breakpoint-down(lg){
+                    margin-bottom: 40px;
+                  }
+                }
+              }
+            }
+          }
+        }
+        .ms-Grid-col{
+          @include media-breakpoint-down(lg){
+            width: 100%;
+          }
+        }
+        .grid-column-wraping-issue{
+          > .ms-Grid{
+            > .ms-Grid-row{
+              > .ms-Grid-col{
+                &:not(:last-child){
+                  margin-bottom: 40px;
+                }
+              }
+            }
+          }
+        }
+        .ms-Grid-col{
+          width: 100%;
+        }
+        .vendor-card-scroll-content{
+          .search-with-data{
+            .vendor-card-list{
+              .vendor-card-list-item{
+                width: 100%;
+                @include media-breakpoint-down(lg){
+                  width: 50%;
+                }
+                @include media-breakpoint-down(ipad){
+                  width: 33.33%;
+                }
+                @include media-breakpoint-down(md){
+                  width: 50%;
+                }
+                @include media-breakpoint-down(sm){
+                  width: 100%;
+                }
+              }
+            }
+          }
+        }
+        .vendor-forms-container{
+          min-height: auto;
+          .vendor-forms-body{
+            padding: 20px 20px 0px;
+          }
+        }
+      }
+    }
+    &.CanvasSection-xl8{
+      @include sharePointColumnCommanStructure(){
+        .grid-column-wraping-issue{
+          > .ms-Grid{
+            > .ms-Grid-row{
+              > .ms-Grid-col{
+                @include media-breakpoint-down(xxl){
+                  width: 50%;
+                }
+                @include media-breakpoint-down(lg){
+                  width: 100%;
+                }
+                &:not(:last-child){
+                  @include media-breakpoint-down(lg){
+                    margin-bottom: 40px;
+                  }
+                }
+              }
+            }
+          }
+        }
+        .vendor-card-scroll-content{
+          .search-with-data{
+            .vendor-card-list{
+              .vendor-card-list-item{
+                width: 50%;
+                @include media-breakpoint-down(xxxl){
+                  width: 50%;
+                }
+                @include media-breakpoint-down(xxl){
+                  width: 100%;
+                }
+                @include media-breakpoint-down(lg){
+                  width: 50%;
+                }
+                @include media-breakpoint-down(sm){
+                  width: 100%;
+                }
+              }
+            }
+          }
+        }
+        .vendor-forms-container{
+          @include media-breakpoint-down(lg){
+            min-height: auto;
+          }
+          .vendor-forms-body{
+            padding: 20px 20px 0px;
+          }
+        }
+      }
+    }
+  }
+}
+.CanvasComponentWrapper{
+  .CanvasComponentMain{
+    // .Canvas{} -> left vala class through set
+    .Canvas{
+      .CanvasSection-xl12{}
+    }
+  }
+}
+.CanvasVerticalSection{
+  .CanvasSection-xl12{
+    .grid-column-wraping-issue{
+      > .ms-Grid{
+        > .ms-Grid-row{
+          > .ms-Grid-col{
+            &:not(:last-child){
+              margin-bottom: 40px;
+            }
+          }
+        }
+      }
+    }
+    .ms-Grid-col{
+      width: 100%;
+    }
+    .grid-column-wraping-issue{
+      > .ms-Grid{
+        > .ms-Grid-row{
+          > .ms-Grid-col{
+            &:not(:last-child){
+              margin-bottom: 40px;
+            }
+          }
+        }
+      }
+    }
+    .ms-Grid-col{
+      width: 100%;
+    }
+    .vendor-card-scroll-content{
+      .search-with-data{
+        .vendor-card-list{
+          .vendor-card-list-item{
+            width: 100%;
+          }
+        }
+      }
+    }
+    .vendor-forms-container{
+      min-height: auto;
+      .vendor-forms-body{
+        padding: 20px 20px 0px;
+      }
+    }
+  }
+}
+/* Sharepoint Select Column Card issue SCSS Customize End */

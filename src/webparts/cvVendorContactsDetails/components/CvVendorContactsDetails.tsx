@@ -19,7 +19,7 @@ export default class CvVendorContactsDetails extends React.Component<ICvVendorCo
           <div className="ms-Grid">
             <div className="ms-Grid-row">
               <div className="ms-Grid-col ms-sm12 ms-md12 ms-lg12 ms-xl12 ms-xxl12 ms-xxxl12">
-                <h1>Vendor Contacts</h1>
+                <h1>{this.props.webpartTitle}</h1>
               </div>
             </div>
           </div>
@@ -30,7 +30,7 @@ export default class CvVendorContactsDetails extends React.Component<ICvVendorCo
                   <VendorContactDetails alasql={this.state.alasql} context={this.props.context} />
                 </div>
                 <div className="ms-Grid-col ms-sm12 ms-md12 ms-lg12 ms-xl5 ms-xxl4 ms-xxxl4">
-                  <RequestForm />
+                  <RequestForm context={this.props.context} hrEmail={this.props.hrEmail}/>
                 </div>
               </div>
             </div>

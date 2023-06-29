@@ -22,7 +22,9 @@
     "description": { "default": "CV Vendor Contacts Details description" },
     "officeFabricIconFontName": "Page",
     "properties": {
-      "description": "CV Vendor Contacts Details"
+      "description": "CV Vendor Contacts Details",
+      "webpartTitle": "Vendor Contacts",
+      "HREmail": "hr22@gmail.com"
     }
   }]
 }

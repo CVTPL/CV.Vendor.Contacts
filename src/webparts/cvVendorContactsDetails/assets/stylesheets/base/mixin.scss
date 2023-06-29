@@ -32,6 +32,22 @@
   }
 }
 
+/* SharePoint Webpart Column Select Create Mixin Start */
+@mixin sharePointColumnCommanStructure(){
+  .ControlZone{
+    .ControlZone--control{
+      .ms-SPLegacyFabricBlock{
+        .vendor-contacts-details-container{
+          .vendor-contacts-details-content-box{
+            @content;
+          }
+        }
+      }
+    }
+  }
+}
+/* SharePoint Webpart Column Select Create Mixin End */
+
 /* Responsive - Mixin Start */
 @mixin media-breakpoint-down($breakpoint) {
   $breakpoint-value: map-get($breakpoints, $breakpoint);

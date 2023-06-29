@@ -3,6 +3,7 @@ import * as ReactDom from 'react-dom';
 import { Version } from '@microsoft/sp-core-library';
 import {
   IPropertyPaneConfiguration,
+  PropertyPaneButton,
   PropertyPaneTextField
 } from '@microsoft/sp-property-pane';
 import { BaseClientSideWebPart } from '@microsoft/sp-webpart-base';
@@ -14,6 +15,8 @@ import { ICvVendorContactsDetailsProps } from './components/ICvVendorContactsDet
 
 export interface ICvVendorContactsDetailsWebPartProps {
   description: string;
+  HREmail: string;
+  webpartTitle: string;
 }
 
 export default class CvVendorContactsDetailsWebPart extends BaseClientSideWebPart<ICvVendorContactsDetailsWebPartProps> {
@@ -21,16 +24,19 @@ export default class CvVendorContactsDetailsWebPart extends BaseClientSideWebPar
   private _isDarkTheme: boolean = false;
   private _environmentMessage: string = '';
 
+
   public render(): void {
     const element: React.ReactElement<ICvVendorContactsDetailsProps> = React.createElement(
       CvVendorContactsDetails,
       {
         description: this.properties.description,
+        webpartTitle: this.properties.webpartTitle,
         isDarkTheme: this._isDarkTheme,
         environmentMessage: this._environmentMessage,
         hasTeamsContext: !!this.context.sdks.microsoftTeams,
         userDisplayName: this.context.pageContext.user.displayName,
-        context: this.context
+        context: this.context,
+        hrEmail:this.properties.HREmail
       }
     );
 
@@ -91,14 +97,38 @@ export default class CvVendorContactsDetailsWebPart extends BaseClientSideWebPar
                 PropertyPaneTextField('description', {
                   label: strings.DescriptionFieldLabel
                 }),
-                PropertyPaneTextField('description', {
-                  label: "HR Email"
-                })
+                PropertyPaneTextField('HREmail', {
+                  label: strings.HREmail,
+                  // onPropertyChange: this.onHRFieldChanged,
+                  onGetErrorMessage: this.validateEmail
+                }),
               ]
             }
           ]
         }
       ]
     };
+  }
+
+  private onHRFieldChanged(propertyPath: string, newValue: any): void {
+    if (propertyPath === 'HREmail') {
+      // this.hrEmail = newValue;
+    }
+  }
+
+  private validateEmail(value: string): string {
+    console.log(value);
+    // Regular expression to validate email format
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!value || value.trim().length === 0) {
+      return 'Email is required';
+    }
+    if (!emailRegex.test(value)) {
+      return 'Invalid email format';
+    }
+    return '';
+  }
+  private onSubmitClick(){
+    console.log("submit !");
   }
 }
