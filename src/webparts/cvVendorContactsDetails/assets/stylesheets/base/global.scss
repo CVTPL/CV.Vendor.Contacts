@@ -638,19 +638,20 @@ ul {
   border-radius: 20px;
   padding: 30px 60px;
   box-shadow: $box-shadow-1;
+  @include media-breakpoint-down(sm){
+    padding: 30px 15px;
+  }
   .content-box{
     text-align: center;
-    > h3{
-      font-size: 28px;
-      margin: 0px;
-      color: $primary-1;
-      margin: 40px 0px 8px;
-    }
     > p{
       font-size: 20px;
+      margin: 40px 0px 8px;
+      @include media-breakpoint-down(xs){
+        font-size: $fs-16;
+      }
     }
     > img{
-      width: 50%;
+      width: 100%;
     }
     .btn-container{
       .ms-Button--default{
@@ -710,6 +711,19 @@ ul {
               }
             }
           }
+          .not-found-message-content-box{
+            @include media-breakpoint-down(lg){
+              padding: 30px 15px;
+            }
+            .content-box{
+              > h3{
+                font-size: $fs-24;
+              }
+              > p{
+                font-size: $fs-18;
+              }
+            }
+          }
         }
         .vendor-forms-container{
           min-height: auto;
@@ -726,6 +740,10 @@ ul {
     }
     &.CanvasSection-xl4{
       @include sharePointColumnCommanStructure(){
+        h1{
+          font-size: $fs-20;
+          line-height: 28px;
+        }
         .grid-column-wraping-issue{
           > .ms-Grid{
             > .ms-Grid-row{
@@ -778,6 +796,25 @@ ul {
               }
             }
           }
+          .not-found-message-content-box{
+            @include media-breakpoint-down(xl){
+              padding: 30px 20px;
+            }
+            .content-box{
+              > h3{
+                font-size: $fs-24;
+                @include media-breakpoint-down(xl){
+                  font-size: $fs-22;
+                }
+              }
+              > p{
+                font-size: $fs-18;
+                @include media-breakpoint-down(xl){
+                  font-size: $fs-16;
+                }
+              }
+            }
+          }
         }
         .vendor-forms-container{
           min-height: auto;
@@ -825,6 +862,19 @@ ul {
                 @include media-breakpoint-down(sm){
                   width: 100%;
                 }
+              }
+            }
+          }
+          .not-found-message-content-box{
+            @include media-breakpoint-down(lg){
+              padding: 30px 15px;
+            }
+            .content-box{
+              > h3{
+                font-size: $fs-24;
+              }
+              > p{
+                font-size: $fs-18;
               }
             }
           }

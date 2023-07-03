@@ -4,12 +4,31 @@ import VendorContactDetails from '../../../components/VendorContactDetails/Vendo
 import RequestForm from '../../../components/RequestForm/RequestForm';
 require("../assets/stylesheets/base/global.scss");
 import * as alasql from 'alasql';
+import PnpSpCommonServices from '../../../services/PnpSpCommonServices';
+import { spfi } from '@pnp/sp';
+import { SPFx } from '@pnp/graph';
 
 export default class CvVendorContactsDetails extends React.Component<ICvVendorContactsDetailsProps, any, {}> {
   constructor(props: ICvVendorContactsDetailsProps){
     super(props);
     this.state = {
       alasql: alasql,
+    }
+  }
+  public sp = spfi().using(SPFx(this.props.context));
+  componentDidMount(): void {
+    if(Object.keys(this.props.context).length > 0){
+      let siteUrl = this.props.context.pageContext.legacyPageContext.webAbsoluteUrl;
+      PnpSpCommonServices._getSiteListByName(this.props.context, "VendorContacts").then((response) => {
+        if(response.status == 404){
+          PnpSpCommonServices._getSiteDesign(this.sp).then((allSiteDesign) => {
+            let checkSiteDesign = allSiteDesign.filter((ele: any) => ele.Title == "CvVendorContactsDetails");
+            console.log(checkSiteDesign);
+          })
+        } else{
+          console.log("List is available");
+        }
+      })
     }
   }
   public render(): React.ReactElement<ICvVendorContactsDetailsProps> {

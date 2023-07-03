@@ -125,15 +125,12 @@ const VendorContactDetails: React.FunctionComponent<IVendorContactDetailsProps> 
     _callGetData()
       .then((response) => {
         // Handle successful response here
-        // console.log(response.length);
-        if(response.length > 0){
-          setDataNotFound(true);
-        } else{
-          setDataNotFound(false);
-        }
-        console.log(response);
+        // if(response.length > 0){
+        //   setDataNotFound(true);
+        // } else{
+        //   setDataNotFound(false);
+        // }
         var orderByData = props.alasql("SELECT * FROM ? ORDER BY Title ASC", [response]);
-        console.log(orderByData);
         setDefaultData(orderByData);
         setDefaultDataCopy(orderByData);
         _getPage(1, orderByData);
@@ -144,8 +141,6 @@ const VendorContactDetails: React.FunctionComponent<IVendorContactDetailsProps> 
         console.error(error);
       });
 
-      console.log("SharePoint Vendor Card List - Data Store = ", defaultData);
-  
     // Clean up function
     return () => {
       console.log("Sorry not working code!");
@@ -231,8 +226,7 @@ const VendorContactDetails: React.FunctionComponent<IVendorContactDetailsProps> 
           <>
             <div className="not-found-message-content-box">
               <div className="content-box">
-                <img src={require("../../assets/png/no-data-found.png")} alt="Not available now" />
-                <h3>No data found!</h3>
+                <img src={require("../../assets/svg/no-data-found.svg")} alt="Not available now" />
                 <p>If you need any information please fill form.</p>
               </div>
             </div>
@@ -463,7 +457,6 @@ const VendorContactDetails: React.FunctionComponent<IVendorContactDetailsProps> 
     let copyData = clone(defaultDataCopy);
     if (Object.keys(itemdata).length > 0) {
       const searchData = itemdata.Search ? "Title like '%" + itemdata.Search + "%' or VendorNumber like '%" + itemdata.Search + "%' or VendorName like '%" + itemdata.Search + "%' or Email like '%" + itemdata.Search + "%' or VendorHeading like '%" + itemdata.Search + "%'" : "Title != 'null'";
-      console.log(searchData);
       var filteredData = props.alasql("select * from ? where (" + searchData + ")", [copyData]);
       setDefaultData(filteredData);
       _getPage(1, filteredData);
@@ -479,6 +472,11 @@ export default VendorContactDetails;
 
 /*
 Task For Maharshi :
+#1 - CV Vendor Contacts - Site provision learning
+
+#1 - Driving ticket - Design fixes changes
+#2 - CV Vendor Contacts - Site provision learning - Prepare Site List by Name "_getSiteListByName" function
+
 #1 - No data found message design with dynamic
 #2 - Title comes from Edit webpart property
 
