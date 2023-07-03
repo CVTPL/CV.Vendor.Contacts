@@ -469,17 +469,3 @@ const VendorContactDetails: React.FunctionComponent<IVendorContactDetailsProps> 
 };
 
 export default VendorContactDetails;
-
-/*
-Task For Maharshi :
-#1 - CV Vendor Contacts - Site provision learning
-
-#1 - Driving ticket - Design fixes changes
-#2 - CV Vendor Contacts - Site provision learning - Prepare Site List by Name "_getSiteListByName" function
-
-#1 - No data found message design with dynamic
-#2 - Title comes from Edit webpart property
-
-Task For Maharshi : Status
-#1 - webpart select column responsive changes - Done ! Email how to send HR (Javascript Through) POC & Implements
-*/
