@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { IVendorContactDetailsProps } from './IVendorContactDetailsProps';
-import { DefaultButton, Icon, Panel, TextField, TooltipHost } from 'office-ui-fabric-react';
+import { DefaultButton, TextField, TooltipHost } from 'office-ui-fabric-react';
 import PnpSpCommonServices from '../../services/PnpSpCommonServices';
 import { spfi, SPFx } from "@pnp/sp";
 import { Pagination } from "@pnp/spfx-controls-react/lib/pagination";
@@ -125,11 +125,11 @@ const VendorContactDetails: React.FunctionComponent<IVendorContactDetailsProps> 
     _callGetData()
       .then((response) => {
         // Handle successful response here
-        // if(response.length > 0){
-        //   setDataNotFound(true);
-        // } else{
-        //   setDataNotFound(false);
-        // }
+        if(response.length > 0){
+          setDataNotFound(true);
+        } else{
+          setDataNotFound(false);
+        }
         var orderByData = props.alasql("SELECT * FROM ? ORDER BY Title ASC", [response]);
         setDefaultData(orderByData);
         setDefaultDataCopy(orderByData);
@@ -214,7 +214,6 @@ const VendorContactDetails: React.FunctionComponent<IVendorContactDetailsProps> 
               </ul>
             </div>
             <div className="pagination-footer">
-              <DefaultButton text="Open panel" onClick={() => isClose(true)} />
               <div className="number-content">
                 {startEndIndexPagination[0] ? startEndIndexPagination[0].startIndex : "1"}{" "}-{" "}
                 {startEndIndexPagination[0] ? startEndIndexPagination[0].endIndex : "10"}{" "} of {paginationTotalcount} items
@@ -232,164 +231,6 @@ const VendorContactDetails: React.FunctionComponent<IVendorContactDetailsProps> 
             </div>
           </>
         }
-        <Panel
-          headerText="Sample panel"
-          isOpen={isOpen}
-          className="panel-container"
-          onDismiss={() => isClose(false)}
-          // You MUST provide this prop! Otherwise screen readers will just say "button" with no label.
-          closeButtonAriaLabel="Close"
-        >
-          <div className="panel-body">
-            <div className="ms-Grid">
-              <div className="ms-Grid-row">
-                <div className="ms-Grid-col ms-sm12 ms-md12 ms-lg12 ms-xl12 ms-xxl12 ms-xxxl12">
-                  <div className="form-group">
-                    <TextField label="Name" placeholder="Enter name" title="Name" id="Name" />
-                  </div>
-                </div>
-                <div className="ms-Grid-col ms-sm12 ms-md12 ms-lg12 ms-xl12 ms-xxl12 ms-xxxl12">
-                  <div className="form-group">
-                    <TextField label="Phone Number" placeholder="Enter number" title="Number" id="Number" maxLength={10} />
-                  </div>
-                </div>
-                <div className="ms-Grid-col ms-sm12 ms-md12 ms-lg12 ms-xl12 ms-xxl12 ms-xxxl12">
-                  <div className="form-group">
-                    <TextField label="E-mail" placeholder="Enter email" title="Email" id="Email" />
-                  </div>
-                </div>
-                <div className="ms-Grid-col ms-sm12 ms-md12 ms-lg12 ms-xl12 ms-xxl12 ms-xxxl12">
-                  <div className="form-group">
-                    <TextField label="Description" placeholder="Enter description" title="Description" id="Description" multiline />
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div className="ms-Grid">
-              <div className="ms-Grid-row">
-                <div className="ms-Grid-col ms-sm12 ms-md12 ms-lg12 ms-xl12 ms-xxl12 ms-xxxl12">
-                  <div className="form-group">
-                    <TextField label="Name" placeholder="Enter name" title="Name" id="Name" />
-                  </div>
-                </div>
-                <div className="ms-Grid-col ms-sm12 ms-md12 ms-lg12 ms-xl12 ms-xxl12 ms-xxxl12">
-                  <div className="form-group">
-                    <TextField label="Phone Number" placeholder="Enter number" title="Number" id="Number" maxLength={10} />
-                  </div>
-                </div>
-                <div className="ms-Grid-col ms-sm12 ms-md12 ms-lg12 ms-xl12 ms-xxl12 ms-xxxl12">
-                  <div className="form-group">
-                    <TextField label="E-mail" placeholder="Enter email" title="Email" id="Email" />
-                  </div>
-                </div>
-                <div className="ms-Grid-col ms-sm12 ms-md12 ms-lg12 ms-xl12 ms-xxl12 ms-xxxl12">
-                  <div className="form-group">
-                    <TextField label="Description" placeholder="Enter description" title="Description" id="Description" multiline />
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div className="ms-Grid">
-              <div className="ms-Grid-row">
-                <div className="ms-Grid-col ms-sm12 ms-md12 ms-lg12 ms-xl12 ms-xxl12 ms-xxxl12">
-                  <div className="form-group">
-                    <TextField label="Name" placeholder="Enter name" title="Name" id="Name" />
-                  </div>
-                </div>
-                <div className="ms-Grid-col ms-sm12 ms-md12 ms-lg12 ms-xl12 ms-xxl12 ms-xxxl12">
-                  <div className="form-group">
-                    <TextField label="Phone Number" placeholder="Enter number" title="Number" id="Number" maxLength={10} />
-                  </div>
-                </div>
-                <div className="ms-Grid-col ms-sm12 ms-md12 ms-lg12 ms-xl12 ms-xxl12 ms-xxxl12">
-                  <div className="form-group">
-                    <TextField label="E-mail" placeholder="Enter email" title="Email" id="Email" />
-                  </div>
-                </div>
-                <div className="ms-Grid-col ms-sm12 ms-md12 ms-lg12 ms-xl12 ms-xxl12 ms-xxxl12">
-                  <div className="form-group">
-                    <TextField label="Description" placeholder="Enter description" title="Description" id="Description" multiline />
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div className="ms-Grid">
-              <div className="ms-Grid-row">
-                <div className="ms-Grid-col ms-sm12 ms-md12 ms-lg12 ms-xl12 ms-xxl12 ms-xxxl12">
-                  <div className="form-group">
-                    <TextField label="Name" placeholder="Enter name" title="Name" id="Name" />
-                  </div>
-                </div>
-                <div className="ms-Grid-col ms-sm12 ms-md12 ms-lg12 ms-xl12 ms-xxl12 ms-xxxl12">
-                  <div className="form-group">
-                    <TextField label="Phone Number" placeholder="Enter number" title="Number" id="Number" maxLength={10} />
-                  </div>
-                </div>
-                <div className="ms-Grid-col ms-sm12 ms-md12 ms-lg12 ms-xl12 ms-xxl12 ms-xxxl12">
-                  <div className="form-group">
-                    <TextField label="E-mail" placeholder="Enter email" title="Email" id="Email" />
-                  </div>
-                </div>
-                <div className="ms-Grid-col ms-sm12 ms-md12 ms-lg12 ms-xl12 ms-xxl12 ms-xxxl12">
-                  <div className="form-group">
-                    <TextField label="Description" placeholder="Enter description" title="Description" id="Description" multiline />
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div className="ms-Grid">
-              <div className="ms-Grid-row">
-                <div className="ms-Grid-col ms-sm12 ms-md12 ms-lg12 ms-xl12 ms-xxl12 ms-xxxl12">
-                  <div className="form-group">
-                    <TextField label="Name" placeholder="Enter name" title="Name" id="Name" />
-                  </div>
-                </div>
-                <div className="ms-Grid-col ms-sm12 ms-md12 ms-lg12 ms-xl12 ms-xxl12 ms-xxxl12">
-                  <div className="form-group">
-                    <TextField label="Phone Number" placeholder="Enter number" title="Number" id="Number" maxLength={10} />
-                  </div>
-                </div>
-                <div className="ms-Grid-col ms-sm12 ms-md12 ms-lg12 ms-xl12 ms-xxl12 ms-xxxl12">
-                  <div className="form-group">
-                    <TextField label="E-mail" placeholder="Enter email" title="Email" id="Email" />
-                  </div>
-                </div>
-                <div className="ms-Grid-col ms-sm12 ms-md12 ms-lg12 ms-xl12 ms-xxl12 ms-xxxl12">
-                  <div className="form-group">
-                    <TextField label="Description" placeholder="Enter description" title="Description" id="Description" multiline />
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div className="ms-Grid">
-              <div className="ms-Grid-row">
-                <div className="ms-Grid-col ms-sm12 ms-md12 ms-lg12 ms-xl12 ms-xxl12 ms-xxxl12">
-                  <div className="form-group">
-                    <TextField label="Name" placeholder="Enter name" title="Name" id="Name" />
-                  </div>
-                </div>
-                <div className="ms-Grid-col ms-sm12 ms-md12 ms-lg12 ms-xl12 ms-xxl12 ms-xxxl12">
-                  <div className="form-group">
-                    <TextField label="Phone Number" placeholder="Enter number" title="Number" id="Number" maxLength={10} />
-                  </div>
-                </div>
-                <div className="ms-Grid-col ms-sm12 ms-md12 ms-lg12 ms-xl12 ms-xxl12 ms-xxxl12">
-                  <div className="form-group">
-                    <TextField label="E-mail" placeholder="Enter email" title="Email" id="Email" />
-                  </div>
-                </div>
-                <div className="ms-Grid-col ms-sm12 ms-md12 ms-lg12 ms-xl12 ms-xxl12 ms-xxxl12">
-                  <div className="form-group">
-                    <TextField label="Description" placeholder="Enter description" title="Description" id="Description" multiline />
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div className="panel-footer">
-            submit
-          </div>
-        </Panel>
     </div>
   );
 
