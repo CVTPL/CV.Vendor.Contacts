@@ -9,6 +9,8 @@ import "@pnp/sp/files";
 import "@pnp/sp/folders";
 import "@pnp/sp/batching";
 import "@pnp/sp/regional-settings/web";
+import "@pnp/sp/site-groups/web";
+import "@pnp/sp/presets/all";
 
 const PnpSpCommonServices = {
   _getSiteListByName: async (context: any, listName: string) => {
@@ -136,7 +138,6 @@ const PnpSpCommonServices = {
     }
     return await sp.siteScripts.createSiteScript("VendorContactsSiteScript", "VendorContactsSiteScript", vendorContactsSiteScript);
   },
-  
   _getFolderByPath: async (context: any, folderPath: string) => {
     var myHeaders = new Headers({
       'Accept': 'application/json; odata=verbose'
@@ -153,9 +154,22 @@ const PnpSpCommonServices = {
     return await sp.web.folders.addUsingPath(folderUrl);
   },
   _getValue: async (sp: any) => {
-    const items: any[] = await sp.web.lists.getByTitle("CVVendorContacts").items();
+    const items: any[] = await sp.web.lists.getByTitle("Vendor Details").items();
     return items;
   },
+  _getSiteGroupsByEmail: async (sp: any, siteName: any, userEmail: any) => {
+    // console.log(sp.web.siteGroups.getByName(`"${siteName} Owners"`).users.get());
+    // const items = await sp.web.siteGroups.getByName(`"${siteName} Owners"`).users.get();
+    const items = await sp.web.siteGroups.getByName("CVMaharshi Owners").users.get();
+    if (items.length > 0) {
+      items.forEach((ele: any) => {
+        if (ele.Email == "jshah@cidev.onmicrosoft.com") {
+          alert("This is Admin");
+        }
+      });
+      console.log(items);
+    }
+  }
 };
 
 export default PnpSpCommonServices;

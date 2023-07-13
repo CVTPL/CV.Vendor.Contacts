@@ -569,6 +569,21 @@ ul {
 }
 /* No Data Found Message Custom Style SCSS End */
 
+.add-edit-vendor-content-box{
+  display: flex;
+  align-items: flex-start;
+  .ms-TextField{
+    flex: 1;
+    margin-right: 30px;
+  }
+  .btn-container{
+    margin-left: 30px;
+    .ms-Button{
+      height: 40px;
+    }
+  }
+}
+
 /* Sharepoint Select Column Card issue SCSS Customize Start */
 .CanvasZone{
   .CanvasSection{

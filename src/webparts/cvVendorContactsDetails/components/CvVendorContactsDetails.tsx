@@ -14,15 +14,18 @@ export default class CvVendorContactsDetails extends React.Component<ICvVendorCo
     super(props);
     this.state = {
       alasql: alasql,
+      loginUserDetail: this.props.context.pageContext.user,
+      loginUserDisplayName: this.props.context.pageContext.user.displayName,
+      loginUserEmail: this.props.context.pageContext.user.email,
+      adminUserHideForms: false,
     }
   }
   // CVVendorContactsSiteDesign
   public sp = spfi().using(SPFx(this.props.context));
   componentDidMount(): void {
-
     if(Object.keys(this.props.context).length > 0){
       let siteUrl = this.props.context.pageContext.legacyPageContext.webAbsoluteUrl;
-      PnpSpCommonServices._getSiteListByName(this.props.context, "Vendor Contacts").then((response) => {
+      PnpSpCommonServices._getSiteListByName(this.props.context, "Vendor Details").then((response) => {
         // CVVendorContactsSiteDesgin
         if (response.status === 404) {
           PnpSpCommonServices._getSiteDesign(this.sp).then((allSiteDesign) => {
@@ -72,12 +75,23 @@ export default class CvVendorContactsDetails extends React.Component<ICvVendorCo
           <div className="grid-column-wraping-issue">
             <div className="ms-Grid">
               <div className="ms-Grid-row">
-                <div className="ms-Grid-col ms-sm12 ms-md12 ms-lg12 ms-xl7 ms-xxl8 ms-xxxl8">
-                  <VendorContactDetails alasql={this.state.alasql} context={this.props.context} />
-                </div>
-                <div className="ms-Grid-col ms-sm12 ms-md12 ms-lg12 ms-xl5 ms-xxl4 ms-xxxl4">
-                  <RequestForm context={this.props.context} hrEmail={this.props.hrEmail}/>
-                </div>
+                {
+                  this.state.loginUserDisplayName === "Jinesh Shah" && this.state.loginUserEmail === "jshah@cidev.onmicrosoft.com" ? 
+                  <>
+                    <div className="ms-Grid-col ms-sm12 ms-md12 ms-lg12 ms-xl12 ms-xxl12 ms-xxxl12">
+                      <VendorContactDetails alasql={this.state.alasql} context={this.props.context} />
+                    </div>
+                  </>
+                  :
+                  <>
+                    <div className="ms-Grid-col ms-sm12 ms-md12 ms-lg12 ms-xl7 ms-xxl8 ms-xxxl8">
+                      <VendorContactDetails alasql={this.state.alasql} context={this.props.context} />
+                    </div>
+                    <div className="ms-Grid-col ms-sm12 ms-md12 ms-lg12 ms-xl5 ms-xxl4 ms-xxxl4">
+                      <RequestForm context={this.props.context} hrEmail={this.props.hrEmail} />
+                    </div>
+                  </>
+                }
               </div>
             </div>
           </div>

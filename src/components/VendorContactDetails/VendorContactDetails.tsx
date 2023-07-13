@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { IVendorContactDetailsProps } from './IVendorContactDetailsProps';
-import { DefaultButton, TextField, TooltipHost } from 'office-ui-fabric-react';
+import { DefaultButton, PrimaryButton, TextField, TooltipHost } from 'office-ui-fabric-react';
 import PnpSpCommonServices from '../../services/PnpSpCommonServices';
 import { spfi, SPFx } from "@pnp/sp";
 import { Pagination } from "@pnp/spfx-controls-react/lib/pagination";
@@ -121,6 +121,13 @@ const VendorContactDetails: React.FunctionComponent<IVendorContactDetailsProps> 
   /* No Data Found Relative Code End */
 
   React.useEffect(() => {
+    console.log("*****data console here = *****", props.context.pageContext.user);
+    _loginUserGroupGetData(props.context.pageContext.web.title, props.context.pageContext.user.email).then((response) => {
+      console.log(response);
+    }).catch((error) => {
+      console.error(error);
+    })
+    
     sessionStorage.PageNumberData = 1; /* For Pagination */
     _callGetData()
       .then((response) => {
@@ -152,11 +159,20 @@ const VendorContactDetails: React.FunctionComponent<IVendorContactDetailsProps> 
         {dataNotFound ? 
           <>
             <div className="search-with-data">
-              <TextField placeholder="Search to filter data" onChange={filterData} value={searchString} />
+              <div className="add-edit-vendor-content-box">
+                <TextField placeholder="Search to filter data" onChange={filterData} value={searchString} />
+                {props.context.pageContext.user.displayName === "Jinesh Shah" ? 
+                  <div className="btn-container btn-center">
+                  <PrimaryButton text="Add" className="ms-primary-2"/>
+                  </div>
+                :
+                ""}
+                
+              </div>
               <ul className="vendor-card-list">
                 {
                   defaultData.map((item: any) => {
-                    const imgJson = JSON.parse(item.VendorImage);
+                    const imgJson = JSON.parse(item.CV_Vendor_Image);
                     return (
                       <>
                         <li className="vendor-card-list-item" onClick={(e) => parentComponent("parent", e)}>
@@ -175,29 +191,29 @@ const VendorContactDetails: React.FunctionComponent<IVendorContactDetailsProps> 
                                 </TooltipHost>
                                 <div className="detail-card">
                                   <div className="detail-card-header">
-                                    <TooltipHost className="tooltip-container" tooltipProps={{ onRenderContent: () => onVendorDetailTitleRenderContent(item.VendorHeading) }} calloutProps={calloutProps}>
+                                    <TooltipHost className="tooltip-container" tooltipProps={{ onRenderContent: () => onVendorDetailTitleRenderContent(item.CV_Vendor_Heading) }} calloutProps={calloutProps}>
                                       <div className="clamp-text">
-                                        <h3>{item.VendorHeading}</h3>
+                                        <h3>{item.CV_Vendor_Heading}</h3>
                                       </div>
                                     </TooltipHost>
                                   </div>
                                   <div className="detail-card-body">
-                                    <p>{item.VendorName}</p>
+                                    <p>{item.CV_Vendor_Name}</p>
                                     <ul className="icon-with-label-list">
                                       <li className="icon-with-label-list-item">
-                                        <a className="icon-link" href={'tel:' + item.VendorNumber}>
+                                        <a className="icon-link" href={'tel:' + item.CV_Vendor_Number}>
                                           <div className="circle-box">
                                             <img src={require("../../assets/svg/phone.svg")} alt="Not Available Now" title="Phone icon" />
                                           </div>
-                                          <span>{item.VendorNumber}</span>
+                                          <span>{item.CV_Vendor_Number}</span>
                                         </a>
                                       </li>
                                       <li className="icon-with-label-list-item">
-                                        <a className="icon-link" href={'mailto:' + item.Email}>
+                                        <a className="icon-link" href={'mailto:' + item.CV_Vendor_Email}>
                                           <div className="circle-box">
                                             <img src={require("../../assets/svg/message.svg")} alt="Not Available Now" title="Message icon" />
                                           </div>
-                                          <span>{item.Email}</span>
+                                          <span>{item.CV_Vendor_Email}</span>
                                         </a>
                                       </li>
                                     </ul>
@@ -278,6 +294,20 @@ const VendorContactDetails: React.FunctionComponent<IVendorContactDetailsProps> 
     }
   }
 
+  async function _loginUserGroupGetData(siteName: any, userEmail: any): Promise<any> {
+    return new Promise((resolve, reject) => {
+      PnpSpCommonServices._getSiteGroupsByEmail(sp, siteName, userEmail).then(
+        (response) => {
+          resolve(response);
+        },
+        (error: any) => {
+          reject(error);
+          console.log(error);
+        }
+      )
+    })
+  }
+
   async function _callGetData(): Promise<any> {
     return new Promise((resolve, reject) => {
       PnpSpCommonServices._getValue(sp).then(
@@ -297,7 +327,7 @@ const VendorContactDetails: React.FunctionComponent<IVendorContactDetailsProps> 
     let itemdata = filterItem;
     let copyData = clone(defaultDataCopy);
     if (Object.keys(itemdata).length > 0) {
-      const searchData = itemdata.Search ? "Title like '%" + itemdata.Search + "%' or VendorNumber like '%" + itemdata.Search + "%' or VendorName like '%" + itemdata.Search + "%' or Email like '%" + itemdata.Search + "%' or VendorHeading like '%" + itemdata.Search + "%'" : "Title != 'null'";
+      const searchData = itemdata.Search ? "Title like '%" + itemdata.Search + "%' or CV_Vendor_Number like '%" + itemdata.Search + "%' or CV_Vendor_Name like '%" + itemdata.Search + "%' or CV_Vendor_Email like '%" + itemdata.Search + "%' or CV_Vendor_Heading like '%" + itemdata.Search + "%'" : "Title != 'null'";
       var filteredData = props.alasql("select * from ? where (" + searchData + ")", [copyData]);
       setDefaultData(filteredData);
       _getPage(1, filteredData);
