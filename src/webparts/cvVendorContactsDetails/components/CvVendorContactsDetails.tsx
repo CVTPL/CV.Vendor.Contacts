@@ -14,10 +14,7 @@ export default class CvVendorContactsDetails extends React.Component<ICvVendorCo
     super(props);
     this.state = {
       alasql: alasql,
-      loginUserDetail: this.props.context.pageContext.user,
-      loginUserDisplayName: this.props.context.pageContext.user.displayName,
-      loginUserEmail: this.props.context.pageContext.user.email,
-      adminUserHideForms: false,
+      isCurrentUserSiteAdminOrOwner: false
     }
   }
   // CVVendorContactsSiteDesign
@@ -60,6 +57,24 @@ export default class CvVendorContactsDetails extends React.Component<ICvVendorCo
         }
       })
     }
+
+    console.log("*****data console here = *****", this.props.context.pageContext.user);
+    // props.context.pageContext.legacyPageContext.isSiteAdmin
+    if(this.props.context.pageContext.legacyPageContext.isSiteAdmin){//check current login user is admin or not
+      this.setState({isCurrentUserSiteAdminOrOwner: true});
+    }
+    else{//current user not admin then check is site owner or not?
+      PnpSpCommonServices._checkLoginUserIsOwnerOrNot(this.props.context, this.props.context.pageContext.web.title + " Owners", this.props.context.pageContext.user.email).then((response) => {
+        console.log(response);
+        if(response.status == 404){//current user is not available in owner group
+          this.setState({isCurrentUserSiteAdminOrOwner: false});
+        }
+        else{// current user is available in owner group
+          this.setState({isCurrentUserSiteAdminOrOwner: true});
+        }
+      });
+    }
+
   }
   public render(): React.ReactElement<ICvVendorContactsDetailsProps> {
     return (
@@ -75,8 +90,7 @@ export default class CvVendorContactsDetails extends React.Component<ICvVendorCo
           <div className="grid-column-wraping-issue">
             <div className="ms-Grid">
               <div className="ms-Grid-row">
-                {
-                  this.state.loginUserDisplayName === "Jinesh Shah" && this.state.loginUserEmail === "jshah@cidev.onmicrosoft.com" ? 
+                {this.state.isCurrentUserSiteAdminOrOwner ? 
                   <>
                     <div className="ms-Grid-col ms-sm12 ms-md12 ms-lg12 ms-xl12 ms-xxl12 ms-xxxl12">
                       <VendorContactDetails alasql={this.state.alasql} context={this.props.context} />
@@ -93,6 +107,11 @@ export default class CvVendorContactsDetails extends React.Component<ICvVendorCo
                   </>
                 }
               </div>
+            </div>
+          </div>
+          <div className="fixed-loader-container">
+            <div className="fixed-loader-child">
+              {/* <BallTriangle height={100} width={100} radius={5} color="#5F9BE7" ariaLabel="ball-triangle-loading" visible={loaderVisible} /> */}
             </div>
           </div>
         </div>

@@ -157,18 +157,17 @@ const PnpSpCommonServices = {
     const items: any[] = await sp.web.lists.getByTitle("Vendor Details").items();
     return items;
   },
-  _getSiteGroupsByEmail: async (sp: any, siteName: any, userEmail: any) => {
-    // console.log(sp.web.siteGroups.getByName(`"${siteName} Owners"`).users.get());
-    // const items = await sp.web.siteGroups.getByName(`"${siteName} Owners"`).users.get();
-    const items = await sp.web.siteGroups.getByName("CVMaharshi Owners").users.get();
-    if (items.length > 0) {
-      items.forEach((ele: any) => {
-        if (ele.Email == "jshah@cidev.onmicrosoft.com") {
-          alert("This is Admin");
-        }
-      });
-      console.log(items);
+  _checkLoginUserIsOwnerOrNot: async(context: any, groupName: string, userEmail: string) =>{
+    var myHeaders = new Headers({
+      'Accept': 'application/json; odata=verbose'
+    });
+    var myInit = {
+      method: 'GET',
+      headers: myHeaders,
     }
+      return await fetch(context.pageContext.legacyPageContext.webAbsoluteUrl + "/_api/web/sitegroups/getByName('" + groupName + "')/users/getByEmail('" + userEmail + "')", myInit).then((response) => {
+      return response;
+    });
   }
 };
 

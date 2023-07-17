@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { IVendorContactDetailsProps } from './IVendorContactDetailsProps';
-import { DefaultButton, PrimaryButton, TextField, TooltipHost } from 'office-ui-fabric-react';
+import { PrimaryButton, TextField, TooltipHost } from 'office-ui-fabric-react';
 import PnpSpCommonServices from '../../services/PnpSpCommonServices';
 import { spfi, SPFx } from "@pnp/sp";
 import { Pagination } from "@pnp/spfx-controls-react/lib/pagination";
@@ -121,13 +121,7 @@ const VendorContactDetails: React.FunctionComponent<IVendorContactDetailsProps> 
   /* No Data Found Relative Code End */
 
   React.useEffect(() => {
-    console.log("*****data console here = *****", props.context.pageContext.user);
-    _loginUserGroupGetData(props.context.pageContext.web.title, props.context.pageContext.user.email).then((response) => {
-      console.log(response);
-    }).catch((error) => {
-      console.error(error);
-    })
-    
+
     sessionStorage.PageNumberData = 1; /* For Pagination */
     _callGetData()
       .then((response) => {
@@ -161,9 +155,9 @@ const VendorContactDetails: React.FunctionComponent<IVendorContactDetailsProps> 
             <div className="search-with-data">
               <div className="add-edit-vendor-content-box">
                 <TextField placeholder="Search to filter data" onChange={filterData} value={searchString} />
-                {props.context.pageContext.user.displayName === "Jinesh Shah" ? 
+                {props.context.isCurrentUserSiteAdminOrOwner ? 
                   <div className="btn-container btn-center">
-                  <PrimaryButton text="Add" className="ms-primary-2"/>
+                    <PrimaryButton text="Add" className="ms-primary-2"/>
                   </div>
                 :
                 ""}
@@ -294,20 +288,6 @@ const VendorContactDetails: React.FunctionComponent<IVendorContactDetailsProps> 
     }
   }
 
-  async function _loginUserGroupGetData(siteName: any, userEmail: any): Promise<any> {
-    return new Promise((resolve, reject) => {
-      PnpSpCommonServices._getSiteGroupsByEmail(sp, siteName, userEmail).then(
-        (response) => {
-          resolve(response);
-        },
-        (error: any) => {
-          reject(error);
-          console.log(error);
-        }
-      )
-    })
-  }
-
   async function _callGetData(): Promise<any> {
     return new Promise((resolve, reject) => {
       PnpSpCommonServices._getValue(sp).then(
@@ -340,3 +320,16 @@ const VendorContactDetails: React.FunctionComponent<IVendorContactDetailsProps> 
 };
 
 export default VendorContactDetails;
+
+/*
+const test = await sp.web.siteGroups.getByName("CVMaharshi mailto:owners").users.getbyemail("yash@cidev.onmicrosoft.com").get();
+
+Task For Maharshi :
+#1 - CV Vendor Contacts - onload data loader design set
+
+Task For Maharshi : Status
+#1 - CV Vendor Contacts - CheckLoginUser Site Admin and Owners Email Based True/False - Done ! (Hide/show - Element)
+
+Task For Maharshi : Status
+#1 - CV Vendor Contacts - using _checkLoginUserIsOwnerOrNot - (Check Site Admin and Site Owner) - (Working on Email Based True/False)
+*/
