@@ -378,10 +378,3 @@ const VendorContactDetails: React.FunctionComponent<IVendorContactDetailsProps> 
 };
 
 export default VendorContactDetails;
-
-/*
-const test = await sp.web.siteGroups.getByName("CVMaharshi mailto:owners").users.getbyemail("yash@cidev.onmicrosoft.com").get();
-
-Task For Maharshi :
-#1 - CV Vendor Contacts - admin login - Data add in list page
-*/

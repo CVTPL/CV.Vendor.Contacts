@@ -117,7 +117,7 @@ const AddNewVendorForm: React.FunctionComponent<IAddNewVendorFormProps> = (props
       _onclearFormData();
     }).then((response)=>{
       adminFormPanelClose();
-    }); 
+    });
   }
 
   /* Add Data into List Page */
@@ -151,7 +151,7 @@ const AddNewVendorForm: React.FunctionComponent<IAddNewVendorFormProps> = (props
   /* Add Image in SharePoint - Site Assets Folder */
   async function _addImagesItems(): Promise<any> {
     return new Promise((resolve, reject) => {
-      PnpSpCommonServices._addImage(sp, "SiteAssets/Lists/4bf10e5c-4e4b-4584-b9fd-27b0b693bb6f", vendorContactsFormData.Vendor_Image).then(
+      PnpSpCommonServices._addImage(sp, "SiteAssets/Lists/4bf10e5c-4e4b-4584-b9fd-27b0b693bb6f", vendorContactsFormData.Upload_Image).then(
         (response) => {
           resolve(response);
           console.log("Data Here in main => ", response);
@@ -172,9 +172,9 @@ const AddNewVendorForm: React.FunctionComponent<IAddNewVendorFormProps> = (props
     vendorContactsFormObject.Vendor_Name = "",
     vendorContactsFormObject.Vendor_Number = "",
     vendorContactsFormObject.Vendor_Email = "",
-    vendorContactsFormObject.Vendor_Image = "",
+    vendorContactsFormObject.Upload_Image = "",
     setVendorContactsFormData(vendorContactsFormObject);
-    const myInput = document.getElementById("Vendor_Image") as HTMLInputElement;
+    const myInput = document.getElementById("file_uploader") as HTMLInputElement;
     myInput.value = "";
   }
 
