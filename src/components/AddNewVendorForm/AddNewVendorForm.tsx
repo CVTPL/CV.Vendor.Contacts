@@ -4,7 +4,7 @@ import { IAddNewVendorFormProps } from "./IAddNewVendorFormProps";
 import { clone } from "@microsoft/sp-lodash-subset";
 import PnpSpCommonServices from "../../services/PnpSpCommonServices";
 import { spfi, SPFx } from "@pnp/sp";
-// import { FileUploader } from "react-drag-drop-files";
+import { FileUploader } from "react-drag-drop-files";
 
 const AddNewVendorForm: React.FunctionComponent<IAddNewVendorFormProps> = (props) => {
 
@@ -65,7 +65,7 @@ const AddNewVendorForm: React.FunctionComponent<IAddNewVendorFormProps> = (props
             <div className="ms-Grid-col ms-sm12 ms-md12 ms-lg12 ms-xl12 ms-xxl12 ms-xxxl12">
               <div className="form-group">
                 <label>Vendor Image</label>
-                {/* <FileUploader multiple={true} handleChange={handleChange} name="file" types={fileTypes} /> */}
+                <FileUploader multiple={true} handleChange={handleChange} name="file" types={fileTypes} />
               </div>
             </div>
           </div>
