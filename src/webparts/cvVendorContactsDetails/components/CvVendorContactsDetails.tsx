@@ -139,14 +139,3 @@ export default class CvVendorContactsDetails extends React.Component<ICvVendorCo
     })
   }
 }
-
-/*
-
-Task For Maharshi :
-#1 - CV Vendor Contacts - Image URL Pass In List Column & Add Data in to HTML
-
-Task For Maharshi : Status
-CV Vendor Contacts
-#1 - getFolderByServerRelativePath() and files.addUsingPath() - Image Upload & Save in Assets Folder
-#2 - Image URL Pass In List Column - (Working inProgress...)
-*/
