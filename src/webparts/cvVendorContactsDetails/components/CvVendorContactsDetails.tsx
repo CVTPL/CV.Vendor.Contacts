@@ -10,7 +10,7 @@ import PnpSpCommonServices from '../../../services/PnpSpCommonServices';
 import { spfi, SPFx } from "@pnp/sp";
 
 export default class CvVendorContactsDetails extends React.Component<ICvVendorContactsDetailsProps, any, {}> {
-  constructor(props: ICvVendorContactsDetailsProps){
+  constructor(props: ICvVendorContactsDetailsProps) {
     super(props);
     this.state = {
       alasql: alasql,
@@ -21,33 +21,33 @@ export default class CvVendorContactsDetails extends React.Component<ICvVendorCo
   public sp = spfi().using(SPFx(this.props.context));
   componentDidMount(): void {
 
-    this._commonFlowAfterSideDesignApply();
+    if (Object.keys(this.props.context).length > 0) {
 
-    if(Object.keys(this.props.context).length > 0){
+      // Start loader here
       let siteUrl = this.props.context.pageContext.legacyPageContext.webAbsoluteUrl;
-      PnpSpCommonServices._getSiteListByName(this.props.context, "Vendor Details").then((response) => {
+      PnpSpCommonServices._getSiteListByName(this.props.context, "Vendor Details").then((response) => {//check list is available or not
         // CVVendorContactsSiteDesgin
-        if (response.status === 404) {
-          PnpSpCommonServices._getSiteDesign(this.sp).then((allSiteDesign) => {
+        if (response.status === 404) {//list is not available
+          PnpSpCommonServices._getSiteDesign(this.sp).then((allSiteDesign) => { //check site design available or not
             let checkSiteDesign = allSiteDesign.filter((ele: any) => ele.Title == "VendorContactsSiteDesign");
-            if (checkSiteDesign.length > 0) {
+            if (checkSiteDesign.length > 0) { //Site design is available
               //site design is available so apply that site design to site.
               return PnpSpCommonServices._applySiteDesignToSite(this.sp, checkSiteDesign[0].Id, siteUrl).then((response) => {
                 return this._commonFlowAfterSideDesignApply();
               });
             }
-            else {
+            else {//site design is not available
               return PnpSpCommonServices._getSiteScript(this.sp).then((allSiteScripts) => {
                 let checkSiteScript = allSiteScripts.filter((ele: any) => ele.Title == "VendorContactsSiteScript");
-                if(checkSiteScript.length > 0){
+                if (checkSiteScript.length > 0) {//Site Script is available
                   return PnpSpCommonServices._createSiteDesign(this.sp, checkSiteScript[0].Id).then((response) => {
                     return PnpSpCommonServices._applySiteDesignToSite(this.sp, response.Id, siteUrl);
                   }).then((response) => {
                     return this._commonFlowAfterSideDesignApply();
                   });
                 }
-                else {
-                  PnpSpCommonServices._createSiteScript(this.props.context, this.sp).then((response:any) =>{
+                else {// Site Script is not available
+                  PnpSpCommonServices._createSiteScript(this.props.context, this.sp).then((response: any) => {
                     return PnpSpCommonServices._createSiteDesign(this.sp, response.Id);
                   }).then((response) => {
                     return PnpSpCommonServices._applySiteDesignToSite(this.sp, response.Id, siteUrl);
@@ -58,24 +58,25 @@ export default class CvVendorContactsDetails extends React.Component<ICvVendorCo
               })
             }
           })
-        } else{
+        } else {
           console.log("List is available");
+          //end loader here
         }
       })
     }
 
     // props.context.pageContext.legacyPageContext.isSiteAdmin
-    if(this.props.context.pageContext.legacyPageContext.isSiteAdmin){//check current login user is admin or not
-      this.setState({isCurrentUserSiteAdminOrOwner: true});
+    if (this.props.context.pageContext.legacyPageContext.isSiteAdmin) {//check current login user is admin or not
+      this.setState({ isCurrentUserSiteAdminOrOwner: true });
     }
-    else{//current user not admin then check is site owner or not?
+    else {//current user not admin then check is site owner or not?
       PnpSpCommonServices._checkLoginUserIsOwnerOrNot(this.props.context, this.props.context.pageContext.web.title + " Owners", this.props.context.pageContext.user.email).then((response) => {
         console.log(response);
-        if(response.status == 404){//current user is not available in owner group
-          this.setState({isCurrentUserSiteAdminOrOwner: false});
+        if (response.status == 404) {//current user is not available in owner group
+          this.setState({ isCurrentUserSiteAdminOrOwner: false });
         }
-        else{// current user is available in owner group
-          this.setState({isCurrentUserSiteAdminOrOwner: true});
+        else {// current user is available in owner group
+          this.setState({ isCurrentUserSiteAdminOrOwner: true });
         }
       });
     }
@@ -94,7 +95,7 @@ export default class CvVendorContactsDetails extends React.Component<ICvVendorCo
           <div className="grid-column-wraping-issue">
             <div className="ms-Grid">
               <div className="ms-Grid-row">
-                {this.state.isCurrentUserSiteAdminOrOwner ? 
+                {this.state.isCurrentUserSiteAdminOrOwner ?
                   <>
                     <div className="ms-Grid-col ms-sm12 ms-md12 ms-lg12 ms-xl12 ms-xxl12 ms-xxxl12">
                       <VendorContactDetails alasql={this.state.alasql} context={this.props.context} isAdmin={this.state.isCurrentUserSiteAdminOrOwner} />
@@ -121,11 +122,15 @@ export default class CvVendorContactsDetails extends React.Component<ICvVendorCo
   private _commonFlowAfterSideDesignApply = async () => {
     let siteUrl = this.props.context.pageContext.legacyPageContext.webAbsoluteUrl;
     console.log("Site URL Print Data =>", siteUrl);
-    let listID = "";
-    PnpSpCommonServices._getFolderByPath(this.props.context, "SiteAssets/Lists").then((response) => {
-      if(response.status == 200) {
+    let listId = "";
+    PnpSpCommonServices._ensureSiteAssetsLibraryexist(this.sp).then((response) => {
+      return PnpSpCommonServices._getFolderByPath(this.props.context, "SiteAssets/Lists");
+    }).then((response) => {
+      //check Lists folder in Site Assets already exists if no then create.
+      if (response.status == 200) {
         return;
-      } else{
+      }
+      else {
         return PnpSpCommonServices._createFolder(this.sp, "SiteAssets/Lists");
       }
     }).then((response) => {
@@ -133,9 +138,11 @@ export default class CvVendorContactsDetails extends React.Component<ICvVendorCo
     }).then(async (response) => {
       return await response.json();
     }).then((response) => {
-      listID = response.d.Id;
-      console.log("_createFolder  SiteAssets/Lists/"+listID);
-      return PnpSpCommonServices._createFolder(this.sp, "SiteAssets/Lists/" + listID + "");
-    })
+      listId = response.d.Id;
+      return PnpSpCommonServices._createFolder(this.sp, "SiteAssets/Lists/" + listId + "");
+    }).then((response) => {
+      //end loader here
+    });
+
   }
 }

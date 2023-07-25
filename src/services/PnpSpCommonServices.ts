@@ -124,11 +124,11 @@ const PnpSpCommonServices = {
                 "CV_Vendor_Email",
                 "CV_Vendor_Image"
               ],
-                "query": "",
-                "rowLimit": 100,
-                "isPaged": true,
-                "makeDefault": true,
-                "replaceViewFields": true
+              "query": "",
+              "rowLimit": 100,
+              "isPaged": true,
+              "makeDefault": true,
+              "replaceViewFields": true
             }
           ]
         }
@@ -137,6 +137,9 @@ const PnpSpCommonServices = {
       "version": "1"
     }
     return await sp.siteScripts.createSiteScript("VendorContactsSiteScript", "VendorContactsSiteScript", vendorContactsSiteScript);
+  },
+  _ensureSiteAssetsLibraryexist: async (sp: any) => {
+    return await sp.web.lists.ensureSiteAssetsLibrary();
   },
   _getFolderByPath: async (context: any, folderPath: string) => {
     var myHeaders = new Headers({
@@ -153,11 +156,14 @@ const PnpSpCommonServices = {
   _createFolder: async (sp: any, folderUrl: string) => {
     return await sp.web.folders.addUsingPath(folderUrl);
   },
+  _getListItemsWithExpandStringWithFiltersAndOrderByWithTop: async (sp: any, listName: string, selectString: string, expandString: string, filterString: string, orderByColumn: string, ascending: boolean, topCount: number) => {
+    return await sp.web.lists.getByTitle(listName).items.select(selectString).expand(expandString).filter(filterString).orderBy(orderByColumn, ascending).top(topCount)();
+  },
   _getValue: async (sp: any) => {
     const items: any[] = await sp.web.lists.getByTitle("Vendor Details").items();
     return items;
   },
-  _checkLoginUserIsOwnerOrNot: async(context: any, groupName: string, userEmail: string) =>{
+  _checkLoginUserIsOwnerOrNot: async (context: any, groupName: string, userEmail: string) => {
     var myHeaders = new Headers({
       'Accept': 'application/json; odata=verbose'
     });
@@ -165,7 +171,7 @@ const PnpSpCommonServices = {
       method: 'GET',
       headers: myHeaders,
     }
-      return await fetch(context.pageContext.legacyPageContext.webAbsoluteUrl + "/_api/web/sitegroups/getByName('" + groupName + "')/users/getByEmail('" + userEmail + "')", myInit).then((response) => {
+    return await fetch(context.pageContext.legacyPageContext.webAbsoluteUrl + "/_api/web/sitegroups/getByName('" + groupName + "')/users/getByEmail('" + userEmail + "')", myInit).then((response) => {
       return response;
     });
   },
