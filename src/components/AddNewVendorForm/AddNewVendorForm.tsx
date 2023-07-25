@@ -13,12 +13,22 @@ const AddNewVendorForm: React.FunctionComponent<IAddNewVendorFormProps> = (props
   const sp = spfi().using(SPFx(props.context));
 
   /* Drag & Drop File Relative Code Start */
+  /*
+  function handleImageFieldChange(event: any){
+    const adminFormDataCopy = clone(vendorContactsFormData);
+    adminFormDataCopy[event.target.id] = event.target.files[0];
+    setVendorContactsFormData(adminFormDataCopy);
+  }
+  */
   function getImageFileObject(imageFile: any) {
-    console.log({ imageFile })
+    const adminFormDataCopy = clone(vendorContactsFormData);
+    adminFormDataCopy["Upload_Image"] = imageFile.file;
+    setVendorContactsFormData(adminFormDataCopy);
+    console.log({ imageFile });
   }
 
   function runAfterImageDelete(file: any) {
-    console.log({ file })
+    console.log({ file });
   }
   /* Drag & Drop File Relative Code Start */
 
@@ -91,6 +101,8 @@ const AddNewVendorForm: React.FunctionComponent<IAddNewVendorFormProps> = (props
   }
 
   function handleImageFieldChange(event: any){
+    console.log("Input Field = ", event);
+    console.log("Get Value Files [0] = ", event.target.files[0]);
     const adminFormDataCopy = clone(vendorContactsFormData);
     adminFormDataCopy[event.target.id] = event.target.files[0];
     setVendorContactsFormData(adminFormDataCopy);
@@ -118,8 +130,8 @@ const AddNewVendorForm: React.FunctionComponent<IAddNewVendorFormProps> = (props
       CV_Vendor_Number: vendorContactsFormData.Vendor_Number,
       CV_Vendor_Email: vendorContactsFormData.Vendor_Email,
       CV_Vendor_Image: JSON.stringify({
-        type: vendorContactsFormData.Vendor_Image.type,
-        serverRelativeUrl: siteUrl + '/SiteAssets/Lists/4bf10e5c-4e4b-4584-b9fd-27b0b693bb6f/' + vendorContactsFormData.Vendor_Image.name,
+        type: vendorContactsFormData.Upload_Image.type,
+        serverRelativeUrl: siteUrl + '/SiteAssets/Lists/4bf10e5c-4e4b-4584-b9fd-27b0b693bb6f/' + vendorContactsFormData.Upload_Image.name,
       }),
     };
     return new Promise((resolve, reject) => {
