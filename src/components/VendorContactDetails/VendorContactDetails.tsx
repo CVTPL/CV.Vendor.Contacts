@@ -1,10 +1,16 @@
 import * as React from 'react';
 import { IVendorContactDetailsProps } from './IVendorContactDetailsProps';
-import { PrimaryButton, TextField, TooltipHost } from 'office-ui-fabric-react';
+import { Panel, PrimaryButton, TextField, TooltipHost } from 'office-ui-fabric-react';
 import PnpSpCommonServices from '../../services/PnpSpCommonServices';
 import { spfi, SPFx } from "@pnp/sp";
 import { Pagination } from "@pnp/spfx-controls-react/lib/pagination";
 import { clone } from '@microsoft/sp-lodash-subset';
+import { getTheme, ITheme } from 'office-ui-fabric-react';
+import { RotatingLines } from 'react-loader-spinner';
+import AddNewVendorForm from '../AddNewVendorForm/AddNewVendorForm';
+
+const theme: ITheme = getTheme();
+const themeColor = theme.palette.themePrimary;
 
 const VendorContactDetails: React.FunctionComponent<IVendorContactDetailsProps> = (props) => {
 
@@ -114,34 +120,31 @@ const VendorContactDetails: React.FunctionComponent<IVendorContactDetailsProps> 
   const [searchString, setSearchString]: any = React.useState("");
   /* Filter Data Create Object Relative Code End */
 
-  const [isOpen, isClose] = React.useState(false);
+  const [isAdminPanelFormOpen, setAdminPanelFormOpen] = React.useState(false);
 
   /* No Data Found Relative Code Start */
   const [dataNotFound, setDataNotFound] = React.useState(false);
   /* No Data Found Relative Code End */
 
+  const [visibleLoader, setVisibleLoader] = React.useState(true);
+
+  /**
+   * Hide Section
+   * @returns 
+   */
+  const [hideSection, setHideSection] = React.useState(false);
+
+  const adminFormPanelHeader = () => (
+    <div className="panel-header">
+      <div className="left-section">
+        <h4>Add Vendor Details</h4>
+      </div>
+    </div>
+  )
+  
   React.useEffect(() => {
-
     sessionStorage.PageNumberData = 1; /* For Pagination */
-    _callGetData()
-      .then((response) => {
-        // Handle successful response here
-        if(response.length > 0){
-          setDataNotFound(true);
-        } else{
-          setDataNotFound(false);
-        }
-        var orderByData = props.alasql("SELECT * FROM ? ORDER BY Title ASC", [response]);
-        setDefaultData(orderByData);
-        setDefaultDataCopy(orderByData);
-        _getPage(1, orderByData);
-        // _getpagination(1, response);
-      })
-      .catch((error) => {
-        // Handle error here
-        console.error(error);
-      });
-
+    _initialFunction();
     // Clean up function
     return () => {
       console.log("Sorry not working code!");
@@ -150,99 +153,129 @@ const VendorContactDetails: React.FunctionComponent<IVendorContactDetailsProps> 
 
   return (
     <div className="vendor-card-scroll-content">
-        {dataNotFound ? 
-          <>
-            <div className="search-with-data">
-              <div className="add-edit-vendor-content-box">
+      {dataNotFound ? 
+        <>
+          <div className="search-with-data">
+            <div className={"add-edit-vendor-content-box" + hideSection ? "search-with-button":""}>
+              {hideSection == true ?
                 <TextField placeholder="Search to filter data" onChange={filterData} value={searchString} />
-                {props.context.isCurrentUserSiteAdminOrOwner ? 
-                  <div className="btn-container btn-center">
-                    <PrimaryButton text="Add" className="ms-primary-2"/>
-                  </div>
-                :
-                ""}
-                
-              </div>
-              <ul className="vendor-card-list">
-                {
-                  defaultData.map((item: any) => {
-                    const imgJson = JSON.parse(item.CV_Vendor_Image);
-                    return (
-                      <>
-                        <li className="vendor-card-list-item" onClick={(e) => parentComponent("parent", e)}>
-                          <div className="card-container vendor-card-container">
-                            <div className="card">
-                              <div className="card-header">
-                                <div className="rectangle-shape-box">
-                                  <img src={imgJson.serverRelativeUrl} alt="Not Available Now" title="Vendor image" />
-                                </div>
+              : ""}
+              {props.isAdmin ?
+                <div className="btn-container btn-center">
+                  <PrimaryButton text="Add" className="ms-primary-2" onClick={() => setAdminPanelFormOpen(true)} />
+                </div>
+              :
+              ""
+              }
+            </div>
+            <ul className="vendor-card-list">
+              {
+                defaultData.map((item: any) => {
+                  const imgJson = JSON.parse(item.CV_Vendor_Image);
+                  return (
+                    <>
+                      <li className="vendor-card-list-item" onClick={(e) => parentComponent("parent", e)}>
+                        <div className="card-container vendor-card-container">
+                          <div className="card">
+                            <div className="card-header">
+                              <div className="rectangle-shape-box">
+                                <img src={imgJson.serverRelativeUrl} alt="Not Available Now" title="Vendor image" />
                               </div>
-                              <div className="card-body">
-                                <TooltipHost className="tooltip-container" tooltipProps={{ onRenderContent: () => onVendorTitleRenderContent(item.Title) }} calloutProps={calloutProps}>
-                                  <div className="clamp-text">
-                                    <h2 onClick={(e) => parentComponent("child", e)}>{item.Title}</h2>
-                                  </div>
-                                </TooltipHost>
-                                <div className="detail-card">
-                                  <div className="detail-card-header">
-                                    <TooltipHost className="tooltip-container" tooltipProps={{ onRenderContent: () => onVendorDetailTitleRenderContent(item.CV_Vendor_Heading) }} calloutProps={calloutProps}>
-                                      <div className="clamp-text">
-                                        <h3>{item.CV_Vendor_Heading}</h3>
-                                      </div>
-                                    </TooltipHost>
-                                  </div>
-                                  <div className="detail-card-body">
-                                    <p>{item.CV_Vendor_Name}</p>
-                                    <ul className="icon-with-label-list">
-                                      <li className="icon-with-label-list-item">
-                                        <a className="icon-link" href={'tel:' + item.CV_Vendor_Number}>
-                                          <div className="circle-box">
-                                            <img src={require("../../assets/svg/phone.svg")} alt="Not Available Now" title="Phone icon" />
-                                          </div>
-                                          <span>{item.CV_Vendor_Number}</span>
-                                        </a>
-                                      </li>
-                                      <li className="icon-with-label-list-item">
-                                        <a className="icon-link" href={'mailto:' + item.CV_Vendor_Email}>
-                                          <div className="circle-box">
-                                            <img src={require("../../assets/svg/message.svg")} alt="Not Available Now" title="Message icon" />
-                                          </div>
-                                          <span>{item.CV_Vendor_Email}</span>
-                                        </a>
-                                      </li>
-                                    </ul>
-                                  </div>
+                            </div>
+                            <div className="card-body">
+                              <TooltipHost className="tooltip-container" tooltipProps={{ onRenderContent: () => onVendorTitleRenderContent(item.Title) }} calloutProps={calloutProps}>
+                                <div className="clamp-text">
+                                  <h2 onClick={(e) => parentComponent("child", e)}>{item.Title}</h2>
+                                </div>
+                              </TooltipHost>
+                              <div className="detail-card">
+                                <div className="detail-card-header">
+                                  <TooltipHost className="tooltip-container" tooltipProps={{ onRenderContent: () => onVendorDetailTitleRenderContent(item.CV_Vendor_Heading) }} calloutProps={calloutProps}>
+                                    <div className="clamp-text">
+                                      <h3>{item.CV_Vendor_Heading}</h3>
+                                    </div>
+                                  </TooltipHost>
+                                </div>
+                                <div className="detail-card-body">
+                                  <p>{item.CV_Vendor_Name}</p>
+                                  <ul className="icon-with-label-list">
+                                    <li className="icon-with-label-list-item">
+                                      <a className="icon-link" href={'tel:' + item.CV_Vendor_Number}>
+                                        <div className="circle-box">
+                                          <img src={require("../../assets/svg/phone.svg")} alt="Not Available Now" title="Phone icon" />
+                                        </div>
+                                        <span>{item.CV_Vendor_Number}</span>
+                                      </a>
+                                    </li>
+                                    <li className="icon-with-label-list-item">
+                                      <a className="icon-link" href={'mailto:' + item.CV_Vendor_Email}>
+                                        <div className="circle-box">
+                                          <img src={require("../../assets/svg/message.svg")} alt="Not Available Now" title="Message icon" />
+                                        </div>
+                                        <span>{item.CV_Vendor_Email}</span>
+                                      </a>
+                                    </li>
+                                  </ul>
                                 </div>
                               </div>
                             </div>
                           </div>
-                        </li>
-                      </>
-                    )
-                  })
+                        </div>
+                      </li>
+                    </>
+                  )
+                })
+              }
+            </ul>
+          </div>
+          <div className="pagination-footer">
+            <div className="number-content">
+              {startEndIndexPagination[0] ? startEndIndexPagination[0].startIndex : "1"}{" "}-{" "}
+              {startEndIndexPagination[0] ? startEndIndexPagination[0].endIndex : "10"}{" "} of {paginationTotalcount} items
+            </div>
+            <Pagination currentPage={pageNumber > 1 ? pageNumber : 1} totalPages={paginationTotalPage} onChange={(page) => _getPage(page, paginationObject)} limiter={1} />
+          </div>
+        </>
+        :
+        <>
+          <div className="not-found-message-container">
+            <div className="search-with-data">
+              <div className="add-edit-vendor-content-box">
+                {props.isAdmin ?
+                  <div className="btn-container btn-center">
+                    <PrimaryButton text="Add" className="ms-primary-2" onClick={() => setAdminPanelFormOpen(true)} />
+                  </div>
+                :
+                ""
                 }
-              </ul>
-            </div>
-            <div className="pagination-footer">
-              <div className="number-content">
-                {startEndIndexPagination[0] ? startEndIndexPagination[0].startIndex : "1"}{" "}-{" "}
-                {startEndIndexPagination[0] ? startEndIndexPagination[0].endIndex : "10"}{" "} of {paginationTotalcount} items
               </div>
-              <Pagination currentPage={pageNumber > 1 ? pageNumber : 1} totalPages={paginationTotalPage} onChange={(page) => _getPage(page, paginationObject)} limiter={1} />
             </div>
-          </>
-          :
-          <>
             <div className="not-found-message-content-box">
               <div className="content-box">
                 <img src={require("../../assets/svg/no-data-found.svg")} alt="Not available now" />
                 <p>If you need any information please fill form.</p>
               </div>
             </div>
-          </>
-        }
+          </div>
+        </>
+      }
+      <div hidden={!visibleLoader}>
+        <div className="fixed-loader-child">
+          {/* <BallTriangle height={100} width={100} radius={5} color="#5F9BE7" ariaLabel="ball-triangle-loading" visible={visibleLoader} /> */}
+          <RotatingLines strokeColor={themeColor} strokeWidth="5" animationDuration="0.75" width="100" visible={visibleLoader} />
+        </div>
+      </div>
+      <Panel onRenderHeader={adminFormPanelHeader} isOpen={isAdminPanelFormOpen} className="panel-container admin-form-panel-container" onDismiss={() => setAdminPanelFormOpen(false)} closeButtonAriaLabel="Close">
+        <AddNewVendorForm _isAdminFormPanelOpen={_isAdminFormPanelOpen} context={props.context} />
+      </Panel>
     </div>
   );
+
+  // Close reminder panel
+  function _isAdminFormPanelOpen() {
+    setAdminPanelFormOpen(false);
+    _initialFunction();
+  }
 
   function filterData(event: any){
     let filterItems = filterItem;
@@ -317,6 +350,31 @@ const VendorContactDetails: React.FunctionComponent<IVendorContactDetailsProps> 
     }
   }
 
+  // Function Initial
+  function _initialFunction(){
+    _callGetData()
+      .then((response) => {
+        // Handle successful response here
+        if(response.length > 0){
+          setDataNotFound(true);
+          setHideSection(true);
+        } else{
+          setDataNotFound(false);
+          setHideSection(false);
+        }
+        var orderByData = props.alasql("SELECT * FROM ? ORDER BY Title ASC", [response]);
+        setDefaultData(orderByData);
+        setDefaultDataCopy(orderByData);
+        _getPage(1, orderByData);
+        setVisibleLoader(false);
+        // _getpagination(1, response);
+      })
+      .catch((error) => {
+        // Handle error here
+        console.error(error);
+      });
+  }
+
 };
 
 export default VendorContactDetails;
@@ -325,11 +383,5 @@ export default VendorContactDetails;
 const test = await sp.web.siteGroups.getByName("CVMaharshi mailto:owners").users.getbyemail("yash@cidev.onmicrosoft.com").get();
 
 Task For Maharshi :
-#1 - CV Vendor Contacts - onload data loader design set
-
-Task For Maharshi : Status
-#1 - CV Vendor Contacts - CheckLoginUser Site Admin and Owners Email Based True/False - Done ! (Hide/show - Element)
-
-Task For Maharshi : Status
-#1 - CV Vendor Contacts - using _checkLoginUserIsOwnerOrNot - (Check Site Admin and Site Owner) - (Working on Email Based True/False)
+#1 - CV Vendor Contacts - admin login - Data add in list page
 */

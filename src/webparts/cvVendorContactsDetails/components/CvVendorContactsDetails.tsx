@@ -14,12 +14,15 @@ export default class CvVendorContactsDetails extends React.Component<ICvVendorCo
     super(props);
     this.state = {
       alasql: alasql,
-      isCurrentUserSiteAdminOrOwner: false
+      isCurrentUserSiteAdminOrOwner: false,
     }
   }
   // CVVendorContactsSiteDesign
   public sp = spfi().using(SPFx(this.props.context));
   componentDidMount(): void {
+
+    this._commonFlowAfterSideDesignApply();
+
     if(Object.keys(this.props.context).length > 0){
       let siteUrl = this.props.context.pageContext.legacyPageContext.webAbsoluteUrl;
       PnpSpCommonServices._getSiteListByName(this.props.context, "Vendor Details").then((response) => {
@@ -30,8 +33,7 @@ export default class CvVendorContactsDetails extends React.Component<ICvVendorCo
             if (checkSiteDesign.length > 0) {
               //site design is available so apply that site design to site.
               return PnpSpCommonServices._applySiteDesignToSite(this.sp, checkSiteDesign[0].Id, siteUrl).then((response) => {
-                // console.log("_commonFlowAfterSideDesignApply");
-                // return this._commonFlowAfterSideDesignApply();
+                return this._commonFlowAfterSideDesignApply();
               });
             }
             else {
@@ -40,6 +42,8 @@ export default class CvVendorContactsDetails extends React.Component<ICvVendorCo
                 if(checkSiteScript.length > 0){
                   return PnpSpCommonServices._createSiteDesign(this.sp, checkSiteScript[0].Id).then((response) => {
                     return PnpSpCommonServices._applySiteDesignToSite(this.sp, response.Id, siteUrl);
+                  }).then((response) => {
+                    return this._commonFlowAfterSideDesignApply();
                   });
                 }
                 else {
@@ -47,6 +51,8 @@ export default class CvVendorContactsDetails extends React.Component<ICvVendorCo
                     return PnpSpCommonServices._createSiteDesign(this.sp, response.Id);
                   }).then((response) => {
                     return PnpSpCommonServices._applySiteDesignToSite(this.sp, response.Id, siteUrl);
+                  }).then((response) => {
+                    return this._commonFlowAfterSideDesignApply();
                   });
                 }
               })
@@ -58,7 +64,6 @@ export default class CvVendorContactsDetails extends React.Component<ICvVendorCo
       })
     }
 
-    console.log("*****data console here = *****", this.props.context.pageContext.user);
     // props.context.pageContext.legacyPageContext.isSiteAdmin
     if(this.props.context.pageContext.legacyPageContext.isSiteAdmin){//check current login user is admin or not
       this.setState({isCurrentUserSiteAdminOrOwner: true});
@@ -74,7 +79,6 @@ export default class CvVendorContactsDetails extends React.Component<ICvVendorCo
         }
       });
     }
-
   }
   public render(): React.ReactElement<ICvVendorContactsDetailsProps> {
     return (
@@ -93,13 +97,13 @@ export default class CvVendorContactsDetails extends React.Component<ICvVendorCo
                 {this.state.isCurrentUserSiteAdminOrOwner ? 
                   <>
                     <div className="ms-Grid-col ms-sm12 ms-md12 ms-lg12 ms-xl12 ms-xxl12 ms-xxxl12">
-                      <VendorContactDetails alasql={this.state.alasql} context={this.props.context} />
+                      <VendorContactDetails alasql={this.state.alasql} context={this.props.context} isAdmin={this.state.isCurrentUserSiteAdminOrOwner} />
                     </div>
                   </>
                   :
                   <>
                     <div className="ms-Grid-col ms-sm12 ms-md12 ms-lg12 ms-xl7 ms-xxl8 ms-xxxl8">
-                      <VendorContactDetails alasql={this.state.alasql} context={this.props.context} />
+                      <VendorContactDetails alasql={this.state.alasql} context={this.props.context} isAdmin={this.state.isCurrentUserSiteAdminOrOwner} />
                     </div>
                     <div className="ms-Grid-col ms-sm12 ms-md12 ms-lg12 ms-xl5 ms-xxl4 ms-xxxl4">
                       <RequestForm context={this.props.context} hrEmail={this.props.hrEmail} />
@@ -109,14 +113,40 @@ export default class CvVendorContactsDetails extends React.Component<ICvVendorCo
               </div>
             </div>
           </div>
-          <div className="fixed-loader-container">
-            <div className="fixed-loader-child">
-              {/* <BallTriangle height={100} width={100} radius={5} color="#5F9BE7" ariaLabel="ball-triangle-loading" visible={loaderVisible} /> */}
-            </div>
-          </div>
         </div>
       </section>
     );
   }
-  
+
+  private _commonFlowAfterSideDesignApply = async () => {
+    let siteUrl = this.props.context.pageContext.legacyPageContext.webAbsoluteUrl;
+    console.log("Site URL Print Data =>", siteUrl);
+    let listID = "";
+    PnpSpCommonServices._getFolderByPath(this.props.context, "SiteAssets/Lists").then((response) => {
+      if(response.status == 200) {
+        return;
+      } else{
+        return PnpSpCommonServices._createFolder(this.sp, "SiteAssets/Lists");
+      }
+    }).then((response) => {
+      return PnpSpCommonServices._getSiteListByName(this.props.context, "Vendor Details");
+    }).then(async (response) => {
+      return await response.json();
+    }).then((response) => {
+      listID = response.d.Id;
+      console.log("_createFolder  SiteAssets/Lists/"+listID);
+      return PnpSpCommonServices._createFolder(this.sp, "SiteAssets/Lists/" + listID + "");
+    })
+  }
 }
+
+/*
+
+Task For Maharshi :
+#1 - CV Vendor Contacts - Image URL Pass In List Column & Add Data in to HTML
+
+Task For Maharshi : Status
+CV Vendor Contacts
+#1 - getFolderByServerRelativePath() and files.addUsingPath() - Image Upload & Save in Assets Folder
+#2 - Image URL Pass In List Column - (Working inProgress...)
+*/

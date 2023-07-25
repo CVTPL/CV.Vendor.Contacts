@@ -48,6 +48,34 @@
 }
 /* SharePoint Webpart Column Select Create Mixin End */
 
+/* Panel Responsive Create Mixin Start */
+@mixin panelResponsiveCommanWidthStyle($width: 800px){
+  .ms-Panel-main {
+    width: $width;
+    @include media-breakpoint-down(xxl) {
+      width: 80%;
+    }
+    @include media-breakpoint-down(xl) {
+      width: 90%;
+    }
+    @include media-breakpoint-down(xxs) {
+      width: 100%;
+    }
+  }
+}
+/* Panel Responsive Create Mixin End */
+
+/* Loader Mixin Comman Code - Mixin Start */
+@mixin loaderMixinCommanCode(){
+  .fixed-loader-child {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+  }
+}
+/* Loader Mixin Comman Code - Mixin End */
+
 /* Responsive - Mixin Start */
 @mixin media-breakpoint-down($breakpoint) {
   $breakpoint-value: map-get($breakpoints, $breakpoint);

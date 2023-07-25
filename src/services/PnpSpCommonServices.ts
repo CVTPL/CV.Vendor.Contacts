@@ -168,7 +168,14 @@ const PnpSpCommonServices = {
       return await fetch(context.pageContext.legacyPageContext.webAbsoluteUrl + "/_api/web/sitegroups/getByName('" + groupName + "')/users/getByEmail('" + userEmail + "')", myInit).then((response) => {
       return response;
     });
+  },
+  _addImage: async (sp: any, folderPath: string, file: any) => {
+    return await sp.web.getFolderByServerRelativePath(folderPath).files.addUsingPath(file.name, file, { Overwrite: true });
+  },
+  _addDataIntoList: async (sp: any, listName: string, data: any) => {
+    return await sp.web.lists.getByTitle(listName).items.add(data);
   }
+
 };
 
 export default PnpSpCommonServices;

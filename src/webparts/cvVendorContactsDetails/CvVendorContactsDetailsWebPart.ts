@@ -36,7 +36,7 @@ export default class CvVendorContactsDetailsWebPart extends BaseClientSideWebPar
         hasTeamsContext: !!this.context.sdks.microsoftTeams,
         userDisplayName: this.context.pageContext.user.displayName,
         context: this.context,
-        hrEmail:this.properties.HREmail
+        hrEmail:this.properties.HREmail,
       }
     );
 
@@ -117,7 +117,6 @@ export default class CvVendorContactsDetailsWebPart extends BaseClientSideWebPar
   }
 
   private validateEmail(value: string): string {
-    console.log(value);
     // Regular expression to validate email format
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!value || value.trim().length === 0) {
@@ -127,8 +126,5 @@ export default class CvVendorContactsDetailsWebPart extends BaseClientSideWebPar
       return 'Invalid email format';
     }
     return '';
-  }
-  private onSubmitClick(){
-    console.log("submit !");
   }
 }

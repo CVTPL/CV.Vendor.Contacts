@@ -414,6 +414,9 @@ ul {
 .ms-Button{
   @include text-style($fs-14, 18px, $font-regular, $primary-1);
   font-weight: bold;
+  &:not(:last-child){
+    margin-right: 15px;
+  }
   &.ms-primary-2{
     min-width: 120px;
     height: 35px;
@@ -422,6 +425,17 @@ ul {
     border-radius: 10px;
     &:hover{
       color: $primary-1;
+    }
+  }
+  &.ms-secondary-10{
+    min-width: 120px;
+    height: 35px;
+    background-color: rgb($secondary-10, 0.33);
+    border: 1px solid $transparent;
+    border-radius: 10px;
+    color: $secondary-11;
+    &:hover{
+      color: $secondary-11;
     }
   }
 }
@@ -534,10 +548,10 @@ ul {
 /* No Data Found Message Custom Style SCSS Start */
 .not-found-message-content-box {
   width: 100%;
-  height: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
+  flex: 1;
   background: $white;
   border-radius: 20px;
   padding: 30px 60px;
@@ -570,16 +584,183 @@ ul {
 }
 /* No Data Found Message Custom Style SCSS End */
 
-.add-edit-vendor-content-box{
+.fixed-loader-container{
+  position: fixed;
+  height: 100%;
+  width: 100%;
+  left: 0px;
+  top: 0px;
+  background: rgb($white, 0.8);
+  z-index: 9999;
+  @include loaderMixinCommanCode();
+}
+
+.fixed-loader-child {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  right: 0px;
+  bottom: 0px;
   display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgb($white, 0.8);
+  z-index: 9999;
+}
+
+.ms-Layer {
+  .ms-Layer-content {
+    .ms-Overlay {
+      backdrop-filter: blur(2px);
+      -webkit-backdrop-filter: blur(2px);
+      -moz-backdrop-filter: blur(2px);
+    }
+    .ms-Panel {
+      &.panel-container {
+        .ms-Panel-main {
+          display: flex;
+          flex-direction: column;
+          justify-content: flex-start;
+          height: 100vh; // This line is Commnet
+          .ms-Panel-commands {
+            margin-top: 0px;
+            .ms-Panel-navigation {
+              align-items: center;
+              justify-content: space-between;
+              background: $secondary-3;
+              padding: 15px 25px;
+              @include media-breakpoint-down(sm) {
+                padding: 15px 20px 15px 25px;
+              }
+              @include media-breakpoint-down(xxs) {
+                padding: 12px 12px 12px 15px;
+              }
+              .panel-header {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                flex-wrap: wrap;
+                flex: 1;
+                padding-right: 20px;
+                @include media-breakpoint-down(sm) {
+                  padding-right: 0px;
+                }
+                h4 {
+                  @include text-style($fs-18, 20px, $font-regular, $secondary-12);
+                  font-weight: bold;
+                  margin-bottom: 4px;
+                  @include media-breakpoint-down(sm) {
+                    @include text-style($fs-16, 18px, $font-regular, $secondary-12);
+                  }
+                }
+                span {
+                  @include text-style($fs-15, 18px, $font-regular, $secondary-13);
+                  @include media-breakpoint-down(sm) {
+                    @include text-style($fs-14, 16px, $font-regular, $secondary-13);
+                  }
+                }
+              }
+              .ms-Button {
+                margin-right: 0px;
+              }
+            }
+          }
+          .ms-Panel-contentInner {
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+            overflow-y: hidden;
+            .ms-Panel-scrollableContent {
+              height: calc(100% - 70px);
+              display: flex;
+              flex-direction: column;
+              flex-grow: 1;
+              height: 100%; // This line is Commnet
+              flex: 1; // This line is Commnet
+              overflow: unset; // This line is Commnet
+              .ms-Panel-content {
+                height: 100%; // This line is Commnet
+                display: flex;
+                flex-direction: column;
+                padding: 0px;
+                .panel-body {
+                  flex: 1;
+                  // background-color: lightseagreen;
+                  padding: 20px 30px;
+                  overflow-y: auto;
+                  @include scroll-style();
+                  @include media-breakpoint-down(xxs) {
+                    padding: 10px;
+                  }
+                }
+                .panel-footer {
+                  padding: 15px 25px;
+                  background-color: $secondary-3;
+                  @include media-breakpoint-down(sm) {
+                    padding: 15px;
+                  }
+                  @include media-breakpoint-down(xxs) {
+                    padding: 12px;
+                  }
+                }
+              }
+            }
+            .ms-Panel-footer {
+              background-color: $secondary-3;
+              .ms-Panel-footerInner {
+                padding: 0px;
+              }
+            }
+          }
+        }
+        .ms-Overlay {
+          background-color: rgb($black, 0.3);
+          filter: blur(2px);
+        }
+        &.admin-form-panel-container {
+          @include panelResponsiveCommanWidthStyle();
+        }
+      }
+    }
+  }
+}
+
+.search-with-button{
+  width: 100%;
+  display: flex;
+  justify-content: flex-start;
   align-items: flex-start;
   .ms-TextField{
     flex: 1;
   }
   .btn-container{
-    margin-left: 30px;
+    margin-left: 20px;
+    margin-bottom: 20px;
     .ms-Button{
       height: 40px;
+    }
+  }
+}
+
+.not-found-message-container{
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  .search-with-data{
+    .add-edit-vendor-content-box{
+      display: flex;
+      align-items: flex-start;
+      flex: 1;
+      .ms-TextField{
+        margin-bottom: 20px !important;
+      }
+      .btn-container{
+        margin-left: auto;
+        margin-bottom: 20px;
+        .ms-Button{
+          height: 40px;
+        }
+      }
     }
   }
 }
@@ -809,14 +990,14 @@ ul {
     }
   }
 }
-.CanvasComponentWrapper{
-  .CanvasComponentMain{
-    // .Canvas{} -> left vala class through set
-    .Canvas{
-      .CanvasSection-xl12{}
-    }
-  }
-}
+// .CanvasComponentWrapper{
+//   .CanvasComponentMain{
+//     // .Canvas{} -> left vala class through set
+//     .Canvas{
+//       .CanvasSection-xl12{}
+//     }
+//   }
+// }
 .CanvasVerticalSection{
   .CanvasSection-xl12{
     .grid-column-wraping-issue{
