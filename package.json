@@ -28,6 +28,7 @@
     "react": "16.13.1",
     "react-dom": "16.13.1",
     "react-drag-drop-files": "^2.3.10",
+    "react-image-upload": "^3.0.1",
     "react-loader-spinner": "^5.3.4",
     "tslib": "2.3.1"
   },

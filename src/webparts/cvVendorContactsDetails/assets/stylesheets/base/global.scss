@@ -60,6 +60,10 @@ ul {
   -webkit-box-orient: vertical;
   overflow: hidden;
 }
+.ms-Label{
+  @include text-style($fs-14, 18px, $font-regular, $black);
+  font-weight: bold;
+}
 /* Comman Style CSS End */
 
 /* SharePoint Design Fixes Relative Code Start */
@@ -365,10 +369,6 @@ ul {
 /* Text Field Relative Style CSS Start */
 .ms-TextField{
   .ms-TextField-wrapper{
-    .ms-Label{
-      @include text-style($fs-14, 18px, $font-regular, $black);
-      font-weight: bold;
-    }
     .ms-TextField-fieldGroup{
       height: 40px;
       border-radius: 6px;
@@ -759,6 +759,45 @@ ul {
         margin-bottom: 20px;
         .ms-Button{
           height: 40px;
+        }
+      }
+    }
+  }
+}
+
+.uploader__container{
+  .uploader__placeholder{
+    min-width: 120px;
+    min-height: 120px;
+    background-color: $primary-2;
+    border: 1px solid $secondary-12;
+    border-radius: 6px;
+    overflow: hidden;
+    .uploader__btn_wrapper{
+      top: 6px;
+      right: 6px;
+      z-index: 2;
+      .uploader__btn{
+        svg{
+          fill: $primary-1;
+        }
+      }
+    }
+    .uploader__file_input_label{
+      position: absolute;
+      top: 0px;
+      left: 0px;
+      right: 0px;
+      bottom: 0px;
+      transform: unset;
+      z-index: 1;
+      svg{
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        path{
+          fill: $primary-1;
         }
       }
     }

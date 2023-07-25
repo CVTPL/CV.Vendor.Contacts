@@ -4,18 +4,22 @@ import { IAddNewVendorFormProps } from "./IAddNewVendorFormProps";
 import { clone } from "@microsoft/sp-lodash-subset";
 import PnpSpCommonServices from "../../services/PnpSpCommonServices";
 import { spfi, SPFx } from "@pnp/sp";
-import { FileUploader } from "react-drag-drop-files";
+import ImageUploader from 'react-image-upload';
+import 'react-image-upload/dist/style.css';
+import { Label } from '@fluentui/react/lib/Label';
 
 const AddNewVendorForm: React.FunctionComponent<IAddNewVendorFormProps> = (props) => {
 
   const sp = spfi().using(SPFx(props.context));
 
   /* Drag & Drop File Relative Code Start */
-  const fileTypes = ["JPEG", "PNG", "GIF"];
-  const [file, setFile] = React.useState(null);
-  const handleChange = (file: any) => {
-    setFile(file);
-  };
+  function getImageFileObject(imageFile: any) {
+    console.log({ imageFile })
+  }
+
+  function runAfterImageDelete(file: any) {
+    console.log({ file })
+  }
   /* Drag & Drop File Relative Code Start */
 
   const [vendorContactsFormData, setVendorContactsFormData]: any = React.useState({
@@ -64,8 +68,8 @@ const AddNewVendorForm: React.FunctionComponent<IAddNewVendorFormProps> = (props
             </div> */}
             <div className="ms-Grid-col ms-sm12 ms-md12 ms-lg12 ms-xl12 ms-xxl12 ms-xxxl12">
               <div className="form-group">
-                <label>Vendor Image</label>
-                <FileUploader multiple={true} handleChange={handleChange} name="file" types={fileTypes} />
+                <Label>Vendor Image</Label>
+                <ImageUploader onFileAdded={(img) => getImageFileObject(img)} onFileRemoved={(img) => runAfterImageDelete(img)} />
               </div>
             </div>
           </div>
