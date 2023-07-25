@@ -98,7 +98,7 @@ const VendorContactDetails: React.FunctionComponent<IVendorContactDetailsProps> 
       vendorEmail: "deepakrathod@gmail.com",
     },
   ];
-  
+
   // Tooltip Relative Code Start
   const calloutProps = { gapSpace: 0 };
   const onVendorTitleRenderContent = (item: any) => (
@@ -112,7 +112,7 @@ const VendorContactDetails: React.FunctionComponent<IVendorContactDetailsProps> 
     </div>
   );
   // Tooltip Relative Code End
-  
+
   /* Filter Data Create Object Relative Code Start */
   const [defaultData, setDefaultData] = React.useState([]);
   const [defaultDataCopy, setDefaultDataCopy] = React.useState([]);
@@ -141,7 +141,7 @@ const VendorContactDetails: React.FunctionComponent<IVendorContactDetailsProps> 
       </div>
     </div>
   )
-  
+
   React.useEffect(() => {
     sessionStorage.PageNumberData = 1; /* For Pagination */
     _initialFunction();
@@ -153,19 +153,19 @@ const VendorContactDetails: React.FunctionComponent<IVendorContactDetailsProps> 
 
   return (
     <div className="vendor-card-scroll-content">
-      {dataNotFound ? 
+      {dataNotFound ?
         <>
           <div className="search-with-data">
-            <div className={"add-edit-vendor-content-box" + hideSection ? "search-with-button":""}>
+            <div className={"add-edit-vendor-content-box" + hideSection ? "search-with-button" : ""}>
               {hideSection == true ?
                 <TextField placeholder="Search to filter data" onChange={filterData} value={searchString} />
-              : ""}
+                : ""}
               {props.isAdmin ?
                 <div className="btn-container btn-center">
                   <PrimaryButton text="Add" className="ms-primary-2" onClick={() => setAdminPanelFormOpen(true)} />
                 </div>
-              :
-              ""
+                :
+                ""
               }
             </div>
             <ul className="vendor-card-list">
@@ -245,8 +245,8 @@ const VendorContactDetails: React.FunctionComponent<IVendorContactDetailsProps> 
                   <div className="btn-container btn-center">
                     <PrimaryButton text="Add" className="ms-primary-2" onClick={() => setAdminPanelFormOpen(true)} />
                   </div>
-                :
-                ""
+                  :
+                  ""
                 }
               </div>
             </div>
@@ -277,7 +277,7 @@ const VendorContactDetails: React.FunctionComponent<IVendorContactDetailsProps> 
     _initialFunction();
   }
 
-  function filterData(event: any){
+  function filterData(event: any) {
     let filterItems = filterItem;
     if (event.target.value != "") {
       filterItems["Search"] = event.target.value;
@@ -289,7 +289,7 @@ const VendorContactDetails: React.FunctionComponent<IVendorContactDetailsProps> 
     _getFilterData(); // filter Function /
   }
 
-  function _getPage(page: number, responseItems: any){
+  function _getPage(page: number, responseItems: any) {
     /* Pagination with Data Relative Code Start */
     sessionStorage.pageNumberData = page;
     let paginationObjects = responseItems;
@@ -298,13 +298,13 @@ const VendorContactDetails: React.FunctionComponent<IVendorContactDetailsProps> 
     setPaginationObject(paginationObjects);
     setPaginationTotalPage(totalPage);
     setPaginationTotalcount(pageCount);
-    if(page){
+    if (page) {
       let filterData = paginationObjects.slice((page - 1) * 8, page * 8);
       setDefaultData(filterData);
       setpageNumber(page);
     }
     /* Pagination with Data Relative Code End */
-    
+
     /* Pagination Left Part Calculate Relative Code Start */
     const startIndex = (page - 1) * 8 + 1;
     const endIndex = Math.min(page * 8, pageCount);
@@ -312,18 +312,18 @@ const VendorContactDetails: React.FunctionComponent<IVendorContactDetailsProps> 
     /* Pagination Left Part Calculate Relative Code End */
   }
 
-  function parentComponent(element: any, event: any){
-    if(element === "parent"){
+  function parentComponent(element: any, event: any) {
+    if (element === "parent") {
       console.log("My name is Parent");
-    } else{
+    } else {
       console.log("My name is Child");
       event.stopPropagation();
     }
   }
 
-  async function _callGetData(): Promise<any> {
+  async function _getVendorDetails(): Promise<any> {
     return new Promise((resolve, reject) => {
-      PnpSpCommonServices._getValue(sp).then(
+      PnpSpCommonServices._getListItemsWithExpandStringWithFiltersAndOrderByWithTop(sp, "Vendor Details", "", "", "", "Id", false, 4999).then(
         (response) => {
           resolve(response);
         },
@@ -351,14 +351,14 @@ const VendorContactDetails: React.FunctionComponent<IVendorContactDetailsProps> 
   }
 
   // Function Initial
-  function _initialFunction(){
-    _callGetData()
+  function _initialFunction() {
+    _getVendorDetails()
       .then((response) => {
         // Handle successful response here
-        if(response.length > 0){
+        if (response.length > 0) {
           setDataNotFound(true);
           setHideSection(true);
-        } else{
+        } else {
           setDataNotFound(false);
           setHideSection(false);
         }
