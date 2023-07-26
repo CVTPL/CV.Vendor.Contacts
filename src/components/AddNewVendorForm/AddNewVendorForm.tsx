@@ -13,18 +13,10 @@ const AddNewVendorForm: React.FunctionComponent<IAddNewVendorFormProps> = (props
   const sp = spfi().using(SPFx(props.context));
 
   /* Drag & Drop File Relative Code Start */
-  /*
-  function handleImageFieldChange(event: any){
-    const adminFormDataCopy = clone(vendorContactsFormData);
-    adminFormDataCopy[event.target.id] = event.target.files[0];
-    setVendorContactsFormData(adminFormDataCopy);
-  }
-  */
   function getImageFileObject(imageFile: any) {
     const adminFormDataCopy = clone(vendorContactsFormData);
     adminFormDataCopy["Upload_Image"] = imageFile.file;
     setVendorContactsFormData(adminFormDataCopy);
-    console.log({ imageFile });
   }
 
   function runAfterImageDelete(file: any) {
@@ -101,27 +93,33 @@ const AddNewVendorForm: React.FunctionComponent<IAddNewVendorFormProps> = (props
   }
 
   function handleImageFieldChange(event: any){
-    console.log("Input Field = ", event);
-    console.log("Get Value Files [0] = ", event.target.files[0]);
     const adminFormDataCopy = clone(vendorContactsFormData);
     adminFormDataCopy[event.target.id] = event.target.files[0];
     setVendorContactsFormData(adminFormDataCopy);
   }
 
-  /* Admin Form Submitted - Store Data in SharePoint Site */
+  /* Admin Form Submitted - Store Data in SharePoint Site Start */
   function adminFormSubmittedData(){
-    console.log(vendorContactsFormData);
-    _addListItems().then((response)=>{
-      _addImagesItems();
+    let assetsListsID = "";
+    PnpSpCommonServices._getSiteListByName(props.context,"Vendor Details").then(async (response)=>{
+      return await response.json();
+    }).then((response)=>{
+      console.log(response.d.Id);
+      assetsListsID = response.d.Id;
+    }).then((response) => {
+      _addListItems(assetsListsID);
+    }).then((response)=>{
+      _addImagesItems(assetsListsID);
     }).then((response)=>{
       _onclearFormData();
     }).then((response)=>{
       adminFormPanelClose();
-    });
+    })
   }
+  /* Admin Form Submitted - Store Data in SharePoint Site End */
 
-  /* Add Data into List Page */
-  async function _addListItems(): Promise<any> {
+  /* Add Data into List Page Start */
+  async function _addListItems(assetsListsID: any): Promise<any> {
     let siteUrl = props.context.pageContext.legacyPageContext.webAbsoluteUrl;
     let obj = {
       Title: vendorContactsFormData.Title,
@@ -131,7 +129,7 @@ const AddNewVendorForm: React.FunctionComponent<IAddNewVendorFormProps> = (props
       CV_Vendor_Email: vendorContactsFormData.Vendor_Email,
       CV_Vendor_Image: JSON.stringify({
         type: vendorContactsFormData.Upload_Image.type,
-        serverRelativeUrl: siteUrl + '/SiteAssets/Lists/4bf10e5c-4e4b-4584-b9fd-27b0b693bb6f/' + vendorContactsFormData.Upload_Image.name,
+        serverRelativeUrl: siteUrl + '/SiteAssets/Lists/' + assetsListsID + '/' + vendorContactsFormData.Upload_Image.name,
       }),
     };
     return new Promise((resolve, reject) => {
@@ -147,11 +145,12 @@ const AddNewVendorForm: React.FunctionComponent<IAddNewVendorFormProps> = (props
       )
     })
   }
-
-  /* Add Image in SharePoint - Site Assets Folder */
-  async function _addImagesItems(): Promise<any> {
+  /* Add Data into List Page End */
+  
+  /* Add Image in SharePoint - Site Assets Folder Start */
+  async function _addImagesItems(assetsListsID: any): Promise<any> {
     return new Promise((resolve, reject) => {
-      PnpSpCommonServices._addImage(sp, "SiteAssets/Lists/4bf10e5c-4e4b-4584-b9fd-27b0b693bb6f", vendorContactsFormData.Upload_Image).then(
+      PnpSpCommonServices._addImage(sp, "SiteAssets/Lists/" + assetsListsID, vendorContactsFormData.Upload_Image).then(
         (response) => {
           resolve(response);
           console.log("Data Here in main => ", response);
@@ -163,8 +162,9 @@ const AddNewVendorForm: React.FunctionComponent<IAddNewVendorFormProps> = (props
       )
     })
   }
+  /* Add Image in SharePoint - Site Assets Folder End */
 
-  /* Submit Button Click - Clear Form Data */
+  /* Submit Button Click - Clear Form Data Start */
   function _onclearFormData(){
     let vendorContactsFormObject = clone(vendorContactsFormData);
     vendorContactsFormObject.Title = "",
@@ -177,11 +177,13 @@ const AddNewVendorForm: React.FunctionComponent<IAddNewVendorFormProps> = (props
     const myInput = document.getElementById("file_uploader") as HTMLInputElement;
     myInput.value = "";
   }
+  /* Submit Button Click - Clear Form Data End */
 
-  /* Cancel Button Click Close Panel & Submit Button Click Last Call This Function */
+  /* Cancel Button Click Close Panel & Submit Button Click Last Call This Function Start */
   function adminFormPanelClose(){
     props._isAdminFormPanelOpen();
   }
+  /* Cancel Button Click Close Panel & Submit Button Click Last Call This Function End */
 
 };
 
