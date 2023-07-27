@@ -267,13 +267,19 @@ const VendorContactDetails: React.FunctionComponent<IVendorContactDetailsProps> 
         </div>
       </div>
       <Panel onRenderHeader={adminFormPanelHeader} isOpen={isAdminPanelFormOpen} className="panel-container admin-form-panel-container" onDismiss={() => setAdminPanelFormOpen(false)} closeButtonAriaLabel="Close">
-        <AddNewVendorForm _isAdminFormPanelOpen={_isAdminFormPanelOpen} context={props.context} />
+        <AddNewVendorForm _isAdminFormPanelOpen={_isAdminFormPanelOpen} context={props.context} _isDataSubmited={_isDataSubmited} />
       </Panel>
     </div>
   );
 
   // Close reminder panel
   function _isAdminFormPanelOpen() {
+    setAdminPanelFormOpen(false);
+    // _initialFunction();
+  }
+
+  // Submit Panel
+  function _isDataSubmited() {
     setAdminPanelFormOpen(false);
     _initialFunction();
   }
@@ -324,7 +330,7 @@ const VendorContactDetails: React.FunctionComponent<IVendorContactDetailsProps> 
 
   async function _getVendorDetails(): Promise<any> {
     return new Promise((resolve, reject) => {
-      PnpSpCommonServices._getListItemsWithExpandStringWithFiltersAndOrderByWithTop(sp, "Vendor Details", "", "", "", "Title", false, 4999).then(
+      PnpSpCommonServices._getListItemsWithExpandStringWithFiltersAndOrderByWithTop(sp, "Vendor Details", "", "", "", "Id", false, 4999).then(
         (response) => {
           resolve(response);
         },
@@ -353,7 +359,9 @@ const VendorContactDetails: React.FunctionComponent<IVendorContactDetailsProps> 
 
   // Function Initial
   function _initialFunction() {
-    _getVendorDetails().then((response) => {
+    setVisibleLoader(true);
+    setTimeout(() => {
+      _getVendorDetails().then((response) => {
         // Handle successful response here
         if (response.length > 0) {
           setDataNotFound(true);
@@ -366,13 +374,10 @@ const VendorContactDetails: React.FunctionComponent<IVendorContactDetailsProps> 
         setDefaultData(orderByData);
         setDefaultDataCopy(orderByData);
         _getPage(1, orderByData);
-        // setVisibleLoader(false);
+        setVisibleLoader(false);
         // _getpagination(1, response);
-      })
-      .catch((error) => {
-        // Handle error here
-        console.error(error);
       });
+    }, 1000);
   }
 
 };

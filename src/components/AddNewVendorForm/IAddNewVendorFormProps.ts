@@ -1,4 +1,5 @@
 export interface IAddNewVendorFormProps {
     _isAdminFormPanelOpen: any,
-    context: any
+    context: any,
+    _isDataSubmited:any
 }

@@ -22,15 +22,15 @@ export default class CvVendorContactsDetails extends React.Component<ICvVendorCo
       alasql: alasql,
       isCurrentUserSiteAdminOrOwner: false,
       visibleLoader: false,
+      visibleItem: false
     }
   }
   // CVVendorContactsSiteDesign
   public sp = spfi().using(SPFx(this.props.context));
   componentDidMount(): void {
     if (Object.keys(this.props.context).length > 0) {
-
       // Start loader here
-      this.setState({visibleLoader: true});
+      this.setState({ visibleLoader: true });
       let siteUrl = this.props.context.pageContext.legacyPageContext.webAbsoluteUrl;
       PnpSpCommonServices._getSiteListByName(this.props.context, "Vendor Details").then((response) => {//check list is available or not
         // CVVendorContactsSiteDesgin
@@ -60,17 +60,17 @@ export default class CvVendorContactsDetails extends React.Component<ICvVendorCo
                     return PnpSpCommonServices._applySiteDesignToSite(this.sp, response.Id, siteUrl);
                   }).then((response) => {
                     return this._commonFlowAfterSideDesignApply();
-                  }).then((response)=>{
-                    this.setState({visibleLoader: false});
                   });
                 }
-              })
+              });
             }
-          })
+          }).then((response) => {
+            this.setState({ visibleLoader: false, visibleItem: true });
+          });
         } else {
           console.log("List is available");
           //end loader here
-          this.setState({visibleLoader: false});
+          this.setState({ visibleLoader: false ,visibleItem: true});
         }
       })
     }
@@ -107,18 +107,23 @@ export default class CvVendorContactsDetails extends React.Component<ICvVendorCo
                 <div className="ms-Grid-row">
                   {this.state.isCurrentUserSiteAdminOrOwner ?
                     <>
-                      <div className="ms-Grid-col ms-sm12 ms-md12 ms-lg12 ms-xl12 ms-xxl12 ms-xxxl12">
-                        <VendorContactDetails alasql={this.state.alasql} context={this.props.context} isAdmin={this.state.isCurrentUserSiteAdminOrOwner} />
-                      </div>
+                      {this.state.visibleItem ?
+                        <div className="ms-Grid-col ms-sm12 ms-md12 ms-lg12 ms-xl12 ms-xxl12 ms-xxxl12">
+                          <VendorContactDetails alasql={this.state.alasql} context={this.props.context} isAdmin={this.state.isCurrentUserSiteAdminOrOwner} />
+                        </div>
+                        : ""}
                     </>
                     :
                     <>
-                      <div className="ms-Grid-col ms-sm12 ms-md12 ms-lg12 ms-xl6 ms-xxl8 ms-xxxl8">
-                        <VendorContactDetails alasql={this.state.alasql} context={this.props.context} isAdmin={this.state.isCurrentUserSiteAdminOrOwner} />
-                      </div>
-                      <div className="ms-Grid-col ms-sm12 ms-md12 ms-lg12 ms-xl6 ms-xxl4 ms-xxxl4">
-                        <RequestForm context={this.props.context} hrEmail={this.props.hrEmail} />
-                      </div>
+                      {this.state.visibleItem ?
+                        <>
+                          <div className="ms-Grid-col ms-sm12 ms-md12 ms-lg12 ms-xl6 ms-xxl8 ms-xxxl8">
+                            <VendorContactDetails alasql={this.state.alasql} context={this.props.context} isAdmin={this.state.isCurrentUserSiteAdminOrOwner} />
+                          </div>
+                          <div className="ms-Grid-col ms-sm12 ms-md12 ms-lg12 ms-xl6 ms-xxl4 ms-xxxl4">
+                            <RequestForm context={this.props.context} hrEmail={this.props.hrEmail} />
+                          </div>
+                        </> : ""}
                     </>
                   }
                 </div>
@@ -161,7 +166,7 @@ export default class CvVendorContactsDetails extends React.Component<ICvVendorCo
       return PnpSpCommonServices._createFolder(this.sp, "SiteAssets/Lists/" + listId + "");
     }).then((response) => {
       //end loader here
-      this.setState({visibleLoader: false});
+      this.setState({ visibleLoader: false });
     });
   }
 }

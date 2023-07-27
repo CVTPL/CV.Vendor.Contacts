@@ -259,7 +259,8 @@ const AddNewVendorForm: React.FunctionComponent<IAddNewVendorFormProps> = (props
       }).then((response) => {
         _onclearFormData();
       }).then((response) => {
-        adminFormPanelClose();
+        // adminFormPanelClose();
+        adminFormPanelSubmit();
       })
     }
     
@@ -332,6 +333,10 @@ const AddNewVendorForm: React.FunctionComponent<IAddNewVendorFormProps> = (props
     props._isAdminFormPanelOpen();
   }
   /* Cancel Button Click Close Panel & Submit Button Click Last Call This Function End */
+
+  function adminFormPanelSubmit(){
+    props._isDataSubmited();
+  }
 
 };
 
