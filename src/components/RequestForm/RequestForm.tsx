@@ -191,12 +191,3 @@ const RequestForm: React.FunctionComponent<IRequestFormProps> = (props) => {
 };
 
 export default RequestForm;
-
-/*
-Task For Maharshi :
-#1 - CV Vendor Contacts - User Email Login wise proper set - using siteGroups() get data
-
-1,1,1,1,1,1
-
-Phone Number - 9955110295
-*/

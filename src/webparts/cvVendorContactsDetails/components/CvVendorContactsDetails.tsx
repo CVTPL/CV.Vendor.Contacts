@@ -166,6 +166,5 @@ export default class CvVendorContactsDetails extends React.Component<ICvVendorCo
       //end loader here
       this.setState({visibleLoader: false});
     });
-
   }
 }
