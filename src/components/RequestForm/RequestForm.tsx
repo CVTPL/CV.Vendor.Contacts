@@ -31,7 +31,7 @@ const RequestForm: React.FunctionComponent<IRequestFormProps> = (props) => {
             <div className="vendor-forms-body">
               <div className="ms-Grid">
                 <div className="ms-Grid-row">
-                  <div className="ms-Grid-col ms-sm12 ms-md12 ms-lg12 ms-xl12 ms-xxl12 ms-xxxl12">
+                  <div className="ms-Grid-col ms-sm12 ms-md12 ms-lg6 ms-xl12 ms-xxl12 ms-xxxl12">
                     <div className="form-group">
                       <TextField label="Name" placeholder="Enter name" title="Name" id="Name" onChange={(e: any) => handleFieldChange(e)} />
                       {errorMessageObj.Name ? (
@@ -41,7 +41,7 @@ const RequestForm: React.FunctionComponent<IRequestFormProps> = (props) => {
                       )}
                     </div>
                   </div>
-                  <div className="ms-Grid-col ms-sm12 ms-md12 ms-lg12 ms-xl12 ms-xxl12 ms-xxxl12">
+                  <div className="ms-Grid-col ms-sm12 ms-md12 ms-lg6 ms-xl12 ms-xxl12 ms-xxxl12">
                     <div className="form-group">
                       <TextField label="Phone Number" placeholder="Enter number" title="Number" id="Number" value={vendorDetailFormsData.Number} maxLength={10} onChange={(e: any) => handleFieldChange(e)} />
                       {errorMessageObj.Number ? (

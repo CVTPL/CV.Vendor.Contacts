@@ -158,7 +158,7 @@ ul {
   margin: 0px -20px;
   box-sizing: border-box;
   @include media-breakpoint-down(xxs){
-    margin: 0ox -10px;
+    margin: 0px -10px;
   }
   .vendor-card-list-item{
     flex: 0 0 auto;
@@ -166,8 +166,8 @@ ul {
     padding: 0px 20px;
     margin-bottom: 80px;
     @include media-breakpoint-down(xxxl){
-      width: 33.33%;
-    };
+      width: 50%;
+    }
     @include media-breakpoint-down(xxl){
       width: 50%;
     }
@@ -175,7 +175,7 @@ ul {
       width: 100%;
     }
     @include media-breakpoint-down(ipad){
-      width: 33.33%;
+      width: 50%;
     }
     @include media-breakpoint-down(md){
       width: 50%;
@@ -824,9 +824,26 @@ ul {
           > .ms-Grid{
             > .ms-Grid-row{
               > .ms-Grid-col{
+                @include media-breakpoint-down(xxxl){
+                  width: 50%;
+                }
+                @include media-breakpoint-down(xxl){
+                  width: 100%;
+                }
                 &:not(:last-child){
                   @include media-breakpoint-down(xxl){
                     margin-bottom: 40px;
+                  }
+                }
+                .vendor-card-scroll-content{
+                  .search-with-data{
+                    .vendor-card-list{
+                      .vendor-card-list-item{
+                        @include media-breakpoint-down(xxxl){
+                          width: 100%;
+                        }
+                      }
+                    }
                   }
                 }
               }
@@ -920,12 +937,9 @@ ul {
               .vendor-card-list-item{
                 width: 100%;
                 @include media-breakpoint-down(lg){
-                  width: 50%;
+                  width: 100%;
                 }
                 @include media-breakpoint-down(ipad){
-                  width: 33.33%;
-                }
-                @include media-breakpoint-down(md){
                   width: 50%;
                 }
                 @include media-breakpoint-down(sm){

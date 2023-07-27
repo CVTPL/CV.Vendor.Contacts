@@ -21,7 +21,6 @@ export default class CvVendorContactsDetails extends React.Component<ICvVendorCo
     this.state = {
       alasql: alasql,
       isCurrentUserSiteAdminOrOwner: false,
-      assetsListsID: "",
       visibleLoader: false,
     }
   }
@@ -114,10 +113,10 @@ export default class CvVendorContactsDetails extends React.Component<ICvVendorCo
                     </>
                     :
                     <>
-                      <div className="ms-Grid-col ms-sm12 ms-md12 ms-lg12 ms-xl7 ms-xxl8 ms-xxxl8">
+                      <div className="ms-Grid-col ms-sm12 ms-md12 ms-lg12 ms-xl6 ms-xxl8 ms-xxxl8">
                         <VendorContactDetails alasql={this.state.alasql} context={this.props.context} isAdmin={this.state.isCurrentUserSiteAdminOrOwner} />
                       </div>
-                      <div className="ms-Grid-col ms-sm12 ms-md12 ms-lg12 ms-xl5 ms-xxl4 ms-xxxl4">
+                      <div className="ms-Grid-col ms-sm12 ms-md12 ms-lg12 ms-xl6 ms-xxl4 ms-xxxl4">
                         <RequestForm context={this.props.context} hrEmail={this.props.hrEmail} />
                       </div>
                     </>
@@ -159,8 +158,6 @@ export default class CvVendorContactsDetails extends React.Component<ICvVendorCo
       return await response.json();
     }).then((response) => {
       listId = response.d.Id;
-      this.setState({assetsListsID: listId});
-      console.log("Onload Value", this.state.assetsListsID);
       return PnpSpCommonServices._createFolder(this.sp, "SiteAssets/Lists/" + listId + "");
     }).then((response) => {
       //end loader here

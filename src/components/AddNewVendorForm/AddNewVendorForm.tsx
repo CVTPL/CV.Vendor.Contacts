@@ -17,7 +17,6 @@ const AddNewVendorForm: React.FunctionComponent<IAddNewVendorFormProps> = (props
     const adminFormDataCopy = clone(vendorContactsFormData);
     adminFormDataCopy["Upload_Image"] = imageFile.file;
     setVendorContactsFormData(adminFormDataCopy);
-
     var errorMessageObj1 = errorMessageObj;
     if(errorMessageObj1 && errorMessageObj1.Upload_Image.length > 0){
       errorMessageObj1.Upload_Image = "";
@@ -40,7 +39,7 @@ const AddNewVendorForm: React.FunctionComponent<IAddNewVendorFormProps> = (props
       <div className="panel-body">
         <div className="ms-Grid">
           <div className="ms-Grid-row">
-            <div className="ms-Grid-col ms-sm12 ms-md12 ms-lg12 ms-xl12 ms-xxl12 ms-xxxl12">
+            <div className="ms-Grid-col ms-sm12 ms-md12 ms-lg12 ms-xl6 ms-xxl6 ms-xxxl6">
               <div className="form-group">
                 <TextField label="Title" placeholder="Enter title" title="Title" id="Title" onChange={(e: any) => handleFieldChange(e)} required value={vendorContactsFormData.Title} />
                 {errorMessageObj.Title ? (
@@ -50,7 +49,7 @@ const AddNewVendorForm: React.FunctionComponent<IAddNewVendorFormProps> = (props
                 )}
               </div>
             </div>
-            <div className="ms-Grid-col ms-sm12 ms-md12 ms-lg12 ms-xl12 ms-xxl12 ms-xxxl12">
+            <div className="ms-Grid-col ms-sm12 ms-md12 ms-lg12 ms-xl6 ms-xxl6 ms-xxxl6">
               <div className="form-group">
                 <TextField label="Vendor Heading" placeholder="Enter vendor heading" title="Vendor_Heading" id="Vendor_Heading" onChange={(e: any) => handleFieldChange(e)} required value={vendorContactsFormData.Vendor_Heading} />
                 {errorMessageObj.Vendor_Heading ? (
@@ -60,7 +59,7 @@ const AddNewVendorForm: React.FunctionComponent<IAddNewVendorFormProps> = (props
                 )}
               </div>
             </div>
-            <div className="ms-Grid-col ms-sm12 ms-md12 ms-lg12 ms-xl12 ms-xxl12 ms-xxxl12">
+            <div className="ms-Grid-col ms-sm12 ms-md12 ms-lg12 ms-xl6 ms-xxl6 ms-xxxl6">
               <div className="form-group">
                 <TextField label="Vendor Name" placeholder="Enter vendor name" title="Vendor_Name" id="Vendor_Name" onChange={(e: any) => handleFieldChange(e)} required value={vendorContactsFormData.Vendor_Name} />
                 {errorMessageObj.Vendor_Name ? (
@@ -70,7 +69,7 @@ const AddNewVendorForm: React.FunctionComponent<IAddNewVendorFormProps> = (props
                 )}
               </div>
             </div>
-            <div className="ms-Grid-col ms-sm12 ms-md12 ms-lg12 ms-xl12 ms-xxl12 ms-xxxl12">
+            <div className="ms-Grid-col ms-sm12 ms-md12 ms-lg12 ms-xl6 ms-xxl6 ms-xxxl6">
               <div className="form-group">
                 <TextField label="Vendor Number" placeholder="Enter vendor number" title="Vendor_Number" id="Vendor_Number" maxLength={10} onChange={(e: any) => handleFieldChange(e)} required value={vendorContactsFormData.Vendor_Number} />
                 {errorMessageObj.Vendor_Number ? (
