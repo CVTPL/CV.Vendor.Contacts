@@ -169,11 +169,3 @@ export default class CvVendorContactsDetails extends React.Component<ICvVendorCo
 
   }
 }
-
-/*
-Task For Maharshi :
-#1 - CV Vendor Contacts - Loader issue changes & testing sites
-
-Task For Maharshi : Status
-#1 - CV Vendor Contacts - Dynamic (SiteAssets/List/) ID Folder Generate Issue & Form Validation - done ! (Loader issue pending)
-*/
