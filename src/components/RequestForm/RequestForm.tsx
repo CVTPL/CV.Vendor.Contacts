@@ -6,9 +6,15 @@ import "@pnp/sp/sputilities";
 import { IEmailProperties } from "@pnp/sp/sputilities";
 
 const RequestForm: React.FunctionComponent<IRequestFormProps> = (props) => {
+  /* Request Form Store Data Relative Declaration Variable with Error Message Start */
   const [vendorDetailFormsData, isSetVendorDetailFormsData]: any = React.useState({ Name: "", Number: "", Email: "", Description: "" });
   const [errorMessageObj, isErrorMessageObj]: any = React.useState({Name: "", Number: "", Email: "", Description: ""});
+  /* Request Form Store Data Relative Declaration Variable with Error Message End */
+
+  /* SubmittedForm Hide/Show Thank You Message Box Relative Code Start */
   const [submittedForm, isSubmittedForm] = React.useState(false);
+  /* SubmittedForm Hide/Show Thank You Message Box Relative Code End */
+
   const sp = spfi().using(SPFx(props.context));
   return (
     <>
@@ -85,10 +91,10 @@ const RequestForm: React.FunctionComponent<IRequestFormProps> = (props) => {
     </>
   );
 
+  /* All TextField Data Get in Store into Object Start */
   function handleFieldChange(event: any) {
     const vendorDetailFormsDataCopy = vendorDetailFormsData;
     vendorDetailFormsDataCopy[event.target.id] = event.target.value;
-
     isErrorMessageObj((prevState: any) => ({
       ...prevState,
       [event.target.id]: event.target.value === "" ? `Please enter your ${event.target.id.toLowerCase()}` : "",
@@ -100,7 +106,9 @@ const RequestForm: React.FunctionComponent<IRequestFormProps> = (props) => {
 
     isSetVendorDetailFormsData(vendorDetailFormsDataCopy);
   }
+  /* All TextField Data Get in Store into Object Start */
 
+  /* Phone Number & Email Validation Relative Code Start */
   function phoneWithEmailValidation(
     event: any,
     vendorDetailFormsDataCopy: any
@@ -108,7 +116,6 @@ const RequestForm: React.FunctionComponent<IRequestFormProps> = (props) => {
     if (event.target.id === "Number") {
       let valuePhoneNumber = vendorDetailFormsDataCopy["Number"].replace(/[^0-9]/g, "");
       vendorDetailFormsDataCopy["Number"] = valuePhoneNumber;
-
       if (valuePhoneNumber.length !== 10) {
         isErrorMessageObj((prevState: any) => ({
           ...prevState,
@@ -120,7 +127,6 @@ const RequestForm: React.FunctionComponent<IRequestFormProps> = (props) => {
     } else if (event.target.id === "Email") {
       const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
       const isValidEmail = emailPattern.test(event.target.value);
-
       if (!isValidEmail) {
         isErrorMessageObj((prevState: any) => ({
           ...prevState,
@@ -134,7 +140,9 @@ const RequestForm: React.FunctionComponent<IRequestFormProps> = (props) => {
       }
     }
   }
+  /* Phone Number & Email Validation Relative Code End */
 
+  /* Submit Button Click Check Error Message & Hide/Show Thank You Message Relative Code Start */
   function submittedFormData() {
     const errors: any = {};
 
@@ -165,7 +173,9 @@ const RequestForm: React.FunctionComponent<IRequestFormProps> = (props) => {
       });
     }
   }
+  /* Submit Button Click Check Error Message & Hide/Show Thank You Message Relative Code End */
 
+  /* HR Send Email Request Relative Code Start */
   async function setEmail(): Promise<any> {
     const emailProps: IEmailProperties = {
       To: [props.hrEmail],
@@ -188,6 +198,7 @@ const RequestForm: React.FunctionComponent<IRequestFormProps> = (props) => {
       );
     });
   }
+  /* HR Send Email Request Relative Code End */
 };
 
 export default RequestForm;

@@ -5,15 +5,8 @@ import RequestForm from '../../../components/RequestForm/RequestForm';
 require("../assets/stylesheets/base/global.scss");
 import * as alasql from 'alasql';
 import PnpSpCommonServices from '../../../services/PnpSpCommonServices';
-//import { spfi } from '@pnp/sp';
-//import { SPFx } from '@pnp/graph';
 import { spfi, SPFx } from "@pnp/sp";
-import { getTheme, ITheme } from 'office-ui-fabric-react';
 import CommonLoader from '../../../components/CommonLoader/CommonLoader';
-import { RotatingLines } from 'react-loader-spinner';
-
-const theme: ITheme = getTheme();
-const themeColor = theme.palette.themePrimary;
 
 export default class CvVendorContactsDetails extends React.Component<ICvVendorContactsDetailsProps, any, {}> {
   constructor(props: ICvVendorContactsDetailsProps) {
@@ -27,9 +20,11 @@ export default class CvVendorContactsDetails extends React.Component<ICvVendorCo
   }
   // CVVendorContactsSiteDesign
   public sp = spfi().using(SPFx(this.props.context));
+
+  /* By Default Call this Function On Refresh Web Page */
   componentDidMount(): void {
     if (Object.keys(this.props.context).length > 0) {
-      // Start loader here
+      // Start Loader Here
       this.setState({ visibleLoader: true });
       let siteUrl = this.props.context.pageContext.legacyPageContext.webAbsoluteUrl;
       PnpSpCommonServices._getSiteListByName(this.props.context, "Vendor Details").then((response) => {//check list is available or not
@@ -103,37 +98,44 @@ export default class CvVendorContactsDetails extends React.Component<ICvVendorCo
               </div>
             </div>
             <div className="grid-column-wraping-issue">
-              <div className="ms-Grid">
-                <div className="ms-Grid-row">
-                  {this.state.isCurrentUserSiteAdminOrOwner ?
-                    <>
-                      {this.state.visibleItem ?
-                        <div className="ms-Grid-col ms-sm12 ms-md12 ms-lg12 ms-xl12 ms-xxl12 ms-xxxl12">
-                          <VendorContactDetails alasql={this.state.alasql} context={this.props.context} isAdmin={this.state.isCurrentUserSiteAdminOrOwner} />
-                        </div>
-                        : ""}
-                    </>
-                    :
-                    <>
-                      {this.state.visibleItem ?
-                        <>
-                          <div className="ms-Grid-col ms-sm12 ms-md12 ms-lg12 ms-xl6 ms-xxl8 ms-xxxl8">
+              {this.state.isCurrentUserSiteAdminOrOwner ?
+                <>
+                  {this.state.visibleItem ?
+                    <div className="admin-flow-container">
+                      <div className="ms-Grid">
+                        <div className="ms-Grid-row">
+                          <div className="ms-Grid-col ms-sm12 ms-md12 ms-lg12 ms-xl12 ms-xxl12 ms-xxxl12">
                             <VendorContactDetails alasql={this.state.alasql} context={this.props.context} isAdmin={this.state.isCurrentUserSiteAdminOrOwner} />
                           </div>
-                          <div className="ms-Grid-col ms-sm12 ms-md12 ms-lg12 ms-xl6 ms-xxl4 ms-xxxl4">
-                            <RequestForm context={this.props.context} hrEmail={this.props.hrEmail} />
+                        </div>
+                      </div>
+                    </div>
+                    : ""}
+                </>
+                :
+                <>
+                  {this.state.visibleItem ?
+                    <>
+                      <div className="visitor-flow-container">
+                        <div className="ms-Grid">
+                          <div className="ms-Grid-row">
+                            <div className="ms-Grid-col ms-sm12 ms-md12 ms-lg12 ms-xl6 ms-xxl8 ms-xxxl8">
+                              <VendorContactDetails alasql={this.state.alasql} context={this.props.context} isAdmin={this.state.isCurrentUserSiteAdminOrOwner} />
+                            </div>
+                            <div className="ms-Grid-col ms-sm12 ms-md12 ms-lg12 ms-xl6 ms-xxl4 ms-xxxl4">
+                              <RequestForm context={this.props.context} hrEmail={this.props.hrEmail} />
+                            </div>
                           </div>
-                        </> : ""}
-                    </>
-                  }
-                </div>
-              </div>
+                        </div>
+                      </div>
+                    </> : ""}
+                </>
+              }
             </div>
           </div>
           <div hidden={!this.state.visibleLoader}>
             <div className="fixed-loader-child">
-              {/* <CommonLoader visibleLoader={this.state.visibleLoader} /> */}
-              <RotatingLines strokeColor={themeColor} strokeWidth="5" animationDuration="0.75" width="100" visible={this.state.visibleLoader} />
+              <CommonLoader visibleLoader={this.state.visibleLoader} />
             </div>
           </div>
         </section>

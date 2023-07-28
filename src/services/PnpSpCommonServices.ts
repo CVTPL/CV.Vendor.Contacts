@@ -13,6 +13,8 @@ import "@pnp/sp/site-groups/web";
 import "@pnp/sp/presets/all";
 
 const PnpSpCommonServices = {
+
+  /* Get List Name Relative Code Start */
   _getSiteListByName: async (context: any, listName: string) => {
     var myHeaders = new Headers({
       'Accept': 'application/json; odata=verbose'
@@ -25,15 +27,27 @@ const PnpSpCommonServices = {
       return response;
     });
   },
+  /* Get List Name Relative Code End */
+
+  /* Site Design List Get into Object (Call with Return) Relative Code Start */
   _getSiteDesign: async (sp: any) => {
     return await sp.siteDesigns.getSiteDesigns();
   },
+  /* Site Design List Get into Object (Call with Return) Relative Code End */
+
+  /* Apply Site Design to Site Relative Code Start */
   _applySiteDesignToSite: async (sp: any, siteDesignId: string, siteUrl: string) => {
     return await sp.siteDesigns.applySiteDesign(siteDesignId, siteUrl);
   },
+  /* Apply Site Design to Site Relative Code End */
+
+  /* Site Script List Get into Object (Call with Return) Relative Code Start */
   _getSiteScript: async (sp: any) => {
     return await sp.siteScripts.getSiteScripts();
   },
+  /* Site Script List Get into Object (Call with Return) Relative Code Start */
+
+  /* Create Site Design Relative Code Start */
   _createSiteDesign: async (sp: any, siteScriptId: any) => {
     return await sp.siteDesigns.createSiteDesign({
       SiteScriptIds: [siteScriptId],
@@ -41,6 +55,9 @@ const PnpSpCommonServices = {
       WebTemplate: "64",
     });
   },
+  /* Create Site Design Relative Code End */
+
+  /* Create Site Script Relative Code Start */
   _createSiteScript: async (context: any, sp: any) => {
     const vendorContactsSiteScript = {
       "$schema": "https://developer.microsoft.com/json-schemas/sp/site-design-script-actions.schema.json",
@@ -138,6 +155,8 @@ const PnpSpCommonServices = {
     }
     return await sp.siteScripts.createSiteScript("VendorContactsSiteScript", "VendorContactsSiteScript", vendorContactsSiteScript);
   },
+  /* Create Site Script Relative Code Start */
+
   _ensureSiteAssetsLibraryexist: async (sp: any) => {
     return await sp.web.lists.ensureSiteAssetsLibrary();
   },

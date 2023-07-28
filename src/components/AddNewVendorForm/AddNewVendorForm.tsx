@@ -10,7 +10,9 @@ import { Label } from '@fluentui/react/lib/Label';
 
 const AddNewVendorForm: React.FunctionComponent<IAddNewVendorFormProps> = (props) => {
 
+  /* Pnp Sp Relative Code Start */
   const sp = spfi().using(SPFx(props.context));
+  /* Pnp Sp Relative Code End */
 
   /* Drag & Drop File Relative Code Start */
   function getImageFileObject(imageFile: any) {
@@ -23,87 +25,82 @@ const AddNewVendorForm: React.FunctionComponent<IAddNewVendorFormProps> = (props
     }
     isErrorMessageObj(errorMessageObj1);
   }
-
   function runAfterImageDelete(file: any) {
     console.log({ file });
   }
   /* Drag & Drop File Relative Code Start */
 
+  /* Admin Form Store Data Relative Declaration Variable with Error Message Start */
   const [vendorContactsFormData, setVendorContactsFormData]: any = React.useState({Title:"", Vendor_Heading: "", Vendor_Name: "", Vendor_Number: "", Vendor_Email: "", Upload_Image: ""});
   const [errorMessageObj, isErrorMessageObj]: any = React.useState({Title: "", Vendor_Heading: "", Vendor_Name: "", Vendor_Number: "", Vendor_Email: "", Upload_Image: ""});
-
-  const [submittedForm, isSubmittedForm] = React.useState(false);
+  /* Admin Form Store Data Relative Declaration Variable with Error Message End */
 
   return (
     <>
       <div className="panel-body">
-        <div className="ms-Grid">
-          <div className="ms-Grid-row">
-            <div className="ms-Grid-col ms-sm12 ms-md12 ms-lg12 ms-xl6 ms-xxl6 ms-xxxl6">
-              <div className="form-group">
-                <TextField label="Title" placeholder="Enter title" title="Title" id="Title" onChange={(e: any) => handleFieldChange(e)} required value={vendorContactsFormData.Title} />
-                {errorMessageObj.Title ? (
-                  <span className="error-message">{errorMessageObj.Title}</span>
-                ) : (
-                  ""
-                )}
+        <div className="grid-column-wraping-issue">
+          <div className="ms-Grid">
+            <div className="ms-Grid-row">
+              <div className="ms-Grid-col ms-sm12 ms-md12 ms-lg12 ms-xl6 ms-xxl6 ms-xxxl6">
+                <div className="form-group">
+                  <TextField label="Title" placeholder="Enter title" title="Title" id="Title" onChange={(e: any) => handleFieldChange(e)} required value={vendorContactsFormData.Title} />
+                  {errorMessageObj.Title ? (
+                    <span className="error-message">{errorMessageObj.Title}</span>
+                  ) : (
+                    ""
+                  )}
+                </div>
               </div>
-            </div>
-            <div className="ms-Grid-col ms-sm12 ms-md12 ms-lg12 ms-xl6 ms-xxl6 ms-xxxl6">
-              <div className="form-group">
-                <TextField label="Vendor Heading" placeholder="Enter vendor heading" title="Vendor_Heading" id="Vendor_Heading" onChange={(e: any) => handleFieldChange(e)} required value={vendorContactsFormData.Vendor_Heading} />
-                {errorMessageObj.Vendor_Heading ? (
-                  <span className="error-message">{errorMessageObj.Vendor_Heading}</span>
-                ) : (
-                  ""
-                )}
+              <div className="ms-Grid-col ms-sm12 ms-md12 ms-lg12 ms-xl6 ms-xxl6 ms-xxxl6">
+                <div className="form-group">
+                  <TextField label="Vendor Heading" placeholder="Enter vendor heading" title="Vendor_Heading" id="Vendor_Heading" onChange={(e: any) => handleFieldChange(e)} required value={vendorContactsFormData.Vendor_Heading} />
+                  {errorMessageObj.Vendor_Heading ? (
+                    <span className="error-message">{errorMessageObj.Vendor_Heading}</span>
+                  ) : (
+                    ""
+                  )}
+                </div>
               </div>
-            </div>
-            <div className="ms-Grid-col ms-sm12 ms-md12 ms-lg12 ms-xl6 ms-xxl6 ms-xxxl6">
-              <div className="form-group">
-                <TextField label="Vendor Name" placeholder="Enter vendor name" title="Vendor_Name" id="Vendor_Name" onChange={(e: any) => handleFieldChange(e)} required value={vendorContactsFormData.Vendor_Name} />
-                {errorMessageObj.Vendor_Name ? (
-                  <span className="error-message">{errorMessageObj.Vendor_Name}</span>
-                ) : (
-                  ""
-                )}
+              <div className="ms-Grid-col ms-sm12 ms-md12 ms-lg12 ms-xl6 ms-xxl6 ms-xxxl6">
+                <div className="form-group">
+                  <TextField label="Vendor Name" placeholder="Enter vendor name" title="Vendor_Name" id="Vendor_Name" onChange={(e: any) => handleFieldChange(e)} required value={vendorContactsFormData.Vendor_Name} />
+                  {errorMessageObj.Vendor_Name ? (
+                    <span className="error-message">{errorMessageObj.Vendor_Name}</span>
+                  ) : (
+                    ""
+                  )}
+                </div>
               </div>
-            </div>
-            <div className="ms-Grid-col ms-sm12 ms-md12 ms-lg12 ms-xl6 ms-xxl6 ms-xxxl6">
-              <div className="form-group">
-                <TextField label="Vendor Number" placeholder="Enter vendor number" title="Vendor_Number" id="Vendor_Number" maxLength={10} onChange={(e: any) => handleFieldChange(e)} required value={vendorContactsFormData.Vendor_Number} />
-                {errorMessageObj.Vendor_Number ? (
-                  <span className="error-message">{errorMessageObj.Vendor_Number}</span>
-                ) : (
-                  ""
-                )}
+              <div className="ms-Grid-col ms-sm12 ms-md12 ms-lg12 ms-xl6 ms-xxl6 ms-xxxl6">
+                <div className="form-group">
+                  <TextField label="Vendor Number" placeholder="Enter vendor number" title="Vendor_Number" id="Vendor_Number" maxLength={10} onChange={(e: any) => handleFieldChange(e)} required value={vendorContactsFormData.Vendor_Number} />
+                  {errorMessageObj.Vendor_Number ? (
+                    <span className="error-message">{errorMessageObj.Vendor_Number}</span>
+                  ) : (
+                    ""
+                  )}
+                </div>
               </div>
-            </div>
-            <div className="ms-Grid-col ms-sm12 ms-md12 ms-lg12 ms-xl12 ms-xxl12 ms-xxxl12">
-              <div className="form-group">
-                <TextField label="Vendor Email" placeholder="Enter vendor email" title="Vendor_Email" id="Vendor_Email" onChange={(e: any) => handleFieldChange(e)} required value={vendorContactsFormData.Vendor_Email} />
-                {errorMessageObj.Vendor_Email ? (
-                  <span className="error-message">{errorMessageObj.Vendor_Email}</span>
-                ) : (
-                  ""
-                )}
+              <div className="ms-Grid-col ms-sm12 ms-md12 ms-lg12 ms-xl12 ms-xxl12 ms-xxxl12">
+                <div className="form-group">
+                  <TextField label="Vendor Email" placeholder="Enter vendor email" title="Vendor_Email" id="Vendor_Email" onChange={(e: any) => handleFieldChange(e)} required value={vendorContactsFormData.Vendor_Email} />
+                  {errorMessageObj.Vendor_Email ? (
+                    <span className="error-message">{errorMessageObj.Vendor_Email}</span>
+                  ) : (
+                    ""
+                  )}
+                </div>
               </div>
-            </div>
-            {/* <div className="ms-Grid-col ms-sm12 ms-md12 ms-lg12 ms-xl12 ms-xxl12 ms-xxxl12">
-              <div className="form-group">
-                <label>Vendor Image</label>
-                <input type="file" title="Vendor_Image" id="Vendor_Image" onChange={(e: any) => handleImageFieldChange(e)} required />
-              </div>
-            </div> */}
-            <div className="ms-Grid-col ms-sm12 ms-md12 ms-lg12 ms-xl12 ms-xxl12 ms-xxxl12">
-              <div className="form-group">
-                <Label>Vendor Image</Label>
-                <ImageUploader onFileAdded={(img) => getImageFileObject(img)} onFileRemoved={(img) => runAfterImageDelete(img)} />
-                {errorMessageObj.Upload_Image ? (
-                  <span className="error-message">{errorMessageObj.Upload_Image}</span>
-                ) : (
-                  ""
-                )}
+              <div className="ms-Grid-col ms-sm12 ms-md12 ms-lg12 ms-xl12 ms-xxl12 ms-xxxl12">
+                <div className="form-group">
+                  <Label>Vendor Image</Label>
+                  <ImageUploader onFileAdded={(img) => getImageFileObject(img)} onFileRemoved={(img) => runAfterImageDelete(img)} />
+                  {errorMessageObj.Upload_Image ? (
+                    <span className="error-message">{errorMessageObj.Upload_Image}</span>
+                  ) : (
+                    ""
+                  )}
+                </div>
               </div>
             </div>
           </div>
@@ -125,38 +122,6 @@ const AddNewVendorForm: React.FunctionComponent<IAddNewVendorFormProps> = (props
     /* Phone with Email Validation Start */
     phoneWithEmailValidation(event, adminFormDataCopy);
     /* Phone with Email Validation End */
-    
-    // isErrorMessageObj((prevState: any) => ({
-    //   ...prevState,
-    //   [event.target.id]: event.target.value === "" ? `Please enter your ${event.target.id.toLowerCase()}` : "",
-    // }));
-
-    // if(event.target.id == "Title"){
-    //   isErrorMessageObj((prevState: any) => ({
-    //       ...prevState,
-    //       [event.target.id]: event.target.value === "" ? `Please enter your title` : "",
-    //     }));
-    // }else if(event.target.id == "Vendor_Heading"){
-    //   isErrorMessageObj((prevState: any) => ({
-    //     ...prevState,
-    //     [event.target.id]: event.target.value === "" ? `Please enter your vendor heading` : "",
-    //   }));
-    // }else if(event.target.id == "Vendor_Name"){
-    //   isErrorMessageObj((prevState: any) => ({
-    //     ...prevState,
-    //     [event.target.id]: event.target.value === "" ? `Please enter your vendor name` : "",
-    //   }));
-    // } else if(event.target.id == "Vendor_Number"){
-    //   isErrorMessageObj((prevState: any) => ({
-    //     ...prevState,
-    //     [event.target.id]: event.target.value === "" ? `Please enter your vendor number` : "",
-    //   }));
-    // } else if(event.target.id == "Vendor_Email"){
-    //   isErrorMessageObj((prevState: any) => ({
-    //     ...prevState,
-    //     [event.target.id]: event.target.value === "" ? `Please enter your vendor email` : "",
-    //   }));
-    // }
     
     setVendorContactsFormData(adminFormDataCopy);
   }
@@ -183,7 +148,6 @@ const AddNewVendorForm: React.FunctionComponent<IAddNewVendorFormProps> = (props
     else if (event.target.id === "Vendor_Number") {
       var valuePhoneNumber = vendorDetailFormsDataCopy["Vendor_Number"].replace(/[^0-9]/g, "");
       vendorDetailFormsDataCopy["Vendor_Number"] = valuePhoneNumber;
-
       if (valuePhoneNumber.length !== 10) {
         isErrorMessageObj((prevState: any) => ({
           ...prevState,
@@ -196,7 +160,6 @@ const AddNewVendorForm: React.FunctionComponent<IAddNewVendorFormProps> = (props
     else if (event.target.id === "Vendor_Email") {
       const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
       const isValidEmail = emailPattern.test(event.target.value);
-
       if (!isValidEmail) {
         isErrorMessageObj((prevState: any) => ({
           ...prevState,
@@ -209,12 +172,6 @@ const AddNewVendorForm: React.FunctionComponent<IAddNewVendorFormProps> = (props
         }));
       }
     }
-  }
-
-  function handleImageFieldChange(event: any){
-    const adminFormDataCopy = clone(vendorContactsFormData);
-    adminFormDataCopy[event.target.id] = event.target.files[0];
-    setVendorContactsFormData(adminFormDataCopy);
   }
 
   /* Admin Form Submitted - Store Data in SharePoint Site Start */
@@ -276,6 +233,7 @@ const AddNewVendorForm: React.FunctionComponent<IAddNewVendorFormProps> = (props
       CV_Vendor_Name: vendorContactsFormData.Vendor_Name,
       CV_Vendor_Number: vendorContactsFormData.Vendor_Number,
       CV_Vendor_Email: vendorContactsFormData.Vendor_Email,
+      // List Page URL Pass, Get in image from Site Assets/dynamic id folder
       CV_Vendor_Image: JSON.stringify({
         type: vendorContactsFormData.Upload_Image.type,
         serverRelativeUrl: siteUrl + '/SiteAssets/Lists/' + assetsListsID + '/' + vendorContactsFormData.Upload_Image.name,
@@ -296,7 +254,7 @@ const AddNewVendorForm: React.FunctionComponent<IAddNewVendorFormProps> = (props
   }
   /* Add Data into List Page End */
   
-  /* Add Image in SharePoint - Site Assets Folder Start */
+  /* Add Image in SharePoint - Site Assets Folder Dynamic ID Generate Store Image Start */
   async function _addImagesItems(assetsListsID: any): Promise<any> {
     return new Promise((resolve, reject) => {
       PnpSpCommonServices._addImage(sp, "SiteAssets/Lists/" + assetsListsID, vendorContactsFormData.Upload_Image).then(
@@ -311,9 +269,9 @@ const AddNewVendorForm: React.FunctionComponent<IAddNewVendorFormProps> = (props
       )
     })
   }
-  /* Add Image in SharePoint - Site Assets Folder End */
+  /* Add Image in SharePoint - Site Assets Folder Dynamic ID Generate Store Image End */
 
-  /* Submit Button Click - Clear Form Data Start */
+  /* Clear Form Data Start */
   function _onclearFormData(){
     let vendorContactsFormObject = clone(vendorContactsFormData);
     vendorContactsFormObject.Title = "",
@@ -326,17 +284,19 @@ const AddNewVendorForm: React.FunctionComponent<IAddNewVendorFormProps> = (props
     const myInput = document.getElementById("file_uploader") as HTMLInputElement;
     myInput.value = "";
   }
-  /* Submit Button Click - Clear Form Data End */
+  /* Clear Form Data End */
 
-  /* Cancel Button Click Close Panel & Submit Button Click Last Call This Function Start */
+  /* Cancel Button Click Close Panel Start */
   function adminFormPanelClose(){
     props._isAdminFormPanelOpen();
   }
-  /* Cancel Button Click Close Panel & Submit Button Click Last Call This Function End */
+  /* Cancel Button Click Close Panel End */
 
+  /* Submit Button Click Close Panel Start */
   function adminFormPanelSubmit(){
     props._isDataSubmited();
   }
+  /* Submit Button Click Close Panel End */
 
 };
 

@@ -330,7 +330,7 @@ const VendorContactDetails: React.FunctionComponent<IVendorContactDetailsProps> 
 
   async function _getVendorDetails(): Promise<any> {
     return new Promise((resolve, reject) => {
-      PnpSpCommonServices._getListItemsWithExpandStringWithFiltersAndOrderByWithTop(sp, "Vendor Details", "", "", "", "Id", false, 4999).then(
+      PnpSpCommonServices._getListItemsWithExpandStringWithFiltersAndOrderByWithTop(sp, "Vendor Details", "", "", "", "Title", true, 4999).then(
         (response) => {
           resolve(response);
         },
@@ -370,7 +370,8 @@ const VendorContactDetails: React.FunctionComponent<IVendorContactDetailsProps> 
           setDataNotFound(false);
           setHideSection(false);
         }
-        var orderByData = props.alasql("SELECT * FROM ? ORDER BY Title ASC", [response]);
+        // var orderByData = props.alasql("SELECT * FROM ? ORDER BY Title ASC", [response]);
+        var orderByData = response;
         setDefaultData(orderByData);
         setDefaultDataCopy(orderByData);
         _getPage(1, orderByData);
@@ -379,7 +380,6 @@ const VendorContactDetails: React.FunctionComponent<IVendorContactDetailsProps> 
       });
     }, 1000);
   }
-
 };
 
 export default VendorContactDetails;
