@@ -63,7 +63,7 @@ export default class CvVendorContactsDetails extends React.Component<ICvVendorCo
             this.setState({ visibleLoader: false, visibleItem: true });
           });
         } else {
-          console.log("List is available");
+          // console.log("List is available");
           //end loader here
           this.setState({ visibleLoader: false ,visibleItem: true});
         }
@@ -75,7 +75,7 @@ export default class CvVendorContactsDetails extends React.Component<ICvVendorCo
     }
     else {//current user not admin then check is site owner or not?
       PnpSpCommonServices._checkLoginUserIsOwnerOrNot(this.props.context, this.props.context.pageContext.web.title + " Owners", this.props.context.pageContext.user.email).then((response) => {
-        console.log(response);
+        // console.log(response);
         if (response.status == 404) {//current user is not available in owner group
           this.setState({ isCurrentUserSiteAdminOrOwner: false });
         }
@@ -147,7 +147,7 @@ export default class CvVendorContactsDetails extends React.Component<ICvVendorCo
     let siteUrl = this.props.context.pageContext.legacyPageContext.webAbsoluteUrl;
     let listId = "";
 
-    console.log("Site URL Print Data =>", siteUrl);
+    // console.log("Site URL Print Data =>", siteUrl);
     // let listId = "";
     PnpSpCommonServices._ensureSiteAssetsLibraryexist(this.sp).then((response) => {
       return PnpSpCommonServices._getFolderByPath(this.props.context, "SiteAssets/Lists");

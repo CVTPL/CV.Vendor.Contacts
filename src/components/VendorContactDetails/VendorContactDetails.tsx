@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { IVendorContactDetailsProps } from './IVendorContactDetailsProps';
-import { Panel, PrimaryButton, TextField, TooltipHost } from 'office-ui-fabric-react';
+import { Panel, PrimaryButton, SearchBox, TextField, TooltipHost } from 'office-ui-fabric-react';
 import PnpSpCommonServices from '../../services/PnpSpCommonServices';
 import { spfi, SPFx } from "@pnp/sp";
 import { Pagination } from "@pnp/spfx-controls-react/lib/pagination";
@@ -148,7 +148,7 @@ const VendorContactDetails: React.FunctionComponent<IVendorContactDetailsProps> 
     _initialFunction();
     // Clean up function
     return () => {
-      console.log("Sorry not working code!");
+      // console.log("Sorry not working code!");
     };
   }, []);
 
@@ -159,7 +159,8 @@ const VendorContactDetails: React.FunctionComponent<IVendorContactDetailsProps> 
           <div className="search-with-data">
             <div className={"add-edit-vendor-content-box" + hideSection ? "search-with-button" : ""}>
               {hideSection == true ?
-                <TextField placeholder="Search to filter data" onChange={filterData} value={searchString} />
+                <SearchBox placeholder="Search to filter data" onSearch={filterData} value={searchString} onClear={(ev?: any) => _onclearSearch()} />
+                // <TextField placeholder="Search to filter data" onChange={filterData} value={searchString} />
                 : ""}
               {props.isAdmin ?
                 <div className="btn-container btn-center">
@@ -175,7 +176,7 @@ const VendorContactDetails: React.FunctionComponent<IVendorContactDetailsProps> 
                   const imgJson = JSON.parse(item.CV_Vendor_Image);
                   return (
                     <>
-                      <li className="vendor-card-list-item" onClick={(e) => parentComponent("parent", e)}>
+                      <li className="vendor-card-list-item">
                         <div className="card-container vendor-card-container">
                           <div className="card">
                             <div className="card-header">
@@ -186,7 +187,7 @@ const VendorContactDetails: React.FunctionComponent<IVendorContactDetailsProps> 
                             <div className="card-body">
                               <TooltipHost className="tooltip-container" tooltipProps={{ onRenderContent: () => onVendorTitleRenderContent(item.Title) }} calloutProps={calloutProps}>
                                 <div className="clamp-text">
-                                  <h2 onClick={(e) => parentComponent("child", e)}>{item.Title}</h2>
+                                  <h2>{item.Title}</h2>
                                 </div>
                               </TooltipHost>
                               <div className="detail-card">
@@ -286,15 +287,26 @@ const VendorContactDetails: React.FunctionComponent<IVendorContactDetailsProps> 
 
   function filterData(event: any) {
     let filterItems = filterItem;
-    if (event.target.value != "") {
-      filterItems["Search"] = event.target.value;
+    if (event != "") {
+      filterItems["Search"] = event;
     } else {
       delete filterItems["Search"];
     }
     setFilterItem(filterItems); // Filter Data /
-    setSearchString(event.target.value); // Search String /
+    setSearchString(event); // Search String /
     _getFilterData(); // filter Function /
   }
+
+    /**
+   * Search clear
+   */
+    function _onclearSearch() {
+      let filterItems = filterItem;
+      delete filterItems["Search"];
+      setFilterItem(filterItems);
+      setSearchString("");
+      _getFilterData();
+    }
 
   function _getPage(page: number, responseItems: any) {
     /* Pagination with Data Relative Code Start */
@@ -317,15 +329,6 @@ const VendorContactDetails: React.FunctionComponent<IVendorContactDetailsProps> 
     const endIndex = Math.min(page * 8, pageCount);
     setStartEndIndexPagination([{ startIndex, endIndex }]);
     /* Pagination Left Part Calculate Relative Code End */
-  }
-
-  function parentComponent(element: any, event: any) {
-    if (element === "parent") {
-      console.log("My name is Parent");
-    } else {
-      console.log("My name is Child");
-      event.stopPropagation();
-    }
   }
 
   async function _getVendorDetails(): Promise<any> {

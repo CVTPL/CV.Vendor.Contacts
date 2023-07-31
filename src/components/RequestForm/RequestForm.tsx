@@ -168,12 +168,26 @@ const RequestForm: React.FunctionComponent<IRequestFormProps> = (props) => {
 
     if (Object.keys(errors).length === 0) {
       setEmail().then((response) => {
-        alert("Message Send !");
+        // alert("Message Send !");
         isSubmittedForm(true);
+        setTimeout(() => {
+          isSubmittedForm(false);
+        }, 1500);
+        clearForm()
       });
     }
   }
   /* Submit Button Click Check Error Message & Hide/Show Thank You Message Relative Code End */
+
+   // Clear Form
+   function clearForm() {
+    var vendorDetailFormsObject = vendorDetailFormsData;
+    vendorDetailFormsObject.Name = "",
+    vendorDetailFormsObject.Number = "",
+    vendorDetailFormsObject.Email = "",
+    vendorDetailFormsObject.Description = "",
+    vendorDetailFormsObject(vendorDetailFormsObject);
+  }
 
   /* HR Send Email Request Relative Code Start */
   async function setEmail(): Promise<any> {
@@ -182,7 +196,7 @@ const RequestForm: React.FunctionComponent<IRequestFormProps> = (props) => {
       //CC: ["user2@site.com", "user3@site.com"],
       //BCC: ["user4@site.com", "user5@site.com"],
       Subject: "This email is about...",
-      Body: "Hi, HR <b>I need to Plumber</b>",
+      Body: vendorDetailFormsData && vendorDetailFormsData.Description,
       AdditionalHeaders: {
         "content-type": "text/html",
       },

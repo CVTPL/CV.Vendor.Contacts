@@ -145,7 +145,7 @@ ul {
       flex-direction: column;
       justify-content: space-between;
       .search-with-data{
-        .ms-TextField{
+        .ms-SearchBox{
           margin-bottom: 80px;
         }
       }
@@ -366,7 +366,32 @@ ul {
   }
 }
 
-/* Text Field Relative Style CSS Start */
+/* Text Field & SearchBox Relative Style CSS Start */
+.ms-SearchBox{
+  width: 100%;
+  height: 40px;
+  align-items: center;
+  border-radius: 6px;
+  border: 1px solid $secondary-8;
+  &::after{
+    display: none;
+  }
+  &:hover{
+    border-color: $secondary-8;
+  }
+  .ms-SearchBox-iconContainer {
+    .ms-SearchBox-icon {
+      color: $secondary-8;
+    }
+  }
+  .ms-SearchBox-field{
+    align-items: center;
+    height: auto;
+    &::placeholder{
+      @include text-style($fs-12, 30px, $font-regular, $secondary-9);
+    }
+  }
+}
 .ms-TextField{
   .ms-TextField-wrapper{
     .ms-TextField-fieldGroup{
@@ -397,7 +422,7 @@ ul {
     }
   }
 }
-/* Text Field Relative Style CSS End */
+/* Text Field & SearchBox Relative Style CSS End */
 
 /* Button Relative Style CSS Start */
 .btn-container{
@@ -767,8 +792,8 @@ ul {
 
 .uploader__container{
   .uploader__placeholder{
-    min-width: 120px;
-    min-height: 120px;
+    min-width: 150px;
+    min-height: 150px;
     background-color: $primary-2;
     border: 1px solid $secondary-12;
     border-radius: 6px;

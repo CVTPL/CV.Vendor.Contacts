@@ -16,17 +16,24 @@ const AddNewVendorForm: React.FunctionComponent<IAddNewVendorFormProps> = (props
 
   /* Drag & Drop File Relative Code Start */
   function getImageFileObject(imageFile: any) {
-    const adminFormDataCopy = clone(vendorContactsFormData);
-    adminFormDataCopy["Upload_Image"] = imageFile.file;
-    setVendorContactsFormData(adminFormDataCopy);
-    var errorMessageObj1 = errorMessageObj;
-    if(errorMessageObj1 && errorMessageObj1.Upload_Image.length > 0){
-      errorMessageObj1.Upload_Image = "";
+    if(imageFile.file.size < 1000000){
+      const adminFormDataCopy = clone(vendorContactsFormData);
+      adminFormDataCopy["Upload_Image"] = imageFile.file;
+      setVendorContactsFormData(adminFormDataCopy);
+      // var errorMessageObj1 = errorMessageObj;
+      // if(errorMessageObj1 && errorMessageObj1.Upload_Image.length > 0){
+      //   errorMessageObj1.Upload_Image = "";
+      // }
+      // isErrorMessageObj(errorMessageObj1);
     }
-    isErrorMessageObj(errorMessageObj1);
+    else{
+      var errorMessageObj1 = errorMessageObj;
+      errorMessageObj1.Upload_Image = "Your file is too large, maximum allowed size is 1 MB";
+      isErrorMessageObj(errorMessageObj1);
+    }
   }
   function runAfterImageDelete(file: any) {
-    console.log({ file });
+    // console.log({ file });
   }
   /* Drag & Drop File Relative Code Start */
 
@@ -94,7 +101,7 @@ const AddNewVendorForm: React.FunctionComponent<IAddNewVendorFormProps> = (props
               <div className="ms-Grid-col ms-sm12 ms-md12 ms-lg12 ms-xl12 ms-xxl12 ms-xxxl12">
                 <div className="form-group">
                   <Label>Vendor Image</Label>
-                  <ImageUploader onFileAdded={(img) => getImageFileObject(img)} onFileRemoved={(img) => runAfterImageDelete(img)} />
+                  <ImageUploader onFileAdded={(img) => getImageFileObject(img)} onFileRemoved={(img) => runAfterImageDelete(img)}/>
                   {errorMessageObj.Upload_Image ? (
                     <span className="error-message">{errorMessageObj.Upload_Image}</span>
                   ) : (
@@ -207,7 +214,7 @@ const AddNewVendorForm: React.FunctionComponent<IAddNewVendorFormProps> = (props
       PnpSpCommonServices._getSiteListByName(props.context,"Vendor Details").then(async (response)=>{
         return await response.json();
       }).then((response) => {
-        console.log(response.d.Id);
+        // console.log(response.d.Id);
         assetsListsID = response.d.Id;
       }).then((response) => {
         _addListItems(assetsListsID);
@@ -243,7 +250,7 @@ const AddNewVendorForm: React.FunctionComponent<IAddNewVendorFormProps> = (props
       PnpSpCommonServices._addDataIntoList(sp, "Vendor Details", obj).then(
         (response) => {
           resolve(response);
-          console.log("Data Here in main => ", response);
+          // console.log("Data Here in main => ", response);
         },
         (error: any) => {
           reject(error);
@@ -260,7 +267,7 @@ const AddNewVendorForm: React.FunctionComponent<IAddNewVendorFormProps> = (props
       PnpSpCommonServices._addImage(sp, "SiteAssets/Lists/" + assetsListsID, vendorContactsFormData.Upload_Image).then(
         (response) => {
           resolve(response);
-          console.log("Data Here in main => ", response);
+          // console.log("Data Here in main => ", response);
         },
         (error: any) => {
           reject(error);
