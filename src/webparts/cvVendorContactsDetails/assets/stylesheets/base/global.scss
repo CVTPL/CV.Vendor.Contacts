@@ -790,6 +790,44 @@ ul {
   }
 }
 
+/* Image File Uploader Style Relative Code Start */
+.fileUploader{
+  .fileContainer{
+    padding: 15px 0px 0px;
+    margin: 0px auto 10px;
+    box-shadow: $box-shadow-2;
+    .chooseFileButton{
+      margin: 15px 0px 20px;
+    }
+    .uploadPicturesWrapper{
+      > div{
+        .uploadPictureContainer{
+          width: 140px;
+          height: 140px;
+          padding: 0px;
+          margin: 20px 15px;
+          border: none;
+          border-radius: 6px;
+          background: $transparent;
+          .deleteImage{
+            top: -15px;
+            right: -15px;
+            font-size: $fs-20;
+            line-height: normal;
+            background: $primary-3;
+          }
+          .uploadPicture{
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center center;
+            border-radius: 6px;
+          }
+        }
+      }
+    }
+  }
+}
 .uploader__container{
   .uploader__placeholder{
     min-width: 150px;
@@ -828,6 +866,7 @@ ul {
     }
   }
 }
+/* Image File Uploader Style Relative Code End */
 
 /* Sharepoint Select Column Card issue SCSS Customize Start */
 .CanvasZone{

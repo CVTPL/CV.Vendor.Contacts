@@ -14,32 +14,9 @@ const AddNewVendorForm: React.FunctionComponent<IAddNewVendorFormProps> = (props
   const sp = spfi().using(SPFx(props.context));
   /* Pnp Sp Relative Code End */
 
-  /* Drag & Drop File Relative Code Start */
-  function getImageFileObject(imageFile: any) {
-    if(imageFile.file.size < 1000000){
-      const adminFormDataCopy = clone(vendorContactsFormData);
-      adminFormDataCopy["Upload_Image"] = imageFile.file;
-      setVendorContactsFormData(adminFormDataCopy);
-      // var errorMessageObj1 = errorMessageObj;
-      // if(errorMessageObj1 && errorMessageObj1.Upload_Image.length > 0){
-      //   errorMessageObj1.Upload_Image = "";
-      // }
-      // isErrorMessageObj(errorMessageObj1);
-    }
-    else{
-      var errorMessageObj1 = errorMessageObj;
-      errorMessageObj1.Upload_Image = "Your file is too large, maximum allowed size is 1 MB";
-      isErrorMessageObj(errorMessageObj1);
-    }
-  }
-  function runAfterImageDelete(file: any) {
-    // console.log({ file });
-  }
-  /* Drag & Drop File Relative Code Start */
-
   /* Admin Form Store Data Relative Declaration Variable with Error Message Start */
-  const [vendorContactsFormData, setVendorContactsFormData]: any = React.useState({Title:"", Vendor_Heading: "", Vendor_Name: "", Vendor_Number: "", Vendor_Email: "", Upload_Image: ""});
-  const [errorMessageObj, isErrorMessageObj]: any = React.useState({Title: "", Vendor_Heading: "", Vendor_Name: "", Vendor_Number: "", Vendor_Email: "", Upload_Image: ""});
+  const [vendorContactsFormData, setVendorContactsFormData]: any = React.useState({ Title: "", Vendor_Heading: "", Vendor_Name: "", Vendor_Number: "", Vendor_Email: "", Upload_Image: "" });
+  const [errorMessageObj, isErrorMessageObj]: any = React.useState({ Title: "", Vendor_Heading: "", Vendor_Name: "", Vendor_Number: "", Vendor_Email: "", Upload_Image: "" });
   /* Admin Form Store Data Relative Declaration Variable with Error Message End */
 
   return (
@@ -100,10 +77,10 @@ const AddNewVendorForm: React.FunctionComponent<IAddNewVendorFormProps> = (props
               </div>
               <div className="ms-Grid-col ms-sm12 ms-md12 ms-lg12 ms-xl12 ms-xxl12 ms-xxxl12">
                 <div className="form-group">
-                  <Label>Vendor Image</Label>
+                  <Label required>Vendor Image</Label>
                   <ImageUploader withIcon={true} buttonText='Product Images (Image should be less then 1MB)'
-                  onChange={onDrop} imgExtension={['.jpg', '.gif', '.png', '.svg', '.jpeg', '.webp', '.jfif']}
-                  maxFileSize={1000000} withPreview={true} withLabel={false} singleImage={true} />
+                    onChange={onDrop} imgExtension={['.jpg', '.gif', '.png', '.svg', '.jpeg', '.webp', '.jfif']}
+                    maxFileSize={1000000} withPreview={true} withLabel={false} singleImage={true} />
                   {/* <ImageUploader onFileAdded={(img) => getImageFileObject(img)} onFileRemoved={(img) => runAfterImageDelete(img)}/> */}
                   {errorMessageObj.Upload_Image ? (
                     <span className="error-message">{errorMessageObj.Upload_Image}</span>
@@ -129,7 +106,10 @@ const AddNewVendorForm: React.FunctionComponent<IAddNewVendorFormProps> = (props
     // console.log("Picture Files", pictureFiles);
     // console.log("Picture Data URLs", pictureDataURLs);
     const adminFormDataCopy = clone(vendorContactsFormData);
-    adminFormDataCopy["Upload_Image"] = pictureFiles[0];
+    adminFormDataCopy["Upload_Image"] = pictureFiles && pictureFiles[0] ? pictureFiles[0] : "";
+    if (pictureFiles.length > 0) {
+      isErrorMessageObj({ ...errorMessageObj, Upload_Image: "" });
+    }
     setVendorContactsFormData(adminFormDataCopy);
   };
 
@@ -140,24 +120,24 @@ const AddNewVendorForm: React.FunctionComponent<IAddNewVendorFormProps> = (props
     /* Phone with Email Validation Start */
     phoneWithEmailValidation(event, adminFormDataCopy);
     /* Phone with Email Validation End */
-    
+
     setVendorContactsFormData(adminFormDataCopy);
   }
 
   function phoneWithEmailValidation(event: any, vendorDetailFormsDataCopy: any) {
-    if(event.target.id == "Title"){
+    if (event.target.id == "Title") {
       isErrorMessageObj((prevState: any) => ({
-          ...prevState,
-          [event.target.id]: event.target.value === "" ? `Please enter your title` : "",
-        }));
+        ...prevState,
+        [event.target.id]: event.target.value === "" ? `Please enter your title` : "",
+      }));
     }
-    else if(event.target.id == "Vendor_Heading"){
+    else if (event.target.id == "Vendor_Heading") {
       isErrorMessageObj((prevState: any) => ({
         ...prevState,
         [event.target.id]: event.target.value === "" ? `Please enter your vendor heading` : "",
       }));
     }
-    else if(event.target.id == "Vendor_Name"){
+    else if (event.target.id == "Vendor_Name") {
       isErrorMessageObj((prevState: any) => ({
         ...prevState,
         [event.target.id]: event.target.value === "" ? `Please enter your vendor name` : "",
@@ -172,9 +152,9 @@ const AddNewVendorForm: React.FunctionComponent<IAddNewVendorFormProps> = (props
           [event.target.id]: `Please enter a 10-digit phone number - (${valuePhoneNumber.length})`,
         }));
       } else {
-        isErrorMessageObj((prevState: any) => ({...prevState, [event.target.id]: ""}));
+        isErrorMessageObj((prevState: any) => ({ ...prevState, [event.target.id]: "" }));
       }
-    } 
+    }
     else if (event.target.id === "Vendor_Email") {
       const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
       const isValidEmail = emailPattern.test(event.target.value);
@@ -193,7 +173,7 @@ const AddNewVendorForm: React.FunctionComponent<IAddNewVendorFormProps> = (props
   }
 
   /* Admin Form Submitted - Store Data in SharePoint Site Start */
-  function adminFormSubmittedData(){
+  function adminFormSubmittedData() {
     const errors: any = {};
 
     // Check for errors
@@ -222,10 +202,9 @@ const AddNewVendorForm: React.FunctionComponent<IAddNewVendorFormProps> = (props
 
     if (Object.keys(errors).length === 0) {
       let assetsListsID = "";
-      PnpSpCommonServices._getSiteListByName(props.context,"Vendor Details").then(async (response)=>{
+      PnpSpCommonServices._getSiteListByName(props.context, "Vendor Details").then(async (response) => {
         return await response.json();
       }).then((response) => {
-        // console.log(response.d.Id);
         assetsListsID = response.d.Id;
       }).then((response) => {
         _addListItems(assetsListsID);
@@ -234,11 +213,10 @@ const AddNewVendorForm: React.FunctionComponent<IAddNewVendorFormProps> = (props
       }).then((response) => {
         _onclearFormData();
       }).then((response) => {
-        // adminFormPanelClose();
         adminFormPanelSubmit();
       })
     }
-    
+
   }
   /* Admin Form Submitted - Store Data in SharePoint Site End */
 
@@ -271,7 +249,7 @@ const AddNewVendorForm: React.FunctionComponent<IAddNewVendorFormProps> = (props
     })
   }
   /* Add Data into List Page End */
-  
+
   /* Add Image in SharePoint - Site Assets Folder Dynamic ID Generate Store Image Start */
   async function _addImagesItems(assetsListsID: any): Promise<any> {
     return new Promise((resolve, reject) => {
@@ -290,28 +268,26 @@ const AddNewVendorForm: React.FunctionComponent<IAddNewVendorFormProps> = (props
   /* Add Image in SharePoint - Site Assets Folder Dynamic ID Generate Store Image End */
 
   /* Clear Form Data Start */
-  function _onclearFormData(){
+  function _onclearFormData() {
     let vendorContactsFormObject = clone(vendorContactsFormData);
     vendorContactsFormObject.Title = "",
-    vendorContactsFormObject.Vendor_Heading = "",
-    vendorContactsFormObject.Vendor_Name = "",
-    vendorContactsFormObject.Vendor_Number = "",
-    vendorContactsFormObject.Vendor_Email = "",
-    vendorContactsFormObject.Upload_Image = "",
-    setVendorContactsFormData(vendorContactsFormObject);
-    const myInput = document.getElementById("file_uploader") as HTMLInputElement;
-    myInput.value = "";
+      vendorContactsFormObject.Vendor_Heading = "",
+      vendorContactsFormObject.Vendor_Name = "",
+      vendorContactsFormObject.Vendor_Number = "",
+      vendorContactsFormObject.Vendor_Email = "",
+      vendorContactsFormObject.Upload_Image = "",
+      setVendorContactsFormData(vendorContactsFormObject);
   }
   /* Clear Form Data End */
 
   /* Cancel Button Click Close Panel Start */
-  function adminFormPanelClose(){
+  function adminFormPanelClose() {
     props._isAdminFormPanelOpen();
   }
   /* Cancel Button Click Close Panel End */
 
   /* Submit Button Click Close Panel Start */
-  function adminFormPanelSubmit(){
+  function adminFormPanelSubmit() {
     props._isDataSubmited();
   }
   /* Submit Button Click Close Panel End */
