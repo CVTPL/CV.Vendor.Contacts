@@ -4,8 +4,8 @@ import { IAddNewVendorFormProps } from "./IAddNewVendorFormProps";
 import { clone } from "@microsoft/sp-lodash-subset";
 import PnpSpCommonServices from "../../services/PnpSpCommonServices";
 import { spfi, SPFx } from "@pnp/sp";
-import ImageUploader from 'react-image-upload';
-import 'react-image-upload/dist/style.css';
+import ImageUploader from 'react-images-upload';
+import 'react-images-upload/index.css';
 import { Label } from '@fluentui/react/lib/Label';
 
 const AddNewVendorForm: React.FunctionComponent<IAddNewVendorFormProps> = (props) => {
@@ -101,7 +101,10 @@ const AddNewVendorForm: React.FunctionComponent<IAddNewVendorFormProps> = (props
               <div className="ms-Grid-col ms-sm12 ms-md12 ms-lg12 ms-xl12 ms-xxl12 ms-xxxl12">
                 <div className="form-group">
                   <Label>Vendor Image</Label>
-                  <ImageUploader onFileAdded={(img) => getImageFileObject(img)} onFileRemoved={(img) => runAfterImageDelete(img)}/>
+                  <ImageUploader withIcon={true} buttonText='Product Images (Image should be less then 1MB)'
+                  onChange={onDrop} imgExtension={['.jpg', '.gif', '.png', '.svg', '.jpeg', '.webp', '.jfif']}
+                  maxFileSize={1000000} withPreview={true} withLabel={false} singleImage={true} />
+                  {/* <ImageUploader onFileAdded={(img) => getImageFileObject(img)} onFileRemoved={(img) => runAfterImageDelete(img)}/> */}
                   {errorMessageObj.Upload_Image ? (
                     <span className="error-message">{errorMessageObj.Upload_Image}</span>
                   ) : (
@@ -121,6 +124,14 @@ const AddNewVendorForm: React.FunctionComponent<IAddNewVendorFormProps> = (props
       </div>
     </>
   );
+
+  function onDrop(pictureFiles: File[], pictureDataURLs: string[]) {
+    // console.log("Picture Files", pictureFiles);
+    // console.log("Picture Data URLs", pictureDataURLs);
+    const adminFormDataCopy = clone(vendorContactsFormData);
+    adminFormDataCopy["Upload_Image"] = pictureFiles[0];
+    setVendorContactsFormData(adminFormDataCopy);
+  };
 
   function handleFieldChange(event: any) {
     const adminFormDataCopy = clone(vendorContactsFormData);
