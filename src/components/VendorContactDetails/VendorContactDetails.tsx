@@ -6,7 +6,6 @@ import { spfi, SPFx } from "@pnp/sp";
 import { Pagination } from "@pnp/spfx-controls-react/lib/pagination";
 import { clone } from '@microsoft/sp-lodash-subset';
 import { getTheme, ITheme } from 'office-ui-fabric-react';
-import { RotatingLines } from 'react-loader-spinner';
 import AddNewVendorForm from '../AddNewVendorForm/AddNewVendorForm';
 import CommonLoader from '../CommonLoader/CommonLoader';
 
@@ -263,8 +262,7 @@ const VendorContactDetails: React.FunctionComponent<IVendorContactDetailsProps> 
       }
       <div hidden={!visibleLoader}>
         <div className="fixed-loader-child">
-          {/* <CommonLoader visibleLoader={visibleLoader} /> */}
-          <RotatingLines strokeColor={themeColor} strokeWidth="5" animationDuration="0.75" width="100" visible={visibleLoader} />
+          <CommonLoader visibleLoader={visibleLoader} />
         </div>
       </div>
       <Panel onRenderHeader={adminFormPanelHeader} isOpen={isAdminPanelFormOpen} className="panel-container admin-form-panel-container" onDismiss={() => setAdminPanelFormOpen(false)} closeButtonAriaLabel="Close">

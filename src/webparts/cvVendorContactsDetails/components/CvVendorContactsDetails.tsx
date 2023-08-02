@@ -7,6 +7,8 @@ import * as alasql from 'alasql';
 import PnpSpCommonServices from '../../../services/PnpSpCommonServices';
 import { spfi, SPFx } from "@pnp/sp";
 import CommonLoader from '../../../components/CommonLoader/CommonLoader';
+import { Placeholder } from '@pnp/spfx-controls-react';
+import { getTheme } from 'office-ui-fabric-react';
 
 export default class CvVendorContactsDetails extends React.Component<ICvVendorContactsDetailsProps, any, {}> {
   constructor(props: ICvVendorContactsDetailsProps) {
@@ -15,7 +17,7 @@ export default class CvVendorContactsDetails extends React.Component<ICvVendorCo
       alasql: alasql,
       isCurrentUserSiteAdminOrOwner: false,
       visibleLoader: false,
-      visibleItem: false
+      visibleItem: false,
     }
   }
   // CVVendorContactsSiteDesign
@@ -63,9 +65,8 @@ export default class CvVendorContactsDetails extends React.Component<ICvVendorCo
             this.setState({ visibleLoader: false, visibleItem: true });
           });
         } else {
-          // console.log("List is available");
           //end loader here
-          this.setState({ visibleLoader: false ,visibleItem: true});
+          this.setState({ visibleLoader: false, visibleItem: true });
         }
       })
     }
@@ -75,7 +76,6 @@ export default class CvVendorContactsDetails extends React.Component<ICvVendorCo
     }
     else {//current user not admin then check is site owner or not?
       PnpSpCommonServices._checkLoginUserIsOwnerOrNot(this.props.context, this.props.context.pageContext.web.title + " Owners", this.props.context.pageContext.user.email).then((response) => {
-        // console.log(response);
         if (response.status == 404) {//current user is not available in owner group
           this.setState({ isCurrentUserSiteAdminOrOwner: false });
         }
@@ -89,66 +89,83 @@ export default class CvVendorContactsDetails extends React.Component<ICvVendorCo
     return (
       <>
         <section className="vendor-contacts-details-container">
-          <div className="vendor-contacts-details-content-box">
-            <div className="ms-Grid">
-              <div className="ms-Grid-row">
-                <div className="ms-Grid-col ms-sm12 ms-md12 ms-lg12 ms-xl12 ms-xxl12 ms-xxxl12">
-                  <h1>{this.props.webpartTitle}</h1>
+          {this.props.hrEmail.length == 0 ?
+            <>
+              <div className="placeholder-configure-container">
+                <Placeholder iconName='Edit'
+                iconText='Configure your web part'
+                description='Details are not available in list for current year.'
+                buttonLabel='Configure'
+                onConfigure={this._onConfigure}
+                  theme={getTheme()} />
+              </div>
+            </>
+            :
+            <>
+              <div className="vendor-contacts-details-content-box">
+                <div className="ms-Grid">
+                  <div className="ms-Grid-row">
+                    <div className="ms-Grid-col ms-sm12 ms-md12 ms-lg12 ms-xl12 ms-xxl12 ms-xxxl12">
+                      <h1>{this.props.webpartTitle}</h1>
+                    </div>
+                  </div>
+                </div>
+                <div className="grid-column-wraping-issue">
+                  {this.state.isCurrentUserSiteAdminOrOwner ?
+                    <>
+                      {this.state.visibleItem ?
+                        <div className="admin-flow-container">
+                          <div className="ms-Grid">
+                            <div className="ms-Grid-row">
+                              <div className="ms-Grid-col ms-sm12 ms-md12 ms-lg12 ms-xl12 ms-xxl12 ms-xxxl12">
+                                <VendorContactDetails alasql={this.state.alasql} context={this.props.context} isAdmin={this.state.isCurrentUserSiteAdminOrOwner} />
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        : ""}
+                    </>
+                    :
+                    <>
+                      {this.state.visibleItem ?
+                        <>
+                          <div className="visitor-flow-container">
+                            <div className="ms-Grid">
+                              <div className="ms-Grid-row">
+                                <div className="ms-Grid-col ms-sm12 ms-md12 ms-lg12 ms-xl6 ms-xxl8 ms-xxxl8">
+                                  <VendorContactDetails alasql={this.state.alasql} context={this.props.context} isAdmin={this.state.isCurrentUserSiteAdminOrOwner} />
+                                </div>
+                                <div className="ms-Grid-col ms-sm12 ms-md12 ms-lg12 ms-xl6 ms-xxl4 ms-xxxl4">
+                                  <RequestForm context={this.props.context} hrEmail={this.props.hrEmail} />
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </> : ""}
+                    </>
+                  }
                 </div>
               </div>
-            </div>
-            <div className="grid-column-wraping-issue">
-              {this.state.isCurrentUserSiteAdminOrOwner ?
-                <>
-                  {this.state.visibleItem ?
-                    <div className="admin-flow-container">
-                      <div className="ms-Grid">
-                        <div className="ms-Grid-row">
-                          <div className="ms-Grid-col ms-sm12 ms-md12 ms-lg12 ms-xl12 ms-xxl12 ms-xxxl12">
-                            <VendorContactDetails alasql={this.state.alasql} context={this.props.context} isAdmin={this.state.isCurrentUserSiteAdminOrOwner} />
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    : ""}
-                </>
-                :
-                <>
-                  {this.state.visibleItem ?
-                    <>
-                      <div className="visitor-flow-container">
-                        <div className="ms-Grid">
-                          <div className="ms-Grid-row">
-                            <div className="ms-Grid-col ms-sm12 ms-md12 ms-lg12 ms-xl6 ms-xxl8 ms-xxxl8">
-                              <VendorContactDetails alasql={this.state.alasql} context={this.props.context} isAdmin={this.state.isCurrentUserSiteAdminOrOwner} />
-                            </div>
-                            <div className="ms-Grid-col ms-sm12 ms-md12 ms-lg12 ms-xl6 ms-xxl4 ms-xxxl4">
-                              <RequestForm context={this.props.context} hrEmail={this.props.hrEmail} />
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </> : ""}
-                </>
-              }
-            </div>
-          </div>
-          <div hidden={!this.state.visibleLoader}>
-            <div className="fixed-loader-child">
-              <CommonLoader visibleLoader={this.state.visibleLoader} />
-            </div>
-          </div>
+              <div hidden={!this.state.visibleLoader}>
+                <div className="fixed-loader-child">
+                  <CommonLoader visibleLoader={this.state.visibleLoader} />
+                </div>
+              </div>
+            </>
+          }
         </section>
       </>
     );
+  }
+
+  private _onConfigure = () => {
+    this.props.context.propertyPane.open();
   }
 
   private _commonFlowAfterSideDesignApply = async () => {
     let siteUrl = this.props.context.pageContext.legacyPageContext.webAbsoluteUrl;
     let listId = "";
 
-    // console.log("Site URL Print Data =>", siteUrl);
-    // let listId = "";
     PnpSpCommonServices._ensureSiteAssetsLibraryexist(this.sp).then((response) => {
       return PnpSpCommonServices._getFolderByPath(this.props.context, "SiteAssets/Lists");
     }).then((response) => {

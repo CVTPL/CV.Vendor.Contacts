@@ -103,8 +103,6 @@ const AddNewVendorForm: React.FunctionComponent<IAddNewVendorFormProps> = (props
   );
 
   function onDrop(pictureFiles: File[], pictureDataURLs: string[]) {
-    // console.log("Picture Files", pictureFiles);
-    // console.log("Picture Data URLs", pictureDataURLs);
     const adminFormDataCopy = clone(vendorContactsFormData);
     adminFormDataCopy["Upload_Image"] = pictureFiles && pictureFiles[0] ? pictureFiles[0] : "";
     if (pictureFiles.length > 0) {
@@ -239,7 +237,6 @@ const AddNewVendorForm: React.FunctionComponent<IAddNewVendorFormProps> = (props
       PnpSpCommonServices._addDataIntoList(sp, "Vendor Details", obj).then(
         (response) => {
           resolve(response);
-          // console.log("Data Here in main => ", response);
         },
         (error: any) => {
           reject(error);
@@ -256,7 +253,6 @@ const AddNewVendorForm: React.FunctionComponent<IAddNewVendorFormProps> = (props
       PnpSpCommonServices._addImage(sp, "SiteAssets/Lists/" + assetsListsID, vendorContactsFormData.Upload_Image).then(
         (response) => {
           resolve(response);
-          // console.log("Data Here in main => ", response);
         },
         (error: any) => {
           reject(error);

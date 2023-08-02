@@ -365,6 +365,47 @@ ul {
     }
   }
 }
+.placeholder-configure-container{
+  > div {
+    > div{
+      background: $primary-2;
+      border-radius: 10px;
+      > div{
+        &:nth-child(1){
+          > div{
+            i{
+              font-size: $fs-30;
+            }
+            span {
+              font-size: $fs-28;
+              line-height: 30px;
+              color: $secondary-5;
+              font-family: bold !important;
+            }
+          }
+        }
+        &:nth-child(2){
+          span{
+            font-size: $fs-18;
+            line-height: normal;
+            color: $secondary-5;
+            font-weight: normal !important;
+          }
+        }
+        &:nth-child(3){
+          .ms-Button{
+            &.ms-Button--primary{
+              background-color: $primary-1;
+              border-width: 1px;
+              border-style: solid;
+              border-color: $primary-1;
+            }
+          }
+        }
+      }
+    }
+  }
+}
 
 /* Text Field & SearchBox Relative Style CSS Start */
 .ms-SearchBox{
@@ -437,7 +478,9 @@ ul {
   }
 }
 .ms-Button{
-  @include text-style($fs-14, 18px, $font-regular, $primary-1);
+  font-size: $fs-14;
+  line-height: 18px;
+  font-family: $font-regular;
   font-weight: bold;
   &:not(:last-child){
     margin-right: 15px;
@@ -448,6 +491,7 @@ ul {
     background-color: $primary-2;
     border: 1px solid $primary-2;
     border-radius: 10px;
+    color: $primary-1;
     &:hover{
       color: $primary-1;
     }

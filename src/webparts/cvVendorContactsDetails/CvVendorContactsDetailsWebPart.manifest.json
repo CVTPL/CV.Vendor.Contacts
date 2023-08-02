@@ -24,7 +24,7 @@
     "properties": {
       "description": "CV Vendor Contacts Details",
       "webpartTitle": "CV Vendor Contacts",
-      "HREmail": "hrd@cidev.onmicrosoft.com"
+      "HREmail": ""
     }
   }]
 }

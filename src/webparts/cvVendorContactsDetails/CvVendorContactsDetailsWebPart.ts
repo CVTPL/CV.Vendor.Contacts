@@ -1,14 +1,9 @@
 import * as React from 'react';
 import * as ReactDom from 'react-dom';
 import { Version } from '@microsoft/sp-core-library';
-import {
-  IPropertyPaneConfiguration,
-  PropertyPaneButton,
-  PropertyPaneTextField
-} from '@microsoft/sp-property-pane';
+import { IPropertyPaneConfiguration, PropertyPaneTextField } from '@microsoft/sp-property-pane';
 import { BaseClientSideWebPart } from '@microsoft/sp-webpart-base';
 import { IReadonlyTheme } from '@microsoft/sp-component-base';
-
 import * as strings from 'CvVendorContactsDetailsWebPartStrings';
 import CvVendorContactsDetails from './components/CvVendorContactsDetails';
 import { ICvVendorContactsDetailsProps } from './components/ICvVendorContactsDetailsProps';
@@ -23,7 +18,6 @@ export default class CvVendorContactsDetailsWebPart extends BaseClientSideWebPar
 
   private _isDarkTheme: boolean = false;
   private _environmentMessage: string = '';
-
 
   public render(): void {
     const element: React.ReactElement<ICvVendorContactsDetailsProps> = React.createElement(
@@ -83,6 +77,10 @@ export default class CvVendorContactsDetailsWebPart extends BaseClientSideWebPar
     return Version.parse('1.0');
   }
 
+  protected get disableReactivePropertyChanges(): boolean{
+    return true;
+  }
+
   protected getPropertyPaneConfiguration(): IPropertyPaneConfiguration {
     return {
       pages: [
@@ -99,7 +97,6 @@ export default class CvVendorContactsDetailsWebPart extends BaseClientSideWebPar
                 }),
                 PropertyPaneTextField('HREmail', {
                   label: strings.HREmail,
-                  // onPropertyChange: this.onHRFieldChanged,
                   onGetErrorMessage: this.validateEmail
                 }),
               ]
@@ -108,12 +105,6 @@ export default class CvVendorContactsDetailsWebPart extends BaseClientSideWebPar
         }
       ]
     };
-  }
-
-  private onHRFieldChanged(propertyPath: string, newValue: any): void {
-    if (propertyPath === 'HREmail') {
-      // this.hrEmail = newValue;
-    }
   }
 
   private validateEmail(value: string): string {
@@ -127,4 +118,5 @@ export default class CvVendorContactsDetailsWebPart extends BaseClientSideWebPar
     }
     return '';
   }
+  
 }
