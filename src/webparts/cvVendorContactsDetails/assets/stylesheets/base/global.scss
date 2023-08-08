@@ -690,7 +690,7 @@ ul {
           display: flex;
           flex-direction: column;
           justify-content: flex-start;
-          height: 100vh; // This line is Commnet
+          // height: 100vh; // This line is Commnet
           .ms-Panel-commands {
             margin-top: 0px;
             .ms-Panel-navigation {
@@ -735,20 +735,21 @@ ul {
             }
           }
           .ms-Panel-contentInner {
+            position: relative;
             display: flex;
-            flex-direction: column;
+            // flex-direction: column;
             flex-grow: 1;
-            overflow-y: hidden;
+            // overflow-y: hidden;
             .ms-Panel-scrollableContent {
-              height: calc(100% - 70px);
+              // height: calc(100% - 70px);
               display: flex;
               flex-direction: column;
               flex-grow: 1;
-              height: 100%; // This line is Commnet
-              flex: 1; // This line is Commnet
-              overflow: unset; // This line is Commnet
+              // height: 100%; // This line is Commnet
+              // flex: 1; // This line is Commnet
+              // overflow: unset; // This line is Commnet
               .ms-Panel-content {
-                height: 100%; // This line is Commnet
+                // height: 100%; // This line is Commnet
                 display: flex;
                 flex-direction: column;
                 padding: 0px;
@@ -756,13 +757,19 @@ ul {
                   flex: 1;
                   // background-color: lightseagreen;
                   padding: 20px 30px;
-                  overflow-y: auto;
+                  // overflow-y: auto;
+                  margin-bottom: 65px;
                   @include scroll-style();
                   @include media-breakpoint-down(xxs) {
                     padding: 10px;
                   }
                 }
                 .panel-footer {
+                  position: absolute;
+                  left: 0px;
+                  right: 0px;
+                  bottom: 0px;
+                  height: 65px;
                   padding: 15px 25px;
                   background-color: $secondary-3;
                   @include media-breakpoint-down(sm) {
