@@ -94,7 +94,7 @@ export default class CvVendorContactsDetails extends React.Component<ICvVendorCo
               <div className="placeholder-configure-container">
                 <Placeholder iconName='Edit'
                 iconText='Configure your web part'
-                description='Details are not available in list for current year.'
+                description='Please complete the mandatory fields in the web part properties.'
                 buttonLabel='Configure'
                 onConfigure={this._onConfigure}
                   theme={getTheme()} />
