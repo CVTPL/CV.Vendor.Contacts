@@ -320,15 +320,10 @@ ul {
 .vendor-forms-container{
   position: sticky;
   top: 0px;
-  // min-height: 900px;
   border: 1px solid $secondary-7;
   border-radius: 20px;
   overflow: hidden;
-  @include media-breakpoint-down(lg){
-    min-height: 650px;
-  }
   @include media-breakpoint-down(ipad){
-    min-height: auto;
     margin-top: 40px;
   }
   .vendor-forms-header{

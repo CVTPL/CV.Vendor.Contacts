@@ -8,7 +8,7 @@ import { IEmailProperties } from "@pnp/sp/sputilities";
 const RequestForm: React.FunctionComponent<IRequestFormProps> = (props) => {
   /* Request Form Store Data Relative Declaration Variable with Error Message Start */
   const [vendorDetailFormsData, isSetVendorDetailFormsData]: any = React.useState({ Name: "", Number: "", Email: "", Description: "" });
-  const [errorMessageObj, isErrorMessageObj]: any = React.useState({Name: "", Number: "", Email: "", Description: ""});
+  const [errorMessageObj, isErrorMessageObj]: any = React.useState({ Name: "", Number: "", Email: "", Description: "" });
   /* Request Form Store Data Relative Declaration Variable with Error Message End */
 
   /* SubmittedForm Hide/Show Thank You Message Box Relative Code Start */
@@ -122,7 +122,7 @@ const RequestForm: React.FunctionComponent<IRequestFormProps> = (props) => {
           [event.target.id]: `Please enter a 10-digit phone number - (${valuePhoneNumber.length})`,
         }));
       } else {
-        isErrorMessageObj((prevState: any) => ({...prevState, [event.target.id]: ""}));
+        isErrorMessageObj((prevState: any) => ({ ...prevState, [event.target.id]: "" }));
       }
     } else if (event.target.id === "Email") {
       const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -179,14 +179,14 @@ const RequestForm: React.FunctionComponent<IRequestFormProps> = (props) => {
   }
   /* Submit Button Click Check Error Message & Hide/Show Thank You Message Relative Code End */
 
-   // Clear Form
-   function clearForm() {
+  // Clear Form
+  function clearForm() {
     var vendorDetailFormsObject = vendorDetailFormsData;
     vendorDetailFormsObject.Name = "",
-    vendorDetailFormsObject.Number = "",
-    vendorDetailFormsObject.Email = "",
-    vendorDetailFormsObject.Description = "",
-    vendorDetailFormsObject(vendorDetailFormsObject);
+      vendorDetailFormsObject.Number = "",
+      vendorDetailFormsObject.Email = "",
+      vendorDetailFormsObject.Description = "",
+      isSetVendorDetailFormsData(vendorDetailFormsObject);
   }
 
   /* HR Send Email Request Relative Code Start */
@@ -195,8 +195,10 @@ const RequestForm: React.FunctionComponent<IRequestFormProps> = (props) => {
       To: [props.hrEmail],
       //CC: ["user2@site.com", "user3@site.com"],
       //BCC: ["user4@site.com", "user5@site.com"],
-      Subject: "This email is about...",
-      Body: vendorDetailFormsData && vendorDetailFormsData.Description,
+      Subject: "Vendor details requirements.",
+      // Body: vendorDetailFormsData && vendorDetailFormsData.Description /n+ "From:" + props.context.pageContext.user.email,
+      Body: '<p><b>Name: </b>' + vendorDetailFormsData.Name + '</p><p><b>Mobile: </b>' + vendorDetailFormsData.Number + '</p><p><b>Email: </b>' + vendorDetailFormsData.Email + '</p></p><p><b>Requirement: </b>' + vendorDetailFormsData.Description + '</p><p>To open vendor details page <a href=' + window.location.href + '>Click Here</a></p>',
+      From: props.context.pageContext.user.email,
       AdditionalHeaders: {
         "content-type": "text/html",
       },

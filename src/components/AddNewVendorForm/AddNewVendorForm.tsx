@@ -78,7 +78,7 @@ const AddNewVendorForm: React.FunctionComponent<IAddNewVendorFormProps> = (props
               <div className="ms-Grid-col ms-sm12 ms-md12 ms-lg12 ms-xl12 ms-xxl12 ms-xxxl12">
                 <div className="form-group">
                   <Label required>Vendor Image</Label>
-                  <ImageUploader withIcon={true} buttonText='Product Images (Image should be less then 1MB)'
+                  <ImageUploader withIcon={true} buttonText='Vendor Image (Image should be less then 1MB)'
                     onChange={onDrop} imgExtension={['.jpg', '.gif', '.png', '.svg', '.jpeg', '.webp', '.jfif']}
                     maxFileSize={1000000} withPreview={true} withLabel={false} singleImage={true} />
                   {/* <ImageUploader onFileAdded={(img) => getImageFileObject(img)} onFileRemoved={(img) => runAfterImageDelete(img)}/> */}
