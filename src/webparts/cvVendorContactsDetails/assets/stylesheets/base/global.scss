@@ -144,11 +144,6 @@ ul {
       display: flex;
       flex-direction: column;
       justify-content: space-between;
-      .search-with-data{
-        .ms-SearchBox{
-          margin-bottom: 80px;
-        }
-      }
     }
   }
 }
@@ -797,12 +792,22 @@ ul {
   display: flex;
   justify-content: flex-start;
   align-items: flex-start;
+  margin-bottom: 60px;
+  @include media-breakpoint-down(xs){
+    flex-direction: column;
+  }
   .ms-TextField{
     flex: 1;
+  }
+  .ms-SearchBox{
+    margin-bottom: 20px;
   }
   .btn-container{
     margin-left: 20px;
     margin-bottom: 20px;
+    @include media-breakpoint-down(xs){
+      margin-left: 0px;
+    }
     .ms-Button{
       height: 40px;
     }
