@@ -690,7 +690,6 @@ ul {
           display: flex;
           flex-direction: column;
           justify-content: flex-start;
-          // height: 100vh; // This line is Commnet
           .ms-Panel-commands {
             margin-top: 0px;
             .ms-Panel-navigation {
@@ -737,27 +736,19 @@ ul {
           .ms-Panel-contentInner {
             position: relative;
             display: flex;
-            // flex-direction: column;
             flex-grow: 1;
-            // overflow-y: hidden;
             .ms-Panel-scrollableContent {
-              // height: calc(100% - 70px);
               display: flex;
               flex-direction: column;
               flex-grow: 1;
-              // height: 100%; // This line is Commnet
-              // flex: 1; // This line is Commnet
-              // overflow: unset; // This line is Commnet
+              @include scroll-style();
               .ms-Panel-content {
-                // height: 100%; // This line is Commnet
                 display: flex;
                 flex-direction: column;
                 padding: 0px;
                 .panel-body {
                   flex: 1;
-                  // background-color: lightseagreen;
                   padding: 20px 30px;
-                  // overflow-y: auto;
                   margin-bottom: 65px;
                   @include scroll-style();
                   @include media-breakpoint-down(xxs) {
@@ -844,7 +835,7 @@ ul {
 /* Image File Uploader Style Relative Code Start */
 .fileUploader{
   .fileContainer{
-    padding: 15px 0px 0px;
+    padding: 15px 15px 0px;
     margin: 0px auto 10px;
     box-shadow: $box-shadow-2;
     .chooseFileButton{
