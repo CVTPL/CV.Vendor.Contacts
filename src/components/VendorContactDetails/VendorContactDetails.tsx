@@ -163,7 +163,7 @@ const VendorContactDetails: React.FunctionComponent<IVendorContactDetailsProps> 
                 : ""}
               {props.isAdmin ?
                 <div className="btn-container btn-center">
-                  <PrimaryButton text="Add" className="ms-primary-2" onClick={() => setAdminPanelFormOpen(true)} />
+                  <PrimaryButton text="Add Vendor" className="ms-primary-2" onClick={() => setAdminPanelFormOpen(true)} />
                 </div>
                 :
                 ""
@@ -244,7 +244,7 @@ const VendorContactDetails: React.FunctionComponent<IVendorContactDetailsProps> 
               <div className="add-edit-vendor-content-box">
                 {props.isAdmin ?
                   <div className="btn-container btn-center">
-                    <PrimaryButton text="Add" className="ms-primary-2" onClick={() => setAdminPanelFormOpen(true)} />
+                    <PrimaryButton text="Add Vendor" className="ms-primary-2" onClick={() => setAdminPanelFormOpen(true)} />
                   </div>
                   :
                   ""
@@ -254,7 +254,7 @@ const VendorContactDetails: React.FunctionComponent<IVendorContactDetailsProps> 
             <div className="not-found-message-content-box">
               <div className="content-box">
                 <img src={require("../../assets/svg/no-data-found.svg")} alt="Not available now" />
-                <p>If you need any information please fill form.</p>
+                {/* <p>If you need any information please fill form.</p> */}
               </div>
             </div>
           </div>

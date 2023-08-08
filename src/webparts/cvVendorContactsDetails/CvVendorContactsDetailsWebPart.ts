@@ -85,12 +85,12 @@ export default class CvVendorContactsDetailsWebPart extends BaseClientSideWebPar
     return {
       pages: [
         {
-          header: {
-            description: strings.PropertyPaneDescription
-          },
+          // header: {
+          //   description: strings.PropertyPaneDescription
+          // },
           groups: [
             {
-              groupName: strings.BasicGroupName,
+              // groupName: strings.BasicGroupName,
               groupFields: [
                 PropertyPaneTextField('webpartTitle', {
                   label: strings.webpartTitle
