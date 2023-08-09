@@ -1,7 +1,7 @@
 import * as React from 'react';
 import * as ReactDom from 'react-dom';
 import { Version } from '@microsoft/sp-core-library';
-import { IPropertyPaneConfiguration, PropertyPaneTextField } from '@microsoft/sp-property-pane';
+import { IPropertyPaneConfiguration, PropertyPaneTextField, PropertyPaneLabel } from '@microsoft/sp-property-pane';
 import { BaseClientSideWebPart } from '@microsoft/sp-webpart-base';
 import { IReadonlyTheme } from '@microsoft/sp-component-base';
 import * as strings from 'CvVendorContactsDetailsWebPartStrings';
@@ -99,6 +99,8 @@ export default class CvVendorContactsDetailsWebPart extends BaseClientSideWebPar
                   label: strings.HREmail,
                   onGetErrorMessage: this.validateEmail
                 }),
+                PropertyPaneLabel('label',
+                  { text: 'Note: Please ensure that the email address you provide in the HR Email field has full access to the respective site.' }),
               ]
             }
           ]

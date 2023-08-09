@@ -4,6 +4,7 @@ import { TextField, PrimaryButton } from "office-ui-fabric-react";
 import { spfi, SPFx } from "@pnp/sp";
 import "@pnp/sp/sputilities";
 import { IEmailProperties } from "@pnp/sp/sputilities";
+import CommonLoader from "../CommonLoader/CommonLoader";
 
 const RequestForm: React.FunctionComponent<IRequestFormProps> = (props) => {
   /* Request Form Store Data Relative Declaration Variable with Error Message Start */
@@ -13,6 +14,7 @@ const RequestForm: React.FunctionComponent<IRequestFormProps> = (props) => {
 
   /* SubmittedForm Hide/Show Thank You Message Box Relative Code Start */
   const [submittedForm, isSubmittedForm] = React.useState(false);
+  const [visibleLoader, isVisibleLoader] = React.useState(false);
   /* SubmittedForm Hide/Show Thank You Message Box Relative Code End */
 
   const sp = spfi().using(SPFx(props.context));
@@ -85,6 +87,13 @@ const RequestForm: React.FunctionComponent<IRequestFormProps> = (props) => {
                 </div>
               </div>
             </div>
+            {/* Loader */}
+            <div hidden={!visibleLoader}>
+              <div className="fixed-loader-child">
+                <CommonLoader visibleLoader={visibleLoader} />
+              </div>
+            </div>
+            {/* Loader */}
           </div>
         </>
       )}
@@ -167,7 +176,9 @@ const RequestForm: React.FunctionComponent<IRequestFormProps> = (props) => {
     isErrorMessageObj(errors);
 
     if (Object.keys(errors).length === 0) {
+      isVisibleLoader(true);
       setEmail().then((response) => {
+        isVisibleLoader(false);
         // alert("Message Send !");
         isSubmittedForm(true);
         setTimeout(() => {
@@ -197,7 +208,7 @@ const RequestForm: React.FunctionComponent<IRequestFormProps> = (props) => {
       //BCC: ["user4@site.com", "user5@site.com"],
       Subject: "Vendor details requirements.",
       // Body: vendorDetailFormsData && vendorDetailFormsData.Description /n+ "From:" + props.context.pageContext.user.email,
-      Body: '<p><b>Name: </b>' + vendorDetailFormsData.Name + '</p><p><b>Mobile: </b>' + vendorDetailFormsData.Number + '</p><p><b>Email: </b>' + vendorDetailFormsData.Email + '</p></p><p><b>Requirement: </b>' + vendorDetailFormsData.Description + '</p><p>To open vendor details page <a href=' + window.location.href + '>Click Here</a></p>',
+      Body: '<p><b>Name: </b>' + vendorDetailFormsData.Name + '</p><p><b>Mobile: </b>' + vendorDetailFormsData.Number + '</p><p><b>Email: </b>' + vendorDetailFormsData.Email + '</p></p><p><b>Requirement: </b>' + vendorDetailFormsData.Description + '</p><p>To add a vendor details <a href=' + window.location.href + '>Click Here</a></p>',
       From: props.context.pageContext.user.email,
       AdditionalHeaders: {
         "content-type": "text/html",
