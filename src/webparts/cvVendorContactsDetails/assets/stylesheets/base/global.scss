@@ -66,63 +66,6 @@ ul {
 }
 /* Comman Style CSS End */
 
-/* SharePoint Design Fixes Relative Code Start */
-.ms-font-m {
-  .SPPageChrome {
-    .spAppAndPropertyPanelContainer {
-      .SPPageChrome-app {
-        #workbenchPageContent {
-          width: 100%;
-          max-width: 100%;
-          .CanvasComponent {
-            &.LCS {
-              .CanvasZone--edit {
-                max-width: 100%;
-              }
-            }
-          }
-        }
-        .ms-Fabric {
-          .mainContent {
-            > article {
-              > div{
-                > div{
-                  @include scroll-style();
-                  #spPageCanvasContent {
-                    .SPCanvas {
-                      .SPCanvas-canvas {
-                        .CanvasComponent {
-                          .Canvas {
-                            background-color: $secondary-3;
-                            .CanvasZone {
-                              background-color: $secondary-3;
-                              > div {
-                                max-width: 100% !important;
-                              }
-                            }
-                            > div{
-                              > div{
-                                @include media-breakpoint-down(xxs){
-                                  padding: 0px;
-                                }
-                              }
-                            }
-                          }
-                        }
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-  }
-}
-/* SharePoint Design Fixes Relative Code End */
-
 .vendor-contacts-details-container{
   position: relative;
   .vendor-contacts-details-content-box{
