@@ -135,6 +135,7 @@ const VendorContactDetails: React.FunctionComponent<IVendorContactDetailsProps> 
    * @returns 
    */
   const [hideSection, setHideSection] = React.useState(false);
+  const [deleteItemIndexPass, setDeleteItemIndexPass] = React.useState();
 
   const adminFormPanelHeader = () => (
     <div className="panel-header">
@@ -302,7 +303,7 @@ const VendorContactDetails: React.FunctionComponent<IVendorContactDetailsProps> 
         <AddNewVendorForm _isAdminFormPanelOpen={_isAdminFormPanelOpen} context={props.context} _isDataSubmited={_isDataSubmited} />
       </Panel>
       <Dialog hidden={!hideCommonDialog} onDismiss={() => { hideCommonDailog }} modalProps={commonModalProps}>
-        <CommonDialog context={props.context} closeDialogBox={closeDialogBox} />
+        <CommonDialog context={props.context} closeDialogBox={closeDialogBox} onItemIndexDelete={deleteItemIndexPass} />
       </Dialog>
     </div>
   );
@@ -310,7 +311,8 @@ const VendorContactDetails: React.FunctionComponent<IVendorContactDetailsProps> 
   /* Add/Edit Relative Code Start */
   function onDeleteRow(item: any) {
     setHideCommonDialog(true);
-    console.log(item);
+    setDeleteItemIndexPass(item.ID);
+    console.log(item.ID);
   }
   function addEditVendorFormPanelOpen(item: string) {
     setAdminPanelFormOpen(true);

@@ -199,7 +199,10 @@ const PnpSpCommonServices = {
   },
   _addDataIntoList: async (sp: any, listName: string, data: any) => {
     return await sp.web.lists.getByTitle(listName).items.add(data);
-  }
+  },
+  _deleteListItem: async (sp: any, listName: string, id: number) => {
+    return await sp.web.lists.getByTitle(listName).items.getById(id).recycle();
+  },
 
 };
 
