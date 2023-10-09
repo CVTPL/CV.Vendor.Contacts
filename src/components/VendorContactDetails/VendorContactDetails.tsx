@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { IVendorContactDetailsProps } from './IVendorContactDetailsProps';
-import { Panel, PrimaryButton, SearchBox, TextField, TooltipHost } from 'office-ui-fabric-react';
+import { Dialog, IIconProps, IconButton, Panel, PrimaryButton, SearchBox, TextField, TooltipHost } from 'office-ui-fabric-react';
 import PnpSpCommonServices from '../../services/PnpSpCommonServices';
 import { spfi, SPFx } from "@pnp/sp";
 import { Pagination } from "@pnp/spfx-controls-react/lib/pagination";
@@ -8,6 +8,7 @@ import { clone } from '@microsoft/sp-lodash-subset';
 import { getTheme, ITheme } from 'office-ui-fabric-react';
 import AddNewVendorForm from '../AddNewVendorForm/AddNewVendorForm';
 import CommonLoader from '../CommonLoader/CommonLoader';
+import CommonDialog from '../CommonDialog/CommonDialog';
 
 const theme: ITheme = getTheme();
 const themeColor = theme.palette.themePrimary;
@@ -121,6 +122,7 @@ const VendorContactDetails: React.FunctionComponent<IVendorContactDetailsProps> 
   /* Filter Data Create Object Relative Code End */
 
   const [isAdminPanelFormOpen, setAdminPanelFormOpen] = React.useState(false);
+  const [hideCommonDialog, setHideCommonDialog] = React.useState(false);
 
   /* No Data Found Relative Code Start */
   const [dataNotFound, setDataNotFound] = React.useState(false);
@@ -151,6 +153,30 @@ const VendorContactDetails: React.FunctionComponent<IVendorContactDetailsProps> 
     };
   }, []);
 
+  const commonModalProps = React.useMemo(
+    () => ({
+      isBlocking: true,
+      className: "comman-message-dialog-container delete-dialog-container",
+    }), [],
+  );
+
+  /* IconButton (RenderIcon) Relative Code Start */
+  const renderEditIcon = (props?: IIconProps): JSX.Element => {
+    return (
+      <>
+        <img src={require("../../assets/svg/edit-icon.svg")} title="Check icon" alt="Check icon" />
+      </>
+    );
+  };
+  const renderDeleteIcon = (props?: IIconProps): JSX.Element => {
+    return (
+      <>
+        <img src={require("../../assets/svg/delete-icon.svg")} title="Delete icon" alt="Delete icon" />
+      </>
+    );
+  };
+  /* IconButton (RenderIcon) Relative Code End */
+
   return (
     <div className="vendor-card-scroll-content">
       {dataNotFound ?
@@ -178,6 +204,13 @@ const VendorContactDetails: React.FunctionComponent<IVendorContactDetailsProps> 
                       <li className="vendor-card-list-item">
                         <div className="card-container vendor-card-container">
                           <div className="card">
+                            <div className="action-icon-buttons">
+                              <div className="btn-container">
+                                {/*  onClick={() => onEditRow(item)} */}
+                                <IconButton className="icon-button icon-button-40 icon-primary-2" onRenderIcon={renderEditIcon} onClick={() => addEditVendorFormPanelOpen("edit")} />
+                                <IconButton className="icon-button icon-button-40 icon-primary-2" onRenderIcon={renderDeleteIcon} onClick={() => onDeleteRow(item)} />
+                              </div>
+                            </div>
                             <div className="card-header">
                               <div className="rectangle-shape-box">
                                 <img src={imgJson.serverRelativeUrl} alt="Not Available Now" title="Vendor image" />
@@ -268,14 +301,38 @@ const VendorContactDetails: React.FunctionComponent<IVendorContactDetailsProps> 
       <Panel onRenderHeader={adminFormPanelHeader} isOpen={isAdminPanelFormOpen} className="panel-container admin-form-panel-container" onDismiss={() => setAdminPanelFormOpen(false)} closeButtonAriaLabel="Close">
         <AddNewVendorForm _isAdminFormPanelOpen={_isAdminFormPanelOpen} context={props.context} _isDataSubmited={_isDataSubmited} />
       </Panel>
+      <Dialog hidden={!hideCommonDialog} onDismiss={() => { hideCommonDailog }} modalProps={commonModalProps}>
+        <CommonDialog context={props.context} closeDialogBox={closeDialogBox} />
+      </Dialog>
     </div>
   );
+
+  /* Add/Edit Relative Code Start */
+  function onDeleteRow(item: any) {
+    setHideCommonDialog(true);
+    console.log(item);
+  }
+  function addEditVendorFormPanelOpen(item: string) {
+    setAdminPanelFormOpen(true);
+    console.log(item);
+  }
+  function hideCommonDailog() {
+    setHideCommonDialog(false);
+  }
+  /* Add/Edit Relative Code End */
 
   // Close reminder panel
   function _isAdminFormPanelOpen() {
     setAdminPanelFormOpen(false);
     // _initialFunction();
   }
+
+  /* Dialog Button Click Close Dialog with Data Handle Relative Code Start */
+  function closeDialogBox() {
+    console.log("redirect");
+    setHideCommonDialog(false);
+  }
+  /* Dialog Button Click Close Dialog with Data Handle Relative Code End */
 
   // Submit Panel
   function _isDataSubmited() {
