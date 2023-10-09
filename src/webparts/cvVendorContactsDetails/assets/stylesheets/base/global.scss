@@ -143,10 +143,11 @@ ul {
   &.vendor-card-container{
     height: 100%;
     .card{
+      position: relative;
       height: 100%;
       display: flex;
       flex-direction: column;
-      border-radius: 20px;
+      // border-radius: 20px;
       .card-header{
         .rectangle-shape-box{
           width: 80px;
@@ -440,6 +441,23 @@ ul {
       color: $secondary-11;
     }
   }
+  &.ms-Button--icon{
+    border-radius: 4px;
+    &.icon-button{
+      &.icon-button-40{
+        width: 40px;
+        height: 40px;
+        .ms-Button-flexContainer{
+          img{
+            width: 18px;
+          }
+        }
+      }
+      &.icon-primary-2{
+        background-color: $primary-1;
+      }
+    }
+  }
 }
 /* Button Relative Style CSS End */
 
@@ -722,6 +740,111 @@ ul {
         }
       }
     }
+    .ms-Modal {
+      padding: 0px 30px;
+      &.ms-Dialog {
+        .ms-Overlay{
+          background-color: rgb($black, 0.4);
+        }
+        .ms-Dialog-main {
+          min-width: auto;
+          max-width: initial;
+          min-height: auto;
+          max-height: initial;
+          border-radius: 6px;
+          box-shadow: 0px 3px 6px #00000029;
+          overflow: visible;
+          .ms-Modal-scrollableContent {
+            overflow: visible;
+            >div {
+              overflow: visible;
+              .ms-Dialog-header {
+                display: none;
+              }
+              .ms-Dialog-inner {
+                padding: 0px;
+                .ms-Dialog-content {
+                  .modal-custom-content {
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: flex-start;
+                    align-items: flex-start;
+                    min-height: auto;
+                    max-height: 80vh;
+                    .modal-header {
+                      width: 100%;
+                      display: flex;
+                      align-items: center;
+                      justify-content: space-between;
+                      padding: 20px 15px;
+                      @include media-breakpoint-down(xs) {
+                        padding: 20px 15px;
+                      }
+                    }
+                    .modal-body {
+                      width: 100%;
+                      flex: 1;
+                      overflow-y: auto;
+                      padding: 20px 30px;
+                      @include scroll-style();
+                      @include media-breakpoint-down(sm) {
+                        padding: 12px 30px;
+                      }
+                      @include media-breakpoint-down(xxs) {
+                        padding: 12px 12px;
+                      }
+                      .modal-content-box{
+                        p{
+                          @include text-style($fs-18, 34px, $font-regular, $secondary-14);
+                          letter-spacing: 1.08px;
+                          @include media-breakpoint-down(sm) {
+                            @include text-style($fs-16, 30px, $font-regular, $secondary-14);
+                          }
+                          @include media-breakpoint-down(xxs) {
+                            @include text-style($fs-14, 24px, $font-regular, $secondary-14);
+                          }
+                        }
+                      }
+                    }
+                    .ms-Dialog-actions {
+                      min-height: auto;
+                      margin: 0px;
+                      padding: 20px 15px;
+                      @include media-breakpoint-down(sm) {
+                        padding: 15px 15px 15px;
+                      }
+                      .ms-Dialog-actionsRight {
+                        margin-right: 0px;
+                        .ms-Dialog-action {
+                          margin: 0px;
+                          .btn-container{
+                            @include media-breakpoint-down(xxxs) {
+                              flex-direction: column;
+                            }
+                            .ms-Button{
+                              height: 50px;
+                              @include media-breakpoint-down(sm) {
+                                height: 40px;
+                              }
+                              &:not(:last-child){
+                                @include media-breakpoint-down(xxxs) {
+                                  margin-right: 0px;
+                                  margin-bottom: 10px;
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
   }
 }
 
@@ -781,6 +904,7 @@ ul {
     padding: 15px 15px 0px;
     margin: 0px auto 10px;
     box-shadow: $box-shadow-2;
+    border-radius: 0px;
     .chooseFileButton{
       margin: 15px 0px 20px;
     }
@@ -851,6 +975,36 @@ ul {
     }
   }
 }
+.card-container{
+  .card{
+    .action-icon-buttons{
+      position: absolute;
+      top: 6px;
+      right: 6px;
+      opacity: 0;
+      overflow: hidden;
+      transition: .5s ease;
+      z-index: -1;
+      .btn-container{
+        align-items: flex-end;
+        justify-content: flex-end;
+        flex-direction: column;
+        .ms-Button{
+          &:not(:last-child){
+            margin-right: 0px;
+            margin-bottom: 4px;
+          }
+        }
+      }
+    }
+    &:hover{
+      .action-icon-buttons{
+        opacity: 1;
+        z-index: 2;
+      }
+    }
+  }
+}
 /* Image File Uploader Style Relative Code End */
 
 /* Sharepoint Select Column Card issue SCSS Customize Start */
@@ -858,6 +1012,17 @@ ul {
   .SPPageChrome {
     .spAppAndPropertyPanelContainer {
       .SPPageChrome-app {
+        #workbenchPageContent {
+          width: 100%;
+          max-width: 100%;
+          .CanvasComponent {
+            &.LCS {
+              .CanvasZone--edit {
+                max-width: 100%;
+              }
+            }
+          }
+        }
         .ms-Fabric {
           .mainContent {
             > article {
