@@ -24,82 +24,7 @@ const VendorContactDetails: React.FunctionComponent<IVendorContactDetailsProps> 
   const [pageNumber, setpageNumber]: any = React.useState(null);
   const [startEndIndexPagination, setStartEndIndexPagination]: any = React.useState([]);
   /* Pagination with Data Relative Code End */
-
-  const vendorCardList: any[] = [
-    {
-      id: 1,
-      vendorimgSrc: require("../../assets/png/vendor_image_01.png"),
-      vendorTitle: "Medical Insurance Query",
-      vendorDetailTitle: "Reliance Health Insurance",
-      vendorDescription: "Deepak Rathod",
-      vendorPhone: "+91 44523 88673",
-      vendorEmail: "deepakrathod@gmail.com",
-    },
-    {
-      id: 2,
-      vendorimgSrc: require("../../assets/png/vendor_image_02.png"),
-      vendorTitle: "Tax Consultatant",
-      vendorDetailTitle: "Reliance Health Insurance",
-      vendorDescription: "Deepak Rathod",
-      vendorPhone: "+91 44523 88673",
-      vendorEmail: "deepakrathod@gmail.com",
-    },
-    {
-      id: 3,
-      vendorimgSrc: require("../../assets/png/vendor_image_03.png"),
-      vendorTitle: "Parking Guidance",
-      vendorDetailTitle: "Reliance Health Insurance",
-      vendorDescription: "Deepak Rathod",
-      vendorPhone: "+91 44523 88673",
-      vendorEmail: "deepakrathod@gmail.com",
-    },
-    {
-      id: 4,
-      vendorimgSrc: require("../../assets/png/vendor_image_04.png"),
-      vendorTitle: "Courier Service",
-      vendorDetailTitle: "Reliance Health Insurance",
-      vendorDescription: "Deepak Rathod",
-      vendorPhone: "+91 44523 88673",
-      vendorEmail: "deepakrathod@gmail.com",
-    },
-    {
-      id: 5,
-      vendorimgSrc: require("../../assets/png/vendor_image_05.png"),
-      vendorTitle: "Computer Laptop Repair",
-      vendorDetailTitle: "Reliance Health Insurance",
-      vendorDescription: "Deepak Rathod",
-      vendorPhone: "+91 44523 88673",
-      vendorEmail: "deepakrathod@gmail.com",
-    },
-    {
-      id: 6,
-      vendorimgSrc: require("../../assets/png/vendor_image_03.png"),
-      vendorTitle: "Parking Guidance",
-      vendorDetailTitle: "Reliance Health Insurance",
-      vendorDescription: "Deepak Rathod",
-      vendorPhone: "+91 44523 88673",
-      vendorEmail: "deepakrathod@gmail.com",
-    },
-    {
-      id: 7,
-      vendorimgSrc: require("../../assets/png/vendor_image_01.png"),
-      vendorTitle: "Medical Insurance Query",
-      vendorDetailTitle: "Reliance Health Insurance",
-      vendorDescription: "Deepak Rathod",
-      vendorPhone: "+91 44523 88673",
-      vendorEmail: "deepakrathod@gmail.com",
-    },
-    {
-      id: 8,
-      vendorimgSrc: require("../../assets/png/vendor_image_02.png"),
-      vendorTitle: "Tax Consultatant",
-      vendorDetailTitle: "Reliance Health Insurance",
-      vendorDescription: "Deepak Rathod",
-      vendorPhone: "+91 44523 88673",
-      vendorEmail: "deepakrathod@gmail.com",
-    },
-  ];
-
+  
   // Tooltip Relative Code Start
   const calloutProps = { gapSpace: 0 };
   const onVendorTitleRenderContent = (item: any) => (
@@ -326,12 +251,11 @@ const VendorContactDetails: React.FunctionComponent<IVendorContactDetailsProps> 
   // Close reminder panel
   function _isAdminFormPanelOpen() {
     setAdminPanelFormOpen(false);
-    // _initialFunction();
   }
 
   /* Dialog Button Click Close Dialog with Data Handle Relative Code Start */
   function closeDialogBox() {
-    console.log("redirect");
+    _initialFunction();
     setHideCommonDialog(false);
   }
   /* Dialog Button Click Close Dialog with Data Handle Relative Code End */
