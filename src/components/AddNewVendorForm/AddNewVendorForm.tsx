@@ -19,6 +19,13 @@ const AddNewVendorForm: React.FunctionComponent<IAddNewVendorFormProps> = (props
   const [errorMessageObj, isErrorMessageObj]: any = React.useState({ Title: "", Vendor_Heading: "", Vendor_Name: "", Vendor_Number: "", Vendor_Email: "", Upload_Image: "" });
   /* Admin Form Store Data Relative Declaration Variable with Error Message End */
 
+  React.useEffect(() => {
+    editVendorIndexWiseData();
+    return () => {
+      console.log("");
+    }
+  }, []);
+
   return (
     <>
       <div className="panel-body">
@@ -81,7 +88,7 @@ const AddNewVendorForm: React.FunctionComponent<IAddNewVendorFormProps> = (props
                   <ImageUploader withIcon={true} buttonText='Vendor Image (Image should be less then 1MB)'
                     onChange={onDrop} imgExtension={['.jpg', '.gif', '.png', '.svg', '.jpeg', '.webp', '.jfif']}
                     maxFileSize={1000000} withPreview={true} withLabel={false} singleImage={true} />
-                  {/* <ImageUploader onFileAdded={(img) => getImageFileObject(img)} onFileRemoved={(img) => runAfterImageDelete(img)}/> */}
+                  {/* <ImageUploader onFileAdded={(img) => getImageFileObject(img)} onFileAdded={(img: any) => getImageFileObject(props.onEditData.Upload_Image)} onFileRemoved={(img) => runAfterImageDelete(img)}/> */}
                   {errorMessageObj.Upload_Image ? (
                     <span className="error-message">{errorMessageObj.Upload_Image}</span>
                   ) : (
@@ -96,13 +103,40 @@ const AddNewVendorForm: React.FunctionComponent<IAddNewVendorFormProps> = (props
       <div className="panel-footer">
         <div className="btn-container btn-end">
           <PrimaryButton className="ms-secondary-10" text="Cancel" onClick={() => { adminFormPanelClose(); }} />
-          <PrimaryButton className="ms-primary-2" text="Submit" onClick={() => adminFormSubmittedData()} />
+          <PrimaryButton className="ms-primary-2" text={props.onAddEditDataView === "edit" ? "Update" : "Submit"} onClick={() => adminFormSubmittedData()} />
         </div>
       </div>
     </>
   );
 
+  function editVendorIndexWiseData() {
+    if (props.onAddEditDataView === "edit") {
+      var json_string = props.onEditData.CV_Vendor_Image;
+      const data = JSON.parse(json_string);
+      setVendorContactsFormData({Title: props.onEditData.Title, Vendor_Heading: props.onEditData.CV_Vendor_Heading, Vendor_Name: props.onEditData.CV_Vendor_Name, Vendor_Number: props.onEditData.CV_Vendor_Number, Vendor_Email: props.onEditData.CV_Vendor_Email, Upload_Image: data.serverRelativeUrl});
+      const DOMElement = `
+        <div class="uploadPictureContainer">
+          <div class="deleteImage">X</div>
+          <img src=${data.serverRelativeUrl} class="uploadPicture" alt="preview">
+        </div>
+      `;
+      const wrapper = document.createElement('div');
+      wrapper.classList.add("createPicturesContainer");
+      wrapper.innerHTML = DOMElement;
+      const uploadPicturesWrapper = document.getElementsByClassName("uploadPicturesWrapper")[0];
+      uploadPicturesWrapper.appendChild(wrapper);
+      const deleteImageDiv = wrapper.querySelector('.deleteImage');
+      // deleteImageDiv.addEventListener('click', demo);
+    } else {
+      setVendorContactsFormData({ Title: "", Vendor_Heading: "", Vendor_Name: "", Vendor_Number: "", Vendor_Email: "", Upload_Image: ""});
+    }
+  }
+
   function onDrop(pictureFiles: File[], pictureDataURLs: string[]) {
+    const element: any = document.getElementsByClassName("createPicturesContainer");
+    while (element.length > 0) {
+      element[0].parentNode.removeChild(element[0]);
+    }
     const adminFormDataCopy = clone(vendorContactsFormData);
     adminFormDataCopy["Upload_Image"] = pictureFiles && pictureFiles[0] ? pictureFiles[0] : "";
     if (pictureFiles.length > 0) {
@@ -205,7 +239,11 @@ const AddNewVendorForm: React.FunctionComponent<IAddNewVendorFormProps> = (props
       }).then((response) => {
         assetsListsID = response.d.Id;
       }).then((response) => {
-        _addListItems(assetsListsID);
+        if(props.onAddEditDataView === "edit"){
+          _updateListItems(assetsListsID);
+        } else {
+          _addListItems(assetsListsID);
+        }
       }).then((response) => {
         _addImagesItems(assetsListsID);
       }).then((response) => {
@@ -218,7 +256,7 @@ const AddNewVendorForm: React.FunctionComponent<IAddNewVendorFormProps> = (props
   }
   /* Admin Form Submitted - Store Data in SharePoint Site End */
 
-  /* Add Data into List Page Start */
+  /* Add Data into List - Relative Code Start */
   async function _addListItems(assetsListsID: any): Promise<any> {
     let siteUrl = props.context.pageContext.legacyPageContext.webAbsoluteUrl;
     let obj = {
@@ -245,7 +283,36 @@ const AddNewVendorForm: React.FunctionComponent<IAddNewVendorFormProps> = (props
       )
     })
   }
-  /* Add Data into List Page End */
+  /* Add Data into List - Relative Code End */
+
+  /* Update Data into List - Relative Code Start */
+  async function _updateListItems(assetsListsID: any): Promise<any> {
+    let siteUrl = props.context.pageContext.legacyPageContext.webAbsoluteUrl;
+    let obj = {
+      Title: vendorContactsFormData.Title,
+      CV_Vendor_Heading: vendorContactsFormData.Vendor_Heading,
+      CV_Vendor_Name: vendorContactsFormData.Vendor_Name,
+      CV_Vendor_Number: vendorContactsFormData.Vendor_Number,
+      CV_Vendor_Email: vendorContactsFormData.Vendor_Email,
+      // List Page URL Pass, Get in image from Site Assets/dynamic id folder
+      CV_Vendor_Image: JSON.stringify({
+        type: vendorContactsFormData.Upload_Image.type,
+        serverRelativeUrl: siteUrl + '/SiteAssets/Lists/' + assetsListsID + '/' + vendorContactsFormData.Upload_Image.name,
+      }),
+    };
+    return new Promise((resolve, reject) => {
+      PnpSpCommonServices._updateListItem(sp, "Vendor Details", obj, props.onEditData.ID).then(
+        (response) => {
+          resolve(response);
+        },
+        (error: any) => {
+          reject(error);
+          console.log(error);
+        }
+      )
+    })
+  }
+  /* Update Data into List - Relative Code End */
 
   /* Add Image in SharePoint - Site Assets Folder Dynamic ID Generate Store Image Start */
   async function _addImagesItems(assetsListsID: any): Promise<any> {
@@ -279,6 +346,7 @@ const AddNewVendorForm: React.FunctionComponent<IAddNewVendorFormProps> = (props
   /* Cancel Button Click Close Panel Start */
   function adminFormPanelClose() {
     props._isAdminFormPanelOpen();
+    props.onEditData([]);
   }
   /* Cancel Button Click Close Panel End */
 
@@ -287,7 +355,6 @@ const AddNewVendorForm: React.FunctionComponent<IAddNewVendorFormProps> = (props
     props._isDataSubmited();
   }
   /* Submit Button Click Close Panel End */
-
 };
 
 export default AddNewVendorForm;

@@ -203,6 +203,9 @@ const PnpSpCommonServices = {
   _deleteListItem: async (sp: any, listName: string, id: number) => {
     return await sp.web.lists.getByTitle(listName).items.getById(id).recycle();
   },
+  _updateListItem: async (sp: any, listName: string, data: any, id: number) => {
+    return await sp.web.lists.getByTitle(listName).items.getById(id).update(data);
+  },
 
 };
 

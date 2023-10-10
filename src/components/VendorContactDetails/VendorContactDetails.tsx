@@ -48,6 +48,8 @@ const VendorContactDetails: React.FunctionComponent<IVendorContactDetailsProps> 
 
   const [isAdminPanelFormOpen, setAdminPanelFormOpen] = React.useState(false);
   const [hideCommonDialog, setHideCommonDialog] = React.useState(false);
+  const [onEditData, setOnEditData] = React.useState();
+  const [onAddEditDataView, setOnAddEditDataView] = React.useState("");
 
   /* No Data Found Relative Code Start */
   const [dataNotFound, setDataNotFound] = React.useState(false);
@@ -65,7 +67,7 @@ const VendorContactDetails: React.FunctionComponent<IVendorContactDetailsProps> 
   const adminFormPanelHeader = () => (
     <div className="panel-header">
       <div className="left-section">
-        <h4>Add Vendor Details</h4>
+        <h4>{onAddEditDataView === "edit" ? "Edit Vendor Details" : "Add Vendor Details"}</h4>
       </div>
     </div>
   )
@@ -115,7 +117,7 @@ const VendorContactDetails: React.FunctionComponent<IVendorContactDetailsProps> 
                 : ""}
               {props.isAdmin ?
                 <div className="btn-container btn-center">
-                  <PrimaryButton text="Add Vendor" className="ms-primary-2" onClick={() => setAdminPanelFormOpen(true)} />
+                  <PrimaryButton text="Add Vendor" className="ms-primary-2" onClick={() => addAdminPanelFormOpen("add")} />
                 </div>
                 :
                 ""
@@ -133,7 +135,7 @@ const VendorContactDetails: React.FunctionComponent<IVendorContactDetailsProps> 
                             <div className="action-icon-buttons">
                               <div className="btn-container">
                                 {/*  onClick={() => onEditRow(item)} */}
-                                <IconButton className="icon-button icon-button-40 icon-primary-2" onRenderIcon={renderEditIcon} onClick={() => addEditVendorFormPanelOpen("edit")} />
+                                <IconButton className="icon-button icon-button-40 icon-primary-2" onRenderIcon={renderEditIcon} onClick={() => addEditVendorFormPanelOpen(item, "edit")} />
                                 <IconButton className="icon-button icon-button-40 icon-primary-2" onRenderIcon={renderDeleteIcon} onClick={() => onDeleteRow(item)} />
                               </div>
                             </div>
@@ -225,7 +227,7 @@ const VendorContactDetails: React.FunctionComponent<IVendorContactDetailsProps> 
         </div>
       </div>
       <Panel onRenderHeader={adminFormPanelHeader} isOpen={isAdminPanelFormOpen} className="panel-container admin-form-panel-container" onDismiss={() => setAdminPanelFormOpen(false)} closeButtonAriaLabel="Close">
-        <AddNewVendorForm _isAdminFormPanelOpen={_isAdminFormPanelOpen} context={props.context} _isDataSubmited={_isDataSubmited} />
+        <AddNewVendorForm _isAdminFormPanelOpen={_isAdminFormPanelOpen} context={props.context} _isDataSubmited={_isDataSubmited} onEditData={onEditData} onAddEditDataView={onAddEditDataView} />
       </Panel>
       <Dialog hidden={!hideCommonDialog} onDismiss={() => { hideCommonDailog }} modalProps={commonModalProps}>
         <CommonDialog context={props.context} closeDialogBox={closeDialogBox} onItemIndexDelete={deleteItemIndexPass} />
@@ -234,14 +236,19 @@ const VendorContactDetails: React.FunctionComponent<IVendorContactDetailsProps> 
   );
 
   /* Add/Edit Relative Code Start */
+  function addAdminPanelFormOpen(item: any) {
+    setOnAddEditDataView(item);
+    setAdminPanelFormOpen(true);
+  }
   function onDeleteRow(item: any) {
     setHideCommonDialog(true);
     setDeleteItemIndexPass(item.ID);
     console.log(item.ID);
   }
-  function addEditVendorFormPanelOpen(item: string) {
+  function addEditVendorFormPanelOpen(item: any, addEditButtonClick: string) {
     setAdminPanelFormOpen(true);
-    console.log(item);
+    setOnAddEditDataView(addEditButtonClick);
+    setOnEditData(item);
   }
   function hideCommonDailog() {
     setHideCommonDialog(false);
