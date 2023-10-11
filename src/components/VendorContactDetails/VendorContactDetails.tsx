@@ -49,7 +49,7 @@ const VendorContactDetails: React.FunctionComponent<IVendorContactDetailsProps> 
   const [isAdminPanelFormOpen, setAdminPanelFormOpen] = React.useState(false);
   const [hideCommonDialog, setHideCommonDialog] = React.useState(false);
   const [onEditData, setOnEditData] = React.useState();
-  const [onAddEditDataView, setOnAddEditDataView] = React.useState("");
+  const [onAddEditDataView, setOnAddEditDataView] = React.useState("add");
 
   /* No Data Found Relative Code Start */
   const [dataNotFound, setDataNotFound] = React.useState(false);

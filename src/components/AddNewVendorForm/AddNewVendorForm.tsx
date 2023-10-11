@@ -113,7 +113,14 @@ const AddNewVendorForm: React.FunctionComponent<IAddNewVendorFormProps> = (props
     if (props.onAddEditDataView === "edit") {
       var json_string = props.onEditData.CV_Vendor_Image;
       const data = JSON.parse(json_string);
-      setVendorContactsFormData({Title: props.onEditData.Title, Vendor_Heading: props.onEditData.CV_Vendor_Heading, Vendor_Name: props.onEditData.CV_Vendor_Name, Vendor_Number: props.onEditData.CV_Vendor_Number, Vendor_Email: props.onEditData.CV_Vendor_Email, Upload_Image: data.serverRelativeUrl});
+      setVendorContactsFormData({
+        Title: props.onEditData.Title,
+        Vendor_Heading: props.onEditData.CV_Vendor_Heading,
+        Vendor_Name: props.onEditData.CV_Vendor_Name,
+        Vendor_Number: props.onEditData.CV_Vendor_Number,
+        Vendor_Email: props.onEditData.CV_Vendor_Email,
+        Upload_Image: props.onEditData.CV_Vendor_Image,
+      });
       const DOMElement = `
         <div class="uploadPictureContainer">
           <div class="deleteImage">X</div>
@@ -126,17 +133,21 @@ const AddNewVendorForm: React.FunctionComponent<IAddNewVendorFormProps> = (props
       const uploadPicturesWrapper = document.getElementsByClassName("uploadPicturesWrapper")[0];
       uploadPicturesWrapper.appendChild(wrapper);
       const deleteImageDiv = wrapper.querySelector('.deleteImage');
-      // deleteImageDiv.addEventListener('click', demo);
+      deleteImageDiv.addEventListener('click', clikCloseIconRemoveImage);
     } else {
-      setVendorContactsFormData({ Title: "", Vendor_Heading: "", Vendor_Name: "", Vendor_Number: "", Vendor_Email: "", Upload_Image: ""});
+      setVendorContactsFormData({ Title: "", Vendor_Heading: "", Vendor_Name: "", Vendor_Number: "", Vendor_Email: "", Upload_Image: "" });
     }
   }
 
-  function onDrop(pictureFiles: File[], pictureDataURLs: string[]) {
+  function clikCloseIconRemoveImage() {
     const element: any = document.getElementsByClassName("createPicturesContainer");
     while (element.length > 0) {
       element[0].parentNode.removeChild(element[0]);
     }
+  }
+
+  function onDrop(pictureFiles: File[], pictureDataURLs: string[]) {
+    clikCloseIconRemoveImage();
     const adminFormDataCopy = clone(vendorContactsFormData);
     adminFormDataCopy["Upload_Image"] = pictureFiles && pictureFiles[0] ? pictureFiles[0] : "";
     if (pictureFiles.length > 0) {
@@ -239,7 +250,7 @@ const AddNewVendorForm: React.FunctionComponent<IAddNewVendorFormProps> = (props
       }).then((response) => {
         assetsListsID = response.d.Id;
       }).then((response) => {
-        if(props.onAddEditDataView === "edit"){
+        if (props.onAddEditDataView === "edit") {
           _updateListItems(assetsListsID);
         } else {
           _addListItems(assetsListsID);
@@ -288,6 +299,8 @@ const AddNewVendorForm: React.FunctionComponent<IAddNewVendorFormProps> = (props
   /* Update Data into List - Relative Code Start */
   async function _updateListItems(assetsListsID: any): Promise<any> {
     let siteUrl = props.context.pageContext.legacyPageContext.webAbsoluteUrl;
+    //  let imageUrl = JSON.parse(vendorContactsFormData.Upload_Image);
+
     let obj = {
       Title: vendorContactsFormData.Title,
       CV_Vendor_Heading: vendorContactsFormData.Vendor_Heading,
@@ -297,8 +310,10 @@ const AddNewVendorForm: React.FunctionComponent<IAddNewVendorFormProps> = (props
       // List Page URL Pass, Get in image from Site Assets/dynamic id folder
       CV_Vendor_Image: JSON.stringify({
         type: vendorContactsFormData.Upload_Image.type,
+        // serverRelativeUrl: vendorContactsFormData.Upload_Image,
         serverRelativeUrl: siteUrl + '/SiteAssets/Lists/' + assetsListsID + '/' + vendorContactsFormData.Upload_Image.name,
       }),
+      // CV_Vendor_Image: imageUrl.serverRelativeUrl
     };
     return new Promise((resolve, reject) => {
       PnpSpCommonServices._updateListItem(sp, "Vendor Details", obj, props.onEditData.ID).then(
