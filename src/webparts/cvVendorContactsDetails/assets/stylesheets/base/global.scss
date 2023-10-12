@@ -130,6 +130,7 @@ ul {
 /* Card Relative Style CSS Start */
 .card-container{
   .card{
+    border-radius: 20px;
     box-shadow: $box-shadow-1;
     .card-header{
       position: relative;
@@ -776,9 +777,36 @@ ul {
                       display: flex;
                       align-items: center;
                       justify-content: space-between;
-                      padding: 20px 15px;
+                      padding: 20px 15px 8px;
                       @include media-breakpoint-down(xs) {
-                        padding: 20px 15px;
+                        padding: 20px 15px 8px;
+                      }
+                      .minus-circle-box {
+                        width: 80px;
+                        height: 80px;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        border-radius: 100%;
+                        border: 6px solid $white;
+                        margin: -40px auto 0px;
+                        @include media-breakpoint-down(xs) {
+                          width: 70px;
+                          height: 70px;
+                          border: 4px solid $white;
+                          margin: -35px auto 0px;
+                        }
+                        @include media-breakpoint-down(xxs) {
+                          width: 60px;
+                          height: 60px;
+                          margin: -30px auto 0px;
+                        }
+                        &.bg-secondary-15{
+                          background-color: $secondary-15;
+                        }
+                        img{
+                          width: 20px;
+                        }
                       }
                     }
                     .modal-body {
@@ -795,6 +823,7 @@ ul {
                       }
                       .modal-content-box{
                         p{
+                          text-align: center;
                           @include text-style($fs-18, 34px, $font-regular, $secondary-14);
                           letter-spacing: 1.08px;
                           @include media-breakpoint-down(sm) {
@@ -842,6 +871,11 @@ ul {
               }
             }
           }
+        }
+      }
+      &.comman-message-dialog-container{
+        &.delete-dialog-container{
+          @include modal-dynamic-generate-with-content(540px);
         }
       }
     }

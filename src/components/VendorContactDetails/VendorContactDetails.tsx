@@ -77,7 +77,7 @@ const VendorContactDetails: React.FunctionComponent<IVendorContactDetailsProps> 
     _initialFunction();
     // Clean up function
     return () => {
-      // console.log("Sorry not working code!");
+      console.log("");
     };
   }, []);
 
@@ -99,7 +99,7 @@ const VendorContactDetails: React.FunctionComponent<IVendorContactDetailsProps> 
   const renderDeleteIcon = (props?: IIconProps): JSX.Element => {
     return (
       <>
-        <img src={require("../../assets/svg/delete-icon.svg")} title="Delete icon" alt="Delete icon" />
+        <img src={require("../../assets/svg/white-delete-icon.svg")} title="Delete icon" alt="Delete icon" />
       </>
     );
   };
@@ -243,7 +243,6 @@ const VendorContactDetails: React.FunctionComponent<IVendorContactDetailsProps> 
   function onDeleteRow(item: any) {
     setHideCommonDialog(true);
     setDeleteItemIndexPass(item.ID);
-    console.log(item.ID);
   }
   function addEditVendorFormPanelOpen(item: any, addEditButtonClick: string) {
     setAdminPanelFormOpen(true);

@@ -76,6 +76,29 @@
 }
 /* Loader Mixin Comman Code - Mixin End */
 
+/* Define mixin with Modal Mixin */
+@mixin modal-dynamic-generate-with-content($width: 360px){
+  &.ms-Dialog {
+    .ms-Dialog-main{
+      width: $width;
+      @include media-breakpoint-down(xs) {
+        width: 100%;
+      }
+      .ms-Modal-scrollableContent {
+        > div {
+          .ms-Dialog-inner {
+            .ms-Dialog-content {
+              .modal-custom-content {
+                @content;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
 /* Responsive - Mixin Start */
 @mixin media-breakpoint-down($breakpoint) {
   $breakpoint-value: map-get($breakpoints, $breakpoint);

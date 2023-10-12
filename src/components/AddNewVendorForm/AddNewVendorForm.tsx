@@ -13,7 +13,7 @@ const AddNewVendorForm: React.FunctionComponent<IAddNewVendorFormProps> = (props
   /* Pnp Sp Relative Code Start */
   const sp = spfi().using(SPFx(props.context));
   /* Pnp Sp Relative Code End */
-
+  const [isImageUpdated, setIsImageUpdated] = React.useState(false)
   /* Admin Form Store Data Relative Declaration Variable with Error Message Start */
   const [vendorContactsFormData, setVendorContactsFormData]: any = React.useState({ Title: "", Vendor_Heading: "", Vendor_Name: "", Vendor_Number: "", Vendor_Email: "", Upload_Image: "" });
   const [errorMessageObj, isErrorMessageObj]: any = React.useState({ Title: "", Vendor_Heading: "", Vendor_Name: "", Vendor_Number: "", Vendor_Email: "", Upload_Image: "" });
@@ -113,6 +113,7 @@ const AddNewVendorForm: React.FunctionComponent<IAddNewVendorFormProps> = (props
     if (props.onAddEditDataView === "edit") {
       var json_string = props.onEditData.CV_Vendor_Image;
       const data = JSON.parse(json_string);
+      const imageUrl = encodeURI(data.serverRelativeUrl);
       setVendorContactsFormData({
         Title: props.onEditData.Title,
         Vendor_Heading: props.onEditData.CV_Vendor_Heading,
@@ -124,7 +125,7 @@ const AddNewVendorForm: React.FunctionComponent<IAddNewVendorFormProps> = (props
       const DOMElement = `
         <div class="uploadPictureContainer">
           <div class="deleteImage">X</div>
-          <img src=${data.serverRelativeUrl} class="uploadPicture" alt="preview">
+          <img src=${imageUrl} class="uploadPicture" alt="preview">
         </div>
       `;
       const wrapper = document.createElement('div');
@@ -152,6 +153,7 @@ const AddNewVendorForm: React.FunctionComponent<IAddNewVendorFormProps> = (props
     adminFormDataCopy["Upload_Image"] = pictureFiles && pictureFiles[0] ? pictureFiles[0] : "";
     if (pictureFiles.length > 0) {
       isErrorMessageObj({ ...errorMessageObj, Upload_Image: "" });
+      setIsImageUpdated(true)
     }
     setVendorContactsFormData(adminFormDataCopy);
   };
@@ -256,7 +258,9 @@ const AddNewVendorForm: React.FunctionComponent<IAddNewVendorFormProps> = (props
           _addListItems(assetsListsID);
         }
       }).then((response) => {
-        _addImagesItems(assetsListsID);
+        if (isImageUpdated == true) {
+          _addImagesItems(assetsListsID);
+        }
       }).then((response) => {
         _onclearFormData();
       }).then((response) => {
@@ -299,7 +303,10 @@ const AddNewVendorForm: React.FunctionComponent<IAddNewVendorFormProps> = (props
   /* Update Data into List - Relative Code Start */
   async function _updateListItems(assetsListsID: any): Promise<any> {
     let siteUrl = props.context.pageContext.legacyPageContext.webAbsoluteUrl;
-    //  let imageUrl = JSON.parse(vendorContactsFormData.Upload_Image);
+    let imageUrl;
+    if (isImageUpdated == false) {
+      imageUrl = JSON.parse(vendorContactsFormData.Upload_Image);
+    }
 
     let obj = {
       Title: vendorContactsFormData.Title,
@@ -308,13 +315,14 @@ const AddNewVendorForm: React.FunctionComponent<IAddNewVendorFormProps> = (props
       CV_Vendor_Number: vendorContactsFormData.Vendor_Number,
       CV_Vendor_Email: vendorContactsFormData.Vendor_Email,
       // List Page URL Pass, Get in image from Site Assets/dynamic id folder
-      CV_Vendor_Image: JSON.stringify({
+      CV_Vendor_Image: isImageUpdated ? JSON.stringify({
         type: vendorContactsFormData.Upload_Image.type,
         // serverRelativeUrl: vendorContactsFormData.Upload_Image,
         serverRelativeUrl: siteUrl + '/SiteAssets/Lists/' + assetsListsID + '/' + vendorContactsFormData.Upload_Image.name,
-      }),
+      }) : vendorContactsFormData.Upload_Image,
       // CV_Vendor_Image: imageUrl.serverRelativeUrl
     };
+
     return new Promise((resolve, reject) => {
       PnpSpCommonServices._updateListItem(sp, "Vendor Details", obj, props.onEditData.ID).then(
         (response) => {
