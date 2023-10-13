@@ -92,14 +92,14 @@ const VendorContactDetails: React.FunctionComponent<IVendorContactDetailsProps> 
   const renderEditIcon = (props?: IIconProps): JSX.Element => {
     return (
       <>
-        <img src={require("../../assets/svg/edit-icon.svg")} title="Check icon" alt="Check icon" />
+        <img src={require("../../assets/svg/edit-icon.svg")} title="Edit" alt="Edit" />
       </>
     );
   };
   const renderDeleteIcon = (props?: IIconProps): JSX.Element => {
     return (
       <>
-        <img src={require("../../assets/svg/white-delete-icon.svg")} title="Delete icon" alt="Delete icon" />
+        <img src={require("../../assets/svg/white-delete-icon.svg")} title="Delete" alt="Delete" />
       </>
     );
   };
