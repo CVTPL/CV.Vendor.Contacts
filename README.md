@@ -14,7 +14,7 @@ CV Vendor Contact Details - The dynamic and user-friendly SharePoint Webpart int
 ![Alt text](/src/assets/images/Screenshots/Vendor-Details-Admin-View.png?raw=true "Vendor Details Admin View")
 
 > Add new vendor form
-![Alt text](\src\assets\images\Screenshots\Add-New-Vendor-Form.png?raw=true "Add New Vendor Form")
+![Alt text](/src/assets/images/Screenshots/Add-New-Vendor-Form.png?raw=true "Add New Vendor Form")
 
 > Vendor details with search
 ![Alt text](/src/assets/images/Screenshots/Vendors-Search-Result.png?raw=true "Vendor details with search")
